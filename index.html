@@ -70,7 +70,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
   @page{size:A4;margin:10mm}
 }
 
-@media(max-width:900px){.menu{display:none}.heroGrid,.featureGrid,.jobs,.resumeBox,.inquiry{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.noteGrid{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr}.foot{grid-template-columns:1fr 1fr}}
+.btn:disabled{opacity:.65;cursor:not-allowed}\n@media(max-width:900px){.menu{display:none}.heroGrid,.featureGrid,.jobs,.resumeBox,.inquiry{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.noteGrid{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr}.foot{grid-template-columns:1fr 1fr}}
 @media(max-width:580px){.topin{justify-content:center}.topin span:last-child{display:none}.navin{height:63px}.brand small{display:none}.cards,.noteGrid,.steps{grid-template-columns:1fr}.hero{padding:45px 0}.hero p{font-size:16px}h1{font-size:40px}.dynamicin{height:40px}.dynamictrack{font-size:12px}.cta{display:block}.feature{padding:25px}}
 </style>
 </head>
@@ -114,7 +114,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <section><div class="wrap"><div class="feature" id="resume"><div class="featureGrid"><div>
 <div class="kick" style="color:#a9d2ff">NEW CAREER SERVICE</div><h2>🤖 AI Job Resume Builder</h2>
 <p>Candidate apni details dega aur batayega ki kis job ke liye resume banana hai. Future AI integration target role aur job description ke hisab se information ko professionally organise kar sakti hai.</p>
-<div class="tags"><span class="tag">Target Job</span><span class="tag">Job Description</span><span class="tag">ATS-Friendly</span><span class="tag">Fresher</span><span class="tag">Experience</span><span class="tag">Skills</span><span class="tag">Projects</span></div></div>
+<div class="tags"><span class="tag">AI Job Matching</span><span class="tag">Target Job</span><span class="tag">Job Description</span><span class="tag">ATS-Friendly</span><span class="tag">Fresher</span><span class="tag">Experience</span><span class="tag">Skills</span><span class="tag">Projects</span></div></div>
 <div class="steps">
 <div class="step"><b>1</b><strong>Target Job</strong><small>Kis position ke liye?</small></div>
 <div class="step"><b>2</b><strong>Details</strong><small>Education, skills, experience</small></div>
@@ -123,8 +123,8 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 </div></div></div></div></section>
 
 <section class="white" id="resumePrintArea"><div class="wrap resumeBox"><div class="formbox">
-<div class="kick">Phase 1 • Working Resume Builder</div><h2 style="font-size:28px">Apna target job batayein</h2>
-<p class="resumeHint">Ye browser-based Phase 1 hai: kisi API ki zarurat nahi. Resume aapki di hui information se generate hoga; fake experience/skills automatically add nahi honge.</p>
+<div class="kick">Phase 2 • AI-Powered Resume Builder</div><h2 style="font-size:28px">Apna target job batayein</h2>
+<p class="resumeHint">Secure AI backend se job-focused resume generate hoga. AI sirf aapki di hui information ko rewrite/organise karega; fake experience, skills, certification ya achievement add nahi karega.</p>
 <label>Full Name <span class="required">*</span></label><input id="rName" placeholder="Example: Saif Anwar">
 <label>Target Job / Position <span class="required">*</span></label><input id="rRole" placeholder="Example: MIS Executive">
 <label>Location</label><input id="rLocation" placeholder="Example: Jaipur, Rajasthan">
@@ -137,7 +137,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <label>Projects / Experience Details</label><textarea id="rDetails" placeholder="Only your real projects, work, internship, responsibilities or achievements. Example: Created sales dashboard in Power BI..." ></textarea>
 <label>Certifications (optional)</label><input id="rCerts" placeholder="Only certifications you actually have">
 <label>Job Description (Optional)</label><textarea id="rJD" placeholder="Job description yahan paste karein. Builder important keywords identify karke skills section ko highlight karega..."></textarea>
-<button class="btn primary" type="button" onclick="generateResume()">✨ Generate Job Resume</button>
+<button id="generateResumeBtn" class="btn primary" type="button" onclick="generateResumeAI()">✨ Generate AI Job Resume</button>
 <div id="resumeStatus" class="resumeStatus"></div>
 <div class="resumeActions resumePrintControls"><button class="btn light" type="button" onclick="printResume()">🖨️ Print / Save PDF</button><button class="btn light" type="button" onclick="clearResume()">↺ Clear</button></div>
 </div>
@@ -212,41 +212,142 @@ function generateSummary(name, role, exp, skills, education, jd){
   var jdText=jd ? 'with attention to the requirements provided in the job description' : 'with a practical, job-focused approach';
   return esc(name)+ ' is a '+esc(expText)+' candidate targeting the '+esc(target)+' role. Skilled in '+esc(skillText||'the skills provided by the candidate')+'. Education: '+esc(edu||'candidate-provided education')+'. The profile is structured '+jdText+'.';
 }
-function generateResume(){
-  var name=document.getElementById('rName').value.trim();
-  var role=document.getElementById('rRole').value.trim();
-  var location=document.getElementById('rLocation').value.trim();
-  var mobile=document.getElementById('rMobile').value.trim();
-  var email=document.getElementById('rEmail').value.trim();
-  var linkedin=document.getElementById('rLinkedin').value.trim();
-  var exp=document.getElementById('rExperience').value;
-  var skills=document.getElementById('rSkills').value.trim();
-  var education=document.getElementById('rEducation').value.trim();
-  var details=document.getElementById('rDetails').value.trim();
-  var certs=document.getElementById('rCerts').value.trim();
-  var jd=document.getElementById('rJD').value.trim();
-  var status=document.getElementById('resumeStatus');
-  if(!name || !role || !skills || !education){
-    status.style.display='block'; status.style.background='#fff5f5'; status.style.borderColor='#f2cccc'; status.style.color='#a63d3d';
-    status.textContent='Please fill the required fields: Full Name, Target Job, Key Skills and Education.'; return;
-  }
-  var skillArr=splitList(skills);
-  var keywords=jdKeywords(jd,skills);
-  var contact=[location,mobile,email,linkedin].filter(Boolean).map(esc).join(' • ');
-  var skillHtml=skillArr.map(function(s){return '<span class="r-skill">'+esc(s)+'</span>';}).join('');
-  var keywordHtml=keywords.length ? '<div class="r-section"><h4>Job Description Keywords</h4><p>'+keywords.map(esc).join(' • ')+'</p></div>' : '';
-  var detailHtml=details ? '<div class="r-section"><h4>Projects / Experience</h4><p>'+esc(details).replace(/\n/g,'<br>')+'</p></div>' : '';
-  var certHtml=certs ? '<div class="r-section"><h4>Certifications</h4><p>'+esc(certs)+'</p></div>' : '';
-  var summary=generateSummary(name,role,exp,skills,education,jd);
-  var output='<div class="resumeTop"><h3 class="r-name">'+esc(name)+'</h3><div class="r-role">'+esc(role)+' • '+esc(exp)+'</div><div class="r-contact">'+(contact||'Contact details not provided')+'</div></div>'+
-    '<div class="r-section"><h4>Professional Summary</h4><p>'+summary+'</p></div>'+
-    '<div class="r-section"><h4>Core Skills</h4><div class="r-skills">'+skillHtml+'</div></div>'+detailHtml+
-    '<div class="r-section"><h4>Education</h4><p>'+esc(education)+'</p></div>'+certHtml+keywordHtml;
-  document.getElementById('resumeOutput').innerHTML=output;
-  status.style.display='block'; status.style.background='#edf8f2'; status.style.borderColor='#c9ead9'; status.style.color='#11623f';
-  status.textContent='Resume generated successfully from your provided information. No unverified experience or certification has been added.';
-  document.getElementById('resumeOutput').scrollIntoView({behavior:'smooth',block:'start'});
+
+// Phase 2: Secure AI Resume Builder
+// IMPORTANT: Keep the OpenAI API key on the backend. Never put it in this HTML file.
+const RESUME_API_URL = "https://YOUR-VERCEL-PROJECT.vercel.app/api/generate-resume";
+
+function getResumeFormData(){
+  return {
+    name: document.getElementById('rName').value.trim(),
+    role: document.getElementById('rRole').value.trim(),
+    location: document.getElementById('rLocation').value.trim(),
+    mobile: document.getElementById('rMobile').value.trim(),
+    email: document.getElementById('rEmail').value.trim(),
+    linkedin: document.getElementById('rLinkedin').value.trim(),
+    experience: document.getElementById('rExperience').value,
+    skills: document.getElementById('rSkills').value.trim(),
+    education: document.getElementById('rEducation').value.trim(),
+    details: document.getElementById('rDetails').value.trim(),
+    certs: document.getElementById('rCerts').value.trim(),
+    jd: document.getElementById('rJD').value.trim()
+  };
 }
+
+function setResumeStatus(message, type){
+  var status=document.getElementById('resumeStatus');
+  status.style.display='block';
+  if(type==='error'){
+    status.style.background='#fff5f5';
+    status.style.borderColor='#f2cccc';
+    status.style.color='#a63d3d';
+  } else {
+    status.style.background='#edf8f2';
+    status.style.borderColor='#c9ead9';
+    status.style.color='#11623f';
+  }
+  status.textContent=message;
+}
+
+function listToHtml(items, cls){
+  if(!Array.isArray(items) || !items.length) return '';
+  return '<ul class="'+(cls||'')+'">'+items.map(function(x){
+    return '<li>'+esc(String(x||''))+'</li>';
+  }).join('')+'</ul>';
+}
+
+function renderAIResume(data){
+  var contact=[data.location,data.mobile,data.email,data.linkedin].filter(Boolean).map(esc).join(' • ');
+  var skillHtml=(data.skills||[]).map(function(s){
+    return '<span class="r-skill">'+esc(String(s))+'</span>';
+  }).join('');
+
+  var experienceHtml='';
+  if(Array.isArray(data.experience) && data.experience.length){
+    experienceHtml='<div class="r-section"><h4>Experience</h4>'+listToHtml(data.experience)+'</div>';
+  }
+
+  var projectHtml='';
+  if(Array.isArray(data.projects) && data.projects.length){
+    projectHtml='<div class="r-section"><h4>Projects</h4>'+listToHtml(data.projects)+'</div>';
+  }
+
+  var certHtml='';
+  if(Array.isArray(data.certifications) && data.certifications.length){
+    certHtml='<div class="r-section"><h4>Certifications</h4>'+listToHtml(data.certifications)+'</div>';
+  }
+
+  var keywordHtml='';
+  if(Array.isArray(data.jobKeywords) && data.jobKeywords.length){
+    keywordHtml='<div class="r-section"><h4>Target Job Keywords</h4><p>'+data.jobKeywords.map(function(k){return esc(String(k));}).join(' • ')+'</p></div>';
+  }
+
+  var educationHtml=Array.isArray(data.education) ? listToHtml(data.education) : '<p>'+esc(String(data.education||''))+'</p>';
+
+  var output=
+    '<div class="resumeTop">'+
+      '<h3 class="r-name">'+esc(data.name||'')+'</h3>'+
+      '<div class="r-role">'+esc(data.headline||'')+'</div>'+
+      '<div class="r-contact">'+(contact||'Contact details not provided')+'</div>'+
+    '</div>'+
+    '<div class="r-section"><h4>Professional Summary</h4><p>'+esc(data.summary||'')+'</p></div>'+
+    '<div class="r-section"><h4>Core Skills</h4><div class="r-skills">'+skillHtml+'</div></div>'+
+    experienceHtml+
+    projectHtml+
+    '<div class="r-section"><h4>Education</h4>'+educationHtml+'</div>'+
+    certHtml+
+    keywordHtml;
+
+  document.getElementById('resumeOutput').innerHTML=output;
+}
+
+async function generateResumeAI(){
+  var data=getResumeFormData();
+  var btn=document.getElementById('generateResumeBtn');
+
+  if(!data.name || !data.role || !data.skills || !data.education){
+    setResumeStatus('Please fill the required fields: Full Name, Target Job, Key Skills and Education.','error');
+    return;
+  }
+
+  if(RESUME_API_URL.indexOf('YOUR-VERCEL-PROJECT') !== -1){
+    setResumeStatus('AI backend URL abhi set nahi hua. Pehle Vercel backend deploy karke RESUME_API_URL mein apna backend URL paste karein.','error');
+    return;
+  }
+
+  btn.disabled=true;
+  btn.textContent='⏳ AI is preparing your resume...';
+  setResumeStatus('AI job description aur aapki details ko analyse kar raha hai...','ok');
+
+  try{
+    var response=await fetch(RESUME_API_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+
+    var result=await response.json().catch(function(){return {};});
+
+    if(!response.ok){
+      throw new Error(result.error || 'Resume generation failed.');
+    }
+
+    if(!result.resume){
+      throw new Error('AI response mein resume data nahi mila.');
+    }
+
+    renderAIResume(result.resume);
+    setResumeStatus('AI resume generated successfully. Sirf aapki provided information use ki gayi hai; unverified facts add nahi kiye gaye.','ok');
+    document.getElementById('resumeOutput').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(error){
+    console.error(error);
+    setResumeStatus(error.message || 'Something went wrong. Please try again.','error');
+  }finally{
+    btn.disabled=false;
+    btn.textContent='✨ Generate AI Job Resume';
+  }
+}
+
 function printResume(){
   var text=document.getElementById('resumeOutput').innerText.trim();
   if(!text || text.indexOf('Your professional resume will appear here')===0){alert('Pehle resume generate karein.');return;}
