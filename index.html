@@ -14,80 +14,60 @@
 }
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
 a{text-decoration:none;color:inherit}.wrap{width:min(1180px,92%);margin:auto}
-.top{background:var(--navy);color:#fff;font-size:13px}.topin{min-height:38px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.top{background:var(--navy);color:#fff;font-size:13px}.topin{min-height:32px;display:flex;align-items:center;justify-content:space-between;gap:15px}
 nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.navin{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:11px;font-weight:900;color:var(--navy)}
-.logo{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--blue),var(--orange));font-weight:950;box-shadow:0 8px 18px #1769e82b}
+.navin{height:60px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:11px;font-weight:900;color:var(--navy)}
+.logo{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--blue),var(--orange));font-weight:950;box-shadow:0 8px 18px #1769e82b}
 .brand small{display:block;font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.2px}
 .menu{display:flex;align-items:center;gap:18px;font-size:13px;font-weight:800}.menu a:hover{color:var(--blue)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:10px;padding:11px 17px;font-weight:850;cursor:pointer;font-size:14px}
 .primary{background:var(--blue);color:#fff}.green{background:var(--green);color:#fff}.light{background:#fff;color:var(--navy);border:1px solid #cbd8e7}.orange{background:var(--orange);color:#fff}
-.dynamic{background:#fff;border-bottom:1px solid var(--line);overflow:hidden}.dynamicin{height:42px;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
-.dynamictrack{display:flex;gap:42px;animation:move 27s linear infinite;font-size:13px;font-weight:850}.dynamictrack span:before{content:"•";color:var(--orange);margin-right:12px}
+.dynamic{background:#fff;border-bottom:1px solid var(--line);overflow:hidden}.dynamicin{height:34px;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
+.dynamictrack{display:flex;gap:34px;animation:move 27s linear infinite;font-size:13px;font-weight:850}.dynamictrack span:before{content:"•";color:var(--orange);margin-right:12px}
 @keyframes move{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.quickActions{background:#fff;padding:24px 0;border-bottom:1px solid var(--line);box-shadow:0 7px 22px rgba(16,42,67,.06)}.quickTitle{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:14px}.quickTitle h2{margin:2px 0 0;color:var(--navy);font-size:24px}.quickTitle p{margin:0;color:var(--muted);font-size:13px}.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.quickCard{min-height:86px;padding:14px 15px;border:1px solid var(--line);border-radius:16px;display:flex;align-items:center;gap:12px;background:#fff;transition:.2s;box-shadow:0 6px 18px rgba(16,42,67,.06)}.quickCard:hover{transform:translateY(-2px);box-shadow:0 11px 25px rgba(16,42,67,.11)}.quickCard>span{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:var(--sky);flex:0 0 46px}.quickCard div{flex:1}.quickCard strong{display:block;color:var(--navy);font-size:15px}.quickCard small{display:block;color:var(--muted);font-size:10.5px;line-height:1.35;margin-top:2px}.quickCard>b{font-size:20px;color:var(--blue)}.quickCard.orange>span{background:#fff4e7}.quickCard.orange>b{color:var(--orange)}.quickCard.navy>span{background:#eef2f7}.quickCard.navy>b{color:var(--navy)}.quickCard.green>span{background:#eaf8f1}.quickCard.green>b{color:var(--green)}
-.hero{background:#fff;padding:62px 0 58px;border-bottom:1px solid var(--line)}
-.heroGrid{display:grid;grid-template-columns:1.12fr .88fr;gap:45px;align-items:center}.eyebrow{display:inline-flex;background:var(--sky);border:1px solid #d6e7ff;color:var(--blue);padding:6px 12px;border-radius:30px;font-size:12px;font-weight:900}
-h1{font-size:clamp(38px,5vw,62px);line-height:1.05;letter-spacing:-2px;color:var(--navy);margin:16px 0 17px}h1 em{font-style:normal;color:var(--blue)}
-.hero p{font-size:18px;color:var(--muted);max-width:720px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:25px 0}
+.quickActions{background:#fff;padding:16px 0;border-bottom:1px solid var(--line);box-shadow:0 7px 22px rgba(16,42,67,.06)}.quickTitle{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:14px}.quickTitle h2{margin:1px 0 0;color:var(--navy);font-size:21px}.quickTitle p{margin:0;color:var(--muted);font-size:13px}.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.quickCard{min-height:72px;padding:10px 12px;border:1px solid var(--line);border-radius:16px;display:flex;align-items:center;gap:12px;background:#fff;transition:.2s;box-shadow:0 6px 18px rgba(16,42,67,.06)}.quickCard:hover{transform:translateY(-2px);box-shadow:0 11px 25px rgba(16,42,67,.11)}.quickCard>span{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:19px;background:var(--sky);flex:0 0 40px}.quickCard div{flex:1}.quickCard strong{display:block;color:var(--navy);font-size:14px}.quickCard small{display:block;color:var(--muted);font-size:9.5px;line-height:1.35;margin-top:2px}.quickCard>b{font-size:20px;color:var(--blue)}.quickCard.orange>span{background:#fff4e7}.quickCard.orange>b{color:var(--orange)}.quickCard.navy>span{background:#eef2f7}.quickCard.navy>b{color:var(--navy)}.quickCard.green>span{background:#eaf8f1}.quickCard.green>b{color:var(--green)}
+.hero{background:#fff;padding:24px 0 22px;border-bottom:1px solid var(--line)}
+.heroGrid{display:grid;grid-template-columns:1.12fr .88fr;gap:30px;align-items:center}.eyebrow{display:inline-flex;background:var(--sky);border:1px solid #d6e7ff;color:var(--blue);padding:6px 12px;border-radius:30px;font-size:12px;font-weight:900}
+h1{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-2px;color:var(--navy);margin:16px 0 17px}h1 em{font-style:normal;color:var(--blue)}
+.hero p{font-size:14px;color:var(--muted);max-width:720px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
 .tags{display:flex;flex-wrap:wrap;gap:7px}.tag{display:inline-flex;padding:5px 9px;border-radius:30px;background:#fff;border:1px solid #dce5ef;color:#40516a;font-size:11px;font-weight:800}
-.heroPanel{border:1px solid var(--line);border-radius:24px;padding:24px;background:#fff;box-shadow:var(--shadow)}
+.heroPanel{border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff;box-shadow:var(--shadow)}
 .heroPanel h3{margin:0 0 15px;color:var(--navy)}.miniGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .mini{padding:14px;border:1px solid var(--line);border-radius:13px;background:var(--bg);font-weight:800;font-size:13px}.mini b{display:block;font-size:21px;color:var(--blue)}
-section{padding:68px 0}.white{background:#fff}.head{text-align:center;max-width:780px;margin:0 auto 34px}.kick{font-size:12px;text-transform:uppercase;letter-spacing:1.4px;font-weight:950;color:var(--blue)}
-h2{font-size:35px;line-height:1.2;color:var(--navy);margin:7px 0 10px}.head p{color:var(--muted);margin:0}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:23px;box-shadow:0 7px 25px rgba(16,42,67,.045)}
+section{padding:48px 0}.white{background:#fff}.head{text-align:center;max-width:780px;margin:0 auto 24px}.kick{font-size:12px;text-transform:uppercase;letter-spacing:1.4px;font-weight:950;color:var(--blue)}
+h2{font-size:30px;line-height:1.2;color:var(--navy);margin:7px 0 10px}.head p{color:var(--muted);margin:0}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 7px 25px rgba(16,42,67,.045)}
 .icon{width:44px;height:44px;border-radius:13px;background:var(--sky);display:grid;place-items:center;font-size:21px;margin-bottom:12px}.card h3{margin:5px 0;color:var(--navy);font-size:19px}.card p{font-size:14px;color:var(--muted);margin:7px 0 15px}
 .feature{background:linear-gradient(135deg,#102a43,#174f91);color:#fff;border-radius:26px;padding:35px;position:relative;overflow:hidden}.feature:after{content:"AI • JOB • SKILLS • CAREER";position:absolute;right:-20px;bottom:8px;font-size:42px;font-weight:950;opacity:.05;white-space:nowrap}
 .feature h2{color:#fff}.feature p{color:#dce9f8}.featureGrid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}.feature .tag{background:#ffffff12;border-color:#ffffff2c;color:#fff}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:20px}.step{background:#ffffff12;border:1px solid #ffffff22;border-radius:14px;padding:16px}.step b{font-size:22px}.step strong{display:block;margin:5px 0}.step small{color:#cbdced}
 .jobs{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.listbox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px 20px;box-shadow:var(--shadow)}
 .job{padding:16px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;align-items:center}.job:last-child{border:0}.job strong{color:var(--navy)}.job small{display:block;color:var(--muted);margin-top:2px}
-.noteGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.note{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}.note .price{font-size:14px;font-weight:900;color:var(--green);margin-top:12px}
+.noteGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.note{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}.note .price{font-size:14px;font-weight:900;color:var(--green);margin-top:12px}
 .resumeBox{display:grid;grid-template-columns:.8fr 1.2fr;gap:22px}.formbox,.preview{background:#fff;border:1px solid var(--line);border-radius:18px;padding:23px;box-shadow:var(--shadow)}label{display:block;font-size:12px;font-weight:850;color:var(--navy);margin:11px 0 5px}
 input,select,textarea{width:100%;padding:12px;border:1px solid #d4dfeb;border-radius:9px;font:inherit;color:var(--ink);background:#fff}textarea{min-height:90px;resize:vertical}
 .preview{background:#fcfdff}.resumeTop{border-bottom:1px solid var(--line);padding-bottom:12px}.resumeTop h3{font-size:25px;margin:0;color:var(--navy)}.resumeTop p{margin:3px 0;color:var(--blue);font-weight:800;font-size:13px}.resumeSec{margin-top:17px}.resumeSec h4{color:var(--navy);margin:0 0 5px;text-transform:uppercase;font-size:12px;letter-spacing:.8px}.resumeSec p{margin:0;color:var(--muted);font-size:13px}
-.future{background:#fff}.docGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.doc{border:1px dashed #b9c9db;border-radius:17px;padding:20px;background:#fbfdff}.doc h3{margin:6px 0;color:var(--navy)}.doc p{font-size:13px;color:var(--muted)}.doc span{font-size:11px;font-weight:900;color:var(--blue)}
+.future{background:#fff}.docGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.doc{border:1px dashed #b9c9db;border-radius:14px;padding:16px;background:#fbfdff}.doc h3{margin:6px 0;color:var(--navy)}.doc p{font-size:13px;color:var(--muted)}.doc span{font-size:11px;font-weight:900;color:var(--blue)}
 .inquiry{display:grid;grid-template-columns:1fr 1fr;gap:22px}.comments{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}.comment{padding:13px 0;border-bottom:1px solid var(--line)}.comment:last-child{border:0}.comment b{color:var(--navy)}.comment small{color:var(--muted)}
-.cta{background:linear-gradient(120deg,var(--blue),var(--navy));color:#fff;border-radius:25px;padding:38px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{color:#fff}.cta p{color:#dbe8f8}
+.cta{background:linear-gradient(120deg,var(--blue),var(--navy));color:#fff;border-radius:20px;padding:28px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{color:#fff}.cta p{color:#dbe8f8}
 footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}.foot h3{color:#fff}.foot a{display:block;margin:7px 0;font-size:13px}.copy{border-top:1px solid #ffffff1c;padding-top:15px;margin-top:25px;font-size:11px}
 
-/* PHASE 1 - WORKING RESUME BUILDER */
-.resumeActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.resumeActions .btn{flex:1;min-width:130px}
-.resumeHint{font-size:11px;color:var(--muted);margin:8px 0 0}.required{color:var(--red)}
-.resumeStatus{display:none;margin-top:12px;padding:10px 12px;border-radius:10px;background:#edf8f2;border:1px solid #c9ead9;color:#11623f;font-size:12px;font-weight:750}
-.resumeDoc{max-width:820px;margin:auto;background:#fff;color:#1b2735;padding:34px 38px;min-height:900px;border:1px solid #dfe6ee}
-.resumeDoc .r-name{font-size:30px;line-height:1.1;color:#102a43;font-weight:900;margin:0}.resumeDoc .r-role{font-size:14px;color:#1769e8;font-weight:800;margin:5px 0 8px}.resumeDoc .r-contact{font-size:11px;color:#64748b;line-height:1.7;border-bottom:2px solid #1769e8;padding-bottom:12px}
-.resumeDoc .r-section{margin-top:18px}.resumeDoc .r-section h4{font-size:12px;letter-spacing:1px;color:#102a43;border-bottom:1px solid #dfe6ee;padding-bottom:5px;margin:0 0 8px}.resumeDoc .r-section p{font-size:12.5px;line-height:1.65;color:#34465b;margin:0}.resumeDoc ul{margin:5px 0 0 18px;padding:0}.resumeDoc li{font-size:12.5px;line-height:1.65;color:#34465b;margin:2px 0}.resumeDoc .r-skills{display:flex;flex-wrap:wrap;gap:6px}.resumeDoc .r-skill{font-size:10.5px;padding:4px 8px;border:1px solid #d5e0eb;border-radius:20px;color:#334e68;background:#f8fbff;font-weight:750}
-.resumeEmpty{text-align:center;padding:110px 20px;color:#7b8a9a}.resumeEmpty strong{display:block;font-size:18px;color:#40516a;margin-bottom:5px}
-@media print{
-  body{background:#fff!important}
-  body>*:not(#resumePrintArea){display:none!important}
-  #resumePrintArea{display:block!important}
-  #resumePrintArea .resumeBox{display:block!important;margin:0!important;width:100%!important}
-  #resumePrintArea .formbox,.resumePrintControls{display:none!important}
-  #resumePrintArea .preview{display:block!important;border:0!important;box-shadow:none!important;padding:0!important}
-  .resumeDoc{border:0!important;max-width:none!important;min-height:0!important;padding:20px 28px!important}
-  @page{size:A4;margin:10mm}
-}
-
-.btn:disabled{opacity:.65;cursor:not-allowed}\n@media(max-width:900px){.quickGrid{grid-template-columns:1fr 1fr}.menu{display:none}.heroGrid,.featureGrid,.jobs,.resumeBox,.inquiry{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.noteGrid{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr}.foot{grid-template-columns:1fr 1fr}}
-@media(max-width:580px){.quickGrid{grid-template-columns:1fr}.quickTitle{display:block}.quickTitle p{margin-top:3px}.topin{justify-content:center}.topin span:last-child{display:none}.navin{height:63px}.brand small{display:none}.cards,.noteGrid,.steps{grid-template-columns:1fr}.hero{padding:45px 0}.hero p{font-size:16px}h1{font-size:40px}.dynamicin{height:40px}.dynamictrack{font-size:12px}.cta{display:block}.feature{padding:25px}}
-
-.noticeSection{background:#f8fbff;padding:28px 0;border-bottom:1px solid var(--line)}.noticeHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:16px}.noticeHeader h2{margin:5px 0;font-size:26px}.noticeHeader p{margin:0;color:var(--muted);font-size:14px}.liveBadge{display:inline-flex;align-items:center;gap:5px;background:#edf8f2;color:#11623f;border:1px solid #c9ead9;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:900;white-space:nowrap}.lightLive{background:var(--sky);color:var(--blue);border-color:#d6e7ff}.announcementList{display:grid;gap:10px}.announcement{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:12px;padding:13px 15px;box-shadow:0 5px 18px rgba(16,42,67,.04)}.announcementTop{display:flex;justify-content:space-between;gap:12px;align-items:center}.announcementTitle{font-weight:900;color:var(--navy)}.announcementDate{font-size:11px;color:var(--muted)}.announcementText{font-size:13px;color:#40516a;margin-top:4px}.loadingAnn{color:var(--muted)}.commentMeta{display:flex;justify-content:space-between;gap:10px;align-items:center}.commentText{margin-top:4px;color:#40516a;font-size:13px;white-space:pre-wrap}.commentUser{font-weight:850;color:var(--navy)}.commentTime{font-size:10px;color:var(--muted)}
+.noticeSection{background:#f8fbff;padding:28px 0;border-bottom:1px solid var(--line)}.noticeHeader{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:7px}.noticeHeader h2{margin:5px 0;font-size:26px}.noticeHeader p{margin:0;color:var(--muted);font-size:14px}.liveBadge{display:inline-flex;align-items:center;gap:5px;background:#edf8f2;color:#11623f;border:1px solid #c9ead9;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:900;white-space:nowrap}.lightLive{background:var(--sky);color:var(--blue);border-color:#d6e7ff}.announcementList{display:grid;gap:10px}.announcement{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:12px;padding:13px 15px;box-shadow:0 5px 18px rgba(16,42,67,.04)}.announcementTop{display:flex;justify-content:space-between;gap:12px;align-items:center}.announcementTitle{font-weight:900;color:var(--navy)}.announcementDate{font-size:11px;color:var(--muted)}.announcementText{font-size:13px;color:#40516a;margin-top:4px}.loadingAnn{color:var(--muted)}.commentMeta{display:flex;justify-content:space-between;gap:10px;align-items:center}.commentText{margin-top:4px;color:#40516a;font-size:13px;white-space:pre-wrap}.commentUser{font-weight:850;color:var(--navy)}.commentTime{font-size:10px;color:var(--muted)}
 
 /* COMPACT LIVE NOTIFICATIONS */
-.compactNotice{padding:14px 0!important;background:#f7faff!important;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.compactNotice{padding:10px 0!important;background:#f7faff!important;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .compactNotice .noticeHeader{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
-.compactNotice .noticeHeader h2{font-size:20px;margin:0}
+.compactNotice .noticeHeader h2{font-size:18px;margin:0}
 .compactNotice .noticeHeader .kick{margin-bottom:2px;font-size:10px}
 .updateLink{font-size:12px;font-weight:800;color:var(--blue);text-decoration:none}
 .compactNotice .announcementList{display:grid;gap:6px}
-.compactNotice .announcement{padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;box-shadow:none}
+.compactNotice .announcement{padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;box-shadow:none}
 .compactNotice .announcementTop{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .compactNotice .announcementTitle{font-size:13px;font-weight:850;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .compactNotice .announcementDate{font-size:10px;color:var(--muted);white-space:nowrap}
 .compactNotice .announcementText{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.categoryStrip{background:#f8fbff;border-bottom:1px solid var(--line);padding:10px 0}.categoryInner{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.categoryInner strong{font-size:11px;color:var(--navy);margin-right:3px}.categoryInner a{font-size:10.5px;font-weight:800;color:#40516a;background:#fff;border:1px solid #dbe5ef;border-radius:20px;padding:4px 9px}.categoryInner a:hover{color:var(--blue);border-color:#bcd6fb}
 </style>
 </head>
 <body>
@@ -95,15 +75,15 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <div class="top"><div class="wrap topin"><span>📍 Jaipur, Rajasthan</span><span>Jobs • Government Jobs • Notes • Job Services</span></div></div>
 
 <nav><div class="wrap navin">
-<a href="#home" class="brand"><div class="logo">RC</div><div>Rajasthan Job<small>Jobs • Learning • Job Support</small></div></a>
+<a href="#home" class="brand"><div class="logo">RJ</div><div>Rajasthan Job<small>Jobs • Government Jobs • Job Support</small></div></a>
 <div class="menu">
 <a href="jobs.html">Jobs</a><a href="#govt">Govt Jobs</a><a href="#notes">Notes</a><a href="post-a-job.html">Post a Job</a><a href="#services">Services</a><a class="btn primary" href="#contact">Inquiry</a>
 </div></div></nav>
 
 <!-- DYNAMIC ADVERTISEMENT / MESSAGE STRIP -->
 <div class="dynamic"><div class="wrap dynamicin"><div class="dynamictrack">
-<span>Jaipur mein job chahiye? Contact karein</span><span>Rajasthan Government Job Updates</span><span>Fresher Job Support Available</span><span>Resume & LinkedIn Support Available</span><span>Premium Exam Notes & Practice Sets</span><span>Excel • MIS • Power BI • SQL • Python Skills</span><span>Job Guidance & Interview Preparation</span>
-<span>Jaipur mein job chahiye? Contact karein</span><span>Rajasthan Government Job Updates</span><span>Fresher Job Support Available</span><span>Resume & LinkedIn Support Available</span><span>Premium Exam Notes & Practice Sets</span><span>Excel • MIS • Power BI • SQL • Python Skills</span><span>Job Guidance & Interview Preparation</span>
+<span>Jaipur mein job chahiye? Contact karein</span><span>Rajasthan Government Job Updates</span><span>Fresher Job Support Available</span><span>Job & Career Support Available</span><span>Premium Exam Notes & Practice Sets</span><span>Excel • MIS • Power BI • SQL • Python Skills</span><span>Job Guidance & Interview Preparation</span>
+<span>Jaipur mein job chahiye? Contact karein</span><span>Rajasthan Government Job Updates</span><span>Fresher Job Support Available</span><span>Job & Career Support Available</span><span>Premium Exam Notes & Practice Sets</span><span>Excel • MIS • Power BI • SQL • Python Skills</span><span>Job Guidance & Interview Preparation</span>
 </div></div></div>
 
 <section class="noticeSection compactNotice" id="updates">
@@ -115,14 +95,16 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 
 <section class="quickActions"><div class="wrap"><div class="quickTitle"><div><div class="kick">MOST IMPORTANT</div><h2>Job ke liye Quick Access</h2></div><p>Sabse zaroori options yahin se direct open karein.</p></div><div class="quickGrid"><a class="quickCard blue" href="jobs.html"><span>🔎</span><div><strong>Jobs Dekhein</strong><small>Latest Jaipur & Rajasthan Jobs</small></div><b>→</b></a><a class="quickCard orange" href="post-a-job.html"><span>🏢</span><div><strong>Post a Job</strong><small>Employer vacancy submit karein</small></div><b>→</b></a><a class="quickCard navy" href="#govt"><span>🏛️</span><div><strong>Government Jobs</strong><small>RPSC • RSSB • CET Updates</small></div><b>→</b></a><a class="quickCard green" href="#contact"><span>💬</span><div><strong>Inquiry Karein</strong><small>Job & career support</small></div><b>→</b></a></div></div></section>
 
+<section class="categoryStrip"><div class="wrap"><div class="categoryInner"><strong>Quick Search:</strong><a href="jobs.html">Jaipur Jobs</a><a href="jobs.html">Fresher Jobs</a><a href="jobs.html">MIS Jobs</a><a href="jobs.html">Data Analyst</a><a href="jobs.html">Sales Jobs</a><a href="#govt">Govt Jobs</a><a href="#notes">Exam Notes</a></div></div></section>
+
 <section class="hero" id="home"><div class="wrap heroGrid"><div>
 <span class="eyebrow">JAIPUR & RAJASTHAN JOB PLATFORM</span>
 <h1>Jobs, Skills & <em>Job Growth</em> — Ek Jagah.</h1>
-<p>Private jobs, government job information, exam notes, resume support, interview preparation aur practical skills — Rajasthan ke students, freshers aur job seekers ke liye.</p>
-<div class="tags"><span class="tag">Jaipur Jobs</span><span class="tag">Rajasthan Jobs</span><span class="tag">Government Jobs</span><span class="tag">RPSC</span><span class="tag">RSSB</span><span class="tag">CET</span><span class="tag">Rajasthan GK</span><span class="tag">Resume</span><span class="tag">Interview</span><span class="tag">Excel</span><span class="tag">Power BI</span><span class="tag">SQL</span><span class="tag">Python</span></div>
+<p>Private jobs, government job information, exam notes, interview preparation aur practical job skills — Rajasthan ke students, freshers aur job seekers ke liye.</p>
+<div class="tags"><span class="tag">Jaipur Jobs</span><span class="tag">Rajasthan Jobs</span><span class="tag">Government Jobs</span><span class="tag">RPSC</span><span class="tag">RSSB</span><span class="tag">CET</span><span class="tag">Rajasthan GK</span><span class="tag">Interview</span><span class="tag">Excel</span><span class="tag">Power BI</span><span class="tag">SQL</span><span class="tag">Python</span></div>
 </div>
 <div class="heroPanel"><h3>Yahan kya milega?</h3><div class="miniGrid">
-<div class="mini"><b>💼</b>Private Jobs</div><div class="mini"><b>🏛️</b>Govt Jobs</div><div class="mini"><b>📚</b>Premium Notes</div><div class="mini"><b>📄</b>Resume Support</div><div class="mini"><b>🎯</b>Interview Prep</div><div class="mini"><b>💻</b>Career Skills</div><div class="mini"><b>🤖</b>AI Learning</div><div class="mini"><b>🏢</b>Employer Services</div>
+<div class="mini"><b>💼</b>Private Jobs</div><div class="mini"><b>🏛️</b>Govt Jobs</div><div class="mini"><b>📚</b>Premium Notes</div><div class="mini"><b>📄</b>Resume Support</div><div class="mini"><b>🎯</b>Interview Prep</div><div class="mini"><b>💻</b>Career Skills</div><div class="mini"><b>🏢</b>Employer Services</div>
 </div></div></div></section>
 
 <section class="white" id="services"><div class="wrap"><div class="head"><div class="kick">Our Services</div><h2>Job ki zarurat — ek platform par</h2><p>Future mein naye documents, courses, job categories aur services isi structure mein add ki ja sakti hain.</p></div>
@@ -156,14 +138,14 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <section class="future"><div class="wrap"><div class="head"><div class="kick">Future Document Center</div><h2>Naye documents kabhi bhi add kar sakte hain</h2><p>Website ko is tarah structure kiya gaya hai ki future mein PDF, DOC, notes, forms, courses aur job resources ko category-wise add kiya ja sake.</p></div>
 <div class="docGrid">
 <div class="doc"><span>EXAMS</span><h3>📘 New Exam Notes</h3><p>New recruitment ya syllabus aane par fresh notes, PDFs aur revision material.</p><button class="btn light">Coming Soon</button></div>
-<div class="doc"><span>CAREER</span><h3>📄 Resume Templates</h3><p>Different job roles ke liye job-oriented resume templates and examples.</p><button class="btn light">Coming Soon</button></div>
+
 <div class="doc"><span>SKILLS</span><h3>💻 Skill Courses</h3><p>Excel, Power BI, SQL, Python, AI aur future job skills ke resources.</p><button class="btn light">Coming Soon</button></div>
 <div class="doc"><span>GOVT JOBS</span><h3>🏛️ Recruitment Documents</h3><p>Official notifications aur important recruitment resources ko organised format mein list karna.</p><button class="btn light">Coming Soon</button></div>
 <div class="doc"><span>INTERVIEW</span><h3>🎯 Interview Packs</h3><p>Role-wise interview questions, mock tests aur preparation documents.</p><button class="btn light">Coming Soon</button></div>
-<div class="doc"><span>AI</span><h3>🤖 AI Learning Material</h3><p>AI tools, practical guides aur new workplace AI learning resources.</p><button class="btn light">Coming Soon</button></div>
+
 </div></div></section>
 
-<section><div class="wrap"><div class="cta"><div><div class="kick" style="color:#acd4ff">Jaipur Job Support</div><h2>Job chahiye, resume support ya notes chahiye?</h2><p>Apni requirement bhejiye. Future mein inquiry system ko database, WhatsApp notifications aur admin dashboard se connect kiya ja sakta hai.</p></div><a class="btn light" href="tel:+916350566010">📞 Contact Now</a></div></div></section>
+<section><div class="wrap"><div class="cta"><div><div class="kick" style="color:#acd4ff">Jaipur Job Support</div><h2>Job chahiye, resume support ya notes chahiye?</h2><p>Apni requirement bhejiye. Inquiry Firebase database mein save hoti hai aur admin panel se review ki ja sakti hai.</p></div><a class="btn light" href="tel:+916350566010">📞 Contact Now</a></div></div></section>
 
 <section class="white" id="contact">
 <div class="wrap"><div class="head"><div class="kick">CONTACT & COMMUNITY</div><h2>Apni requirement bhejein</h2><p>Job, notes, resume, interview, skills ya employer service — inquiry bhejein aur community mein comment bhi karein.</p></div>
@@ -174,7 +156,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
     <form id="inquiryForm">
       <label>Name <span class="required">*</span></label><input id="inqName" required placeholder="Your Name">
       <label>Mobile <span class="required">*</span></label><input id="inqMobile" required inputmode="numeric" placeholder="10-digit mobile number">
-      <label>Service</label><select id="inqService"><option value="">Choose Service</option><option>Jaipur / Rajasthan Job</option><option>Government Job</option><option>Premium Notes</option><option>Interview Preparation</option><option>Excel / MIS</option><option>Power BI / SQL / Python</option><option>AI Course</option><option>Employer Job Posting</option><option>Other</option></select>
+      <label>Service</label><select id="inqService"><option value="">Choose Service</option><option>Jaipur / Rajasthan Job</option><option>Government Job</option><option>Premium Notes</option><option>Interview Preparation</option><option>Excel / MIS</option><option>Power BI / SQL / Python</option><option>Other</option><option>Employer Job Posting</option><option>Other</option></select>
       <label>Your Requirement <span class="required">*</span></label><textarea id="inqMessage" required placeholder="Apni requirement clearly likhiye..."></textarea>
       <button id="inqBtn" class="btn primary" type="submit">📩 Submit Inquiry</button>
       <div id="inqStatus" class="resumeStatus"></div>
@@ -193,7 +175,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 </div></div></section>
 <footer><div class="wrap foot"><div><h3>Rajasthan Job</h3><p>Jaipur & Rajasthan ke liye jobs, government job information, premium study material, career resume, interview support aur job skills.</p></div>
 <div><h3>Explore</h3><a href="jobs.html">Private Jobs</a><a href="#govt">Government Jobs</a><a href="#notes">Premium Notes</a><a href="#contact">Resume Support</a><a href="#services">All Services</a></div>
-<div><h3>Job Services</h3><a href="#contact">Job Inquiry</a><a href="#contact">Resume Support</a><a href="#contact">Interview Preparation</a><a href="#contact">Employer Services</a></div></div>
+<div><h3>Job Services</h3><a href="#contact">Job Inquiry</a><a href="#contact">Resume Support</a><a href="#contact">Interview Preparation</a><a href="#contact">Employer Services</a><a href="admin-dashboard.html">🔐 Admin Login</a></div></div>
 <div class="wrap copy">© 2026 Rajasthan Job • Recruitment details should be verified from the relevant official source before applying.</div></footer>
 
 
@@ -214,15 +196,6 @@ function jdKeywords(jd, skills){
   var own=splitList(skills).map(function(x){return x.toLowerCase();});
   return Array.from(new Set(fromJD.concat(own))).slice(0,12);
 }
-function generateSummary(name, role, exp, skills, education, jd){
-  var skillText=splitList(skills).slice(0,6).join(', ');
-  var edu=cleanSentences(education);
-  var target=role||'the target role';
-  var expText=exp==='Fresher' ? 'fresher' : exp+' experience';
-  var jdText=jd ? 'with attention to the requirements provided in the job description' : 'with a practical, job-focused approach';
-  return esc(name)+ ' is a '+esc(expText)+' candidate targeting the '+esc(target)+' role. Skilled in '+esc(skillText||'the skills provided by the candidate')+'. Education: '+esc(edu||'candidate-provided education')+'. The profile is structured '+jdText+'.';
-}
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import { getFirestore, collection, addDoc, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
