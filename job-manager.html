@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Manager | Rajasthan Job</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{--navy:#102a43;--blue:#1769e8;--sky:#edf5ff;--orange:#f39a2f;--green:#16865b;--red:#d84b4b;--ink:#182536;--muted:#64748b;--bg:#f5f7fb;--line:#dfe7ef;--card:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}a{text-decoration:none;color:inherit}.wrap{width:min(1180px,94%);margin:auto}
+header{background:var(--navy);color:#fff;padding:18px 0}.head{display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{font-size:20px;font-weight:900}.head small{color:#cfe0f3}.nav{display:flex;gap:9px;flex-wrap:wrap}.btn{border:0;border-radius:9px;padding:10px 14px;font-weight:850;cursor:pointer;font-size:13px}.blue{background:var(--blue);color:#fff}.white{background:#fff;color:var(--navy)}.danger{background:#fff0f0;color:#b52f2f;border:1px solid #f0caca}.green{background:var(--green);color:#fff}
+main{padding:28px 0 60px}.notice{background:#fff8eb;border:1px solid #f1d39d;border-radius:12px;padding:13px 15px;color:#72500d;font-size:12px;margin-bottom:20px}.layout{display:grid;grid-template-columns:1.25fr .9fr;gap:20px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 8px 25px #102a430b}.card h2{margin:0 0 16px;color:var(--navy);font-size:21px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:5px}.full{grid-column:1/-1}label{font-size:12px;font-weight:850;color:#34465c}input,select,textarea{width:100%;padding:11px;border:1px solid #cfdbe7;border-radius:9px;background:#fff;font:inherit;outline:none}textarea{min-height:105px;resize:vertical}.help{font-size:11px;color:var(--muted)}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}.jobrow{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;background:#fff}.jobrow h3{margin:0;color:var(--navy);font-size:16px}.jobrow p{margin:3px 0;color:var(--muted);font-size:12px}.status{display:inline-block;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:900;margin-top:7px}.active{background:#edf8f2;color:#11623f}.draft{background:#fff8eb;color:#79500c}.expired{background:#fff0f0;color:#a63d3d}.rowactions{display:flex;gap:6px;margin-top:10px}.rowactions button{font-size:11px;padding:7px 9px}.empty{color:var(--muted);font-size:13px;padding:18px 0}.smalltitle{font-size:12px;font-weight:900;color:var(--navy);margin:18px 0 7px}.codebox{background:#0e1d2d;color:#dbe9f7;border-radius:10px;padding:12px;font:11px/1.5 Consolas,monospace;max-height:180px;overflow:auto;white-space:pre-wrap}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:15px}.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{font-size:22px;color:var(--navy);display:block}.stat span{font-size:10px;color:var(--muted);font-weight:800}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.full{grid-column:auto}}@media(max-width:520px){.head{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr 1fr 1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap head"><div><div class="brand">Rajasthan Job — Job Manager</div><small>Private management tool • not for public navigation</small></div><div class="nav"><a class="btn white" href="jobs.html">View Jobs</a><a class="btn white" href="index.html">Website</a></div></div></header>
+<main><div class="wrap">
+<div class="notice"><b>Important:</b> Ye abhi <b>no-cost local admin prototype</b> hai. Data is browser ke local storage mein save hota hai; ye secure multi-user admin system nahi hai. Public publishing ke liye generated files ko review karke GitHub par upload karna hoga. Baad mein Firebase/database se isse real admin panel banaya ja sakta hai.</div>
+<div class="stats"><div class="stat"><b id="total">0</b><span>TOTAL JOBS</span></div><div class="stat"><b id="active">0</b><span>ACTIVE</span></div><div class="stat"><b id="drafts">0</b><span>DRAFTS</span></div></div>
+<div class="layout">
+<section class="card">
+<h2 id="formTitle">➕ Add New Job</h2>
+<form id="jobForm"><div class="grid">
+<div class="field"><label>Job Title *</label><input id="title" required placeholder="MIS Executive"></div>
+<div class="field"><label>Company *</label><input id="company" required placeholder="ABC Pvt. Ltd."></div>
+<div class="field"><label>Location *</label><input id="location" required placeholder="Jaipur, Rajasthan"></div>
+<div class="field"><label>Category *</label><select id="category" required><option value="">Select</option><option>Private</option><option>Government</option><option>Data & MIS</option><option>Sales</option><option>IT</option><option>Manufacturing</option><option>Other</option></select></div>
+<div class="field"><label>Experience</label><select id="experience"><option>Fresher</option><option>0–1 Year</option><option>1–3 Years</option><option>3+ Years</option><option>Any Experience</option></select></div>
+<div class="field"><label>Job Type</label><select id="type"><option>Full Time</option><option>Part Time</option><option>Internship</option><option>Contract</option><option>Work From Home</option></select></div>
+<div class="field"><label>Salary / CTC</label><input id="salary" placeholder="₹18,000–25,000"></div>
+<div class="field"><label>Qualification</label><input id="qualification" placeholder="Graduate"></div>
+<div class="field"><label>Deadline</label><input id="deadline" type="date"></div>
+<div class="field"><label>Status</label><select id="status"><option value="active">Active</option><option value="draft">Draft</option><option value="expired">Expired</option></select></div>
+<div class="field full"><label>Job Description *</label><textarea id="description" required placeholder="Responsibilities, required skills, working hours..."></textarea></div>
+<div class="field full"><label>Official / Authorized Apply Link *</label><input id="apply" type="url" required placeholder="https://company.com/careers/..."></div>
+</div>
+<div class="actions"><button class="btn blue" type="submit" id="saveBtn">Save Job</button><button class="btn white" type="button" onclick="clearForm()">Clear</button></div>
+</form>
+</section>
+<aside class="card"><h2>📋 Saved Jobs</h2><div id="jobList"></div></aside>
+</div>
+<section class="card" style="margin-top:20px">
+<h2>📤 Publish / Backup</h2>
+<p class="help">Review jobs first. Then export the JSON backup. Individual job HTML files can also be generated from the saved list. Upload only genuine/verified vacancies and the required files to GitHub.</p>
+<div class="actions"><button class="btn green" onclick="exportJSON()">Download jobs-data.json</button><button class="btn white" onclick="downloadAllInfo()">Download Job Manager Info</button></div>
+<div class="smalltitle">Current data preview</div><div class="codebox" id="preview"></div>
+</section>
+</div></main>
+<script>
+const KEY='rajasthanJobManagerJobs_v1'; let jobs=JSON.parse(localStorage.getItem(KEY)||'[]'); let editingId=null;
+const $=id=>document.getElementById(id);
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function save(){localStorage.setItem(KEY,JSON.stringify(jobs));render();}
+function render(){
+ $('total').textContent=jobs.length;$('active').textContent=jobs.filter(j=>j.status==='active').length;$('drafts').textContent=jobs.filter(j=>j.status==='draft').length;
+ $('preview').textContent=JSON.stringify(jobs,null,2);
+ $('jobList').innerHTML=jobs.length?jobs.map(j=>`<div class="jobrow"><h3>${esc(j.title)}</h3><p>${esc(j.company)} • ${esc(j.location)}</p><span class="status ${j.status}">${j.status.toUpperCase()}</span><div class="rowactions"><button class="btn white" onclick="editJob('${j.id}')">Edit</button><button class="btn white" onclick="downloadJob('${j.id}')">HTML</button><button class="btn danger" onclick="deleteJob('${j.id}')">Delete</button></div></div>`).join(''):'<div class="empty">Abhi koi job saved nahi hai.</div>';
+}
+function clearForm(){editingId=null;$('jobForm').reset();$('formTitle').textContent='➕ Add New Job';$('saveBtn').textContent='Save Job';}
+$('jobForm').addEventListener('submit',e=>{e.preventDefault();const j={id:editingId||('job_'+Date.now()),title:$('title').value.trim(),company:$('company').value.trim(),location:$('location').value.trim(),category:$('category').value,experience:$('experience').value,type:$('type').value,salary:$('salary').value.trim(),qualification:$('qualification').value.trim(),deadline:$('deadline').value,status:$('status').value,description:$('description').value.trim(),apply:$('apply').value.trim(),updatedAt:new Date().toISOString()};const i=jobs.findIndex(x=>x.id===j.id);if(i>=0)jobs[i]=j;else jobs.unshift(j);save();clearForm();});
+function editJob(id){const j=jobs.find(x=>x.id===id);if(!j)return;editingId=id;['title','company','location','category','experience','type','salary','qualification','deadline','status','description','apply'].forEach(k=>$(k).value=j[k]||'');$('formTitle').textContent='✏️ Edit Job';$('saveBtn').textContent='Update Job';scrollTo({top:0,behavior:'smooth'});}
+function deleteJob(id){if(confirm('Delete this job?')){jobs=jobs.filter(j=>j.id!==id);save();}}
+function exportFile(name,text,type='application/json'){const blob=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);}
+function exportJSON(){exportFile('jobs-data.json',JSON.stringify(jobs,null,2));}
+function downloadJob(id){const j=jobs.find(x=>x.id===id);if(!j)return;const slug=j.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');const html=`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${esc(j.title)} | Rajasthan Job</title><meta name="description" content="${esc(j.title)} at ${esc(j.company)} in ${esc(j.location)}."><style>body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#182536}.wrap{width:min(850px,92%);margin:auto}.top{background:#102a43;color:#fff;padding:16px 0}.card{background:#fff;margin:35px 0;padding:28px;border-radius:18px;border:1px solid #dfe7ef;box-shadow:0 10px 30px #102a430d}h1{color:#102a43;margin-bottom:5px}.company{color:#64748b;font-weight:700}.meta{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}.meta span{border:1px solid #dfe7ef;padding:8px 10px;border-radius:8px;font-size:13px}.btn{display:inline-block;background:#1769e8;color:#fff;padding:12px 18px;border-radius:9px;text-decoration:none;font-weight:800}.section{border-top:1px solid #e5ebf1;margin-top:24px;padding-top:20px}.note{font-size:12px;color:#64748b}</style></head><body><div class="top"><div class="wrap"><b>Rajasthan Job</b> • Job Details</div></div><main class="wrap"><div class="card"><h1>${esc(j.title)}</h1><div class="company">${esc(j.company)} • 📍 ${esc(j.location)}</div><div class="meta"><span>💼 ${esc(j.type)}</span><span>👤 ${esc(j.experience)}</span><span>💰 ${esc(j.salary||'Not specified')}</span><span>🎓 ${esc(j.qualification||'Not specified')}</span>${j.deadline?`<span>📅 Deadline: ${esc(j.deadline)}</span>`:''}</div><a class="btn" href="${esc(j.apply)}" target="_blank" rel="noopener">Apply Now</a><div class="section"><h2>Job Description</h2><p>${esc(j.description).replace(/\\n/g,'<br>')}</p></div><p class="note">Please verify vacancy details and the application route before applying.</p></div></main></body></html>`;exportFile(slug+'.html',html,'text/html');}
+function downloadAllInfo(){exportFile('job-manager-backup.txt','Rajasthan Job Job Manager\\n\\nSaved jobs: '+jobs.length+'\\n\\nUse the Download jobs-data.json button for structured backup.','text/plain');}
+render();
+</script>
+</body>
+</html>
