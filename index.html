@@ -283,6 +283,7 @@ function jdKeywords(jd, skills){
   var own=splitList(skills).map(function(x){return x.toLowerCase();});
   return Array.from(new Set(fromJD.concat(own))).slice(0,12);
 }
+</script>
 
 <script>
 /* Notification center local read-state */
@@ -374,6 +375,23 @@ notifItems.addEventListener('click',function(e){
   const updates=document.getElementById('updates');
   if(updates) updates.scrollIntoView({behavior:'smooth',block:'start'});
 });
+
+// APPROVED JOB NOTIFICATIONS — public-safe because only approved jobs are readable.
+let firstApprovedJobSnapshot=true;
+try{
+  onSnapshot(query(collection(db2,'jobs'),where('status','==','approved')),snap=>{
+    if(firstApprovedJobSnapshot){ firstApprovedJobSnapshot=false; return; }
+    snap.docChanges().forEach(change=>{
+      if(change.type!=='added') return;
+      const j=change.doc.data();
+      const id='job_'+change.doc.id;
+      if(!window.RJNotificationRead.has(id)){
+        latestNotifications=[{id:id,title:'New Job Available',message:`${j.title||'New vacancy'}${j.company?' • '+j.company:''}${j.location?' • '+j.location:''}`,type:'job',status:'published',createdAt:new Date()}].concat(latestNotifications).slice(0,15);
+        renderNotificationCenter();
+      }
+    });
+  },err=>console.error('Approved job notification listener:',err));
+}catch(e){console.error('Approved job notification init:',e);}
 
 try{
   // Read announcements without a Firestore composite-index dependency.
