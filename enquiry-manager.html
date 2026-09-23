@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rajasthan Job — Enquiry Manager</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#102b49}
+.header{background:#102f4d;color:#fff;padding:22px 7%;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.header h1{margin:0;font-size:24px}.header p{margin:5px 0 0;font-size:13px;opacity:.85}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-light{background:#fff;color:#102b49}.btn-blue{background:#1769e8;color:#fff}.btn-red{background:#ffe9e9;color:#b42318}.btn-green{background:#e7f7ee;color:#087443}
+.wrap{width:min(1100px,92%);margin:22px auto}
+.notice{padding:13px 16px;background:#eef6ff;border:1px solid #c8def8;border-radius:10px;margin-bottom:18px;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:#fff;border:1px solid #d9e3ef;border-radius:14px;padding:16px}.stat b{display:block;font-size:26px}.stat span{font-size:11px;font-weight:800;color:#60738a;text-transform:uppercase}
+.panel{background:#fff;border:1px solid #d9e3ef;border-radius:16px;padding:20px;box-shadow:0 8px 24px rgba(16,43,73,.05)}
+.panel h2{margin:0 0 15px;font-size:22px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.toolbar input,.toolbar select{padding:11px 12px;border:1px solid #ccd9e7;border-radius:9px;background:#fff;color:#102b49}
+.toolbar input{flex:1;min-width:220px}
+.enquiry{border:1px solid #dce5ef;border-radius:13px;padding:16px;margin:12px 0;background:#fff}
+.enq-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.enq-name{font-size:18px;font-weight:800}.meta{font-size:13px;color:#58708b;margin-top:5px;line-height:1.55}
+.badge{font-size:11px;font-weight:800;border-radius:999px;padding:6px 9px;white-space:nowrap}
+.badge-new{background:#fff3d6;color:#8a5a00}.badge-read{background:#eaf3ff;color:#1769e8}.badge-closed{background:#e9f7ef;color:#087443}
+.message{margin:14px 0;padding:12px;background:#f7f9fc;border-radius:9px;line-height:1.55;white-space:pre-wrap}
+.enq-actions{display:flex;gap:8px;flex-wrap:wrap}
+.empty{text-align:center;color:#6c7f93;padding:35px 10px}
+.login{max-width:520px;margin:70px auto;text-align:center}
+.login .panel{padding:35px}
+.hidden{display:none!important}
+.error{color:#b42318;background:#fff1f1;border:1px solid #f1cccc;padding:11px;border-radius:9px;margin-top:12px}
+.success{color:#087443;background:#effaf3;border:1px solid #c9ead7;padding:11px;border-radius:9px;margin-top:12px}
+.small{font-size:12px;color:#6c7f93}
+@media(max-width:750px){.stats{grid-template-columns:repeat(2,1fr)}.header{padding:18px 4%}.wrap{width:94%}.enq-top{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<div id="loginView" class="login">
+  <div class="panel">
+    <div style="font-size:42px">📩</div>
+    <h1>Enquiry Manager</h1>
+    <p class="small">Authorized Rajasthan Job admin only.</p>
+    <button class="btn btn-blue" id="googleLogin">🔐 Login with Google</button>
+    <div id="loginMsg"></div>
+  </div>
+</div>
+
+<div id="appView" class="hidden">
+  <header class="header">
+    <div>
+      <h1>Rajasthan Job — Enquiry Manager</h1>
+      <p>Public enquiries received from the website</p>
+    </div>
+    <div class="actions">
+      <a class="btn btn-light" href="index.html">Website</a>
+      <button class="btn btn-light" id="refreshBtn">↻ Refresh</button>
+      <button class="btn btn-light" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="notice">📩 <b>Enquiries:</b> Website visitors ki submitted requirements yahan dikhenगी. New enquiry ko <b>New</b> status milega.</div>
+
+    <div class="stats">
+      <div class="stat"><b id="totalCount">0</b><span>Total</span></div>
+      <div class="stat"><b id="newCount">0</b><span>New</span></div>
+      <div class="stat"><b id="readCount">0</b><span>Read</span></div>
+      <div class="stat"><b id="closedCount">0</b><span>Closed</span></div>
+    </div>
+
+    <section class="panel">
+      <h2>📩 Enquiry Submissions</h2>
+      <div class="toolbar">
+        <input id="searchBox" placeholder="Search name, mobile, service or message...">
+        <select id="statusFilter">
+          <option value="all">All Status</option>
+          <option value="new">New</option>
+          <option value="read">Read</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+      <div id="statusMsg" class="small">Loading enquiries...</div>
+      <div id="enquiryList"></div>
+    </section>
+  </main>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import {
+  getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const ADMIN_EMAIL = "saif.anwar1618@gmail.com";
+const CONFIG_FILE = "firebase-config.js";
+
+let app, auth, db, allEnquiries = [];
+
+function showMsg(text, type=""){
+  const el=document.getElementById("statusMsg");
+  el.className=type==="error"?"error":type==="success"?"success":"small";
+  el.textContent=text;
+}
+
+function esc(v){
+  return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+
+function dateText(v){
+  try{
+    if(v && typeof v.toDate==="function") return v.toDate().toLocaleString("en-IN");
+    if(v) return new Date(v).toLocaleString("en-IN");
+  }catch(e){}
+  return "Date not available";
+}
+
+async function loadConfig(){
+  const text = await fetch(CONFIG_FILE + "?v=" + Date.now()).then(r=>{
+    if(!r.ok) throw new Error("firebase-config.js nahi mila.");
+    return r.text();
+  });
+
+  // Reads the standard firebaseConfig object without requiring any change
+  // to the existing config file format.
+  const keys=["apiKey","authDomain","projectId","storageBucket","messagingSenderId","appId","measurementId"];
+  const cfg={};
+  for(const key of keys){
+    const re = new RegExp(key + "\\s*:\\s*[\"']([^\"']+)[\"']");
+    const m=text.match(re);
+    if(m) cfg[key]=m[1];
+  }
+  if(!cfg.apiKey || !cfg.projectId || !cfg.appId){
+    throw new Error("firebase-config.js mein valid Firebase configuration nahi mili.");
+  }
+  return cfg;
+}
+
+async function initFirebase(){
+  const config=await loadConfig();
+  app=initializeApp(config);
+  auth=getAuth(app);
+  db=getFirestore(app);
+
+  onAuthStateChanged(auth, async user=>{
+    if(!user){
+      document.getElementById("loginView").classList.remove("hidden");
+      document.getElementById("appView").classList.add("hidden");
+      return;
+    }
+    if((user.email||"").toLowerCase() !== ADMIN_EMAIL.toLowerCase()){
+      await signOut(auth);
+      document.getElementById("loginMsg").innerHTML =
+        '<div class="error">This Google account is not authorized for Rajasthan Job admin.</div>';
+      return;
+    }
+    document.getElementById("loginView").classList.add("hidden");
+    document.getElementById("appView").classList.remove("hidden");
+    loadEnquiries();
+  });
+}
+
+async function login(){
+  const msg=document.getElementById("loginMsg");
+  msg.innerHTML="";
+  try{
+    const provider=new GoogleAuthProvider();
+    await signInWithPopup(auth,provider);
+  }catch(e){
+    console.error(e);
+    msg.innerHTML='<div class="error">Login failed: '+esc(e.message||e.code||"Unknown error")+'</div>';
+  }
+}
+
+async function loadEnquiries(){
+  showMsg("Loading enquiries...");
+  try{
+    const snap=await getDocs(collection(db,"inquiries"));
+    allEnquiries=[];
+    snap.forEach(d=>{
+      const x=d.data();
+      allEnquiries.push({id:d.id,...x});
+    });
+    allEnquiries.sort((a,b)=>{
+      const at=a.createdAt?.seconds||0, bt=b.createdAt?.seconds||0;
+      return bt-at;
+    });
+    render();
+    showMsg(allEnquiries.length ? "Enquiries loaded." : "No enquiries yet.");
+  }catch(e){
+    console.error(e);
+    showMsg("Unable to load enquiries. Firestore rules mein /inquiries admin read permission check karein.", "error");
+  }
+}
+
+function render(){
+  const q=document.getElementById("searchBox").value.trim().toLowerCase();
+  const filter=document.getElementById("statusFilter").value;
+
+  const counts={total:allEnquiries.length,new:0,read:0,closed:0};
+  allEnquiries.forEach(x=>{
+    const s=(x.status||"new").toLowerCase();
+    if(counts[s]!==undefined) counts[s]++;
+  });
+  document.getElementById("totalCount").textContent=counts.total;
+  document.getElementById("newCount").textContent=counts.new;
+  document.getElementById("readCount").textContent=counts.read;
+  document.getElementById("closedCount").textContent=counts.closed;
+
+  const filtered=allEnquiries.filter(x=>{
+    const hay=[x.name,x.mobile,x.phone,x.email,x.service,x.requirement,x.message].join(" ").toLowerCase();
+    const status=(x.status||"new").toLowerCase();
+    return (!q || hay.includes(q)) && (filter==="all" || status===filter);
+  });
+
+  const box=document.getElementById("enquiryList");
+  if(!filtered.length){
+    box.innerHTML='<div class="empty">📭 No matching enquiries.</div>';
+    return;
+  }
+
+  box.innerHTML=filtered.map(x=>{
+    const status=(x.status||"new").toLowerCase();
+    const badgeClass=status==="closed"?"badge-closed":status==="read"?"badge-read":"badge-new";
+    const phone=x.mobile||x.phone||"";
+    const email=x.email||"";
+    const service=x.service||"Not specified";
+    const req=x.requirement||x.message||"No requirement provided";
+    return `
+      <article class="enquiry">
+        <div class="enq-top">
+          <div>
+            <div class="enq-name">${esc(x.name||"Unnamed")}</div>
+            <div class="meta">
+              📱 ${esc(phone||"No mobile")} ${email?` • ✉️ ${esc(email)}`:""}<br>
+              🎯 ${esc(service)} • 🕒 ${esc(dateText(x.createdAt))}
+            </div>
+          </div>
+          <span class="badge ${badgeClass}">${esc(status.toUpperCase())}</span>
+        </div>
+        <div class="message">${esc(req)}</div>
+        <div class="enq-actions">
+          ${phone?`<a class="btn btn-green" href="tel:${esc(phone)}">📞 Call</a>`:""}
+          ${phone?`<a class="btn btn-green" target="_blank" href="https://wa.me/91${esc(phone.replace(/\\D/g,""))}">💬 WhatsApp</a>`:""}
+          ${status!=="read"?`<button class="btn btn-blue" data-action="read" data-id="${esc(x.id)}">✓ Mark Read</button>`:""}
+          ${status!=="closed"?`<button class="btn btn-green" data-action="closed" data-id="${esc(x.id)}">✓ Close</button>`:""}
+          ${status!=="new"?`<button class="btn btn-light" data-action="new" data-id="${esc(x.id)}">↺ New</button>`:""}
+          <button class="btn btn-red" data-action="delete" data-id="${esc(x.id)}">Delete</button>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+async function changeStatus(id,status){
+  try{
+    await updateDoc(doc(db,"inquiries",id),{status,updatedAt:serverTimestamp()});
+    await loadEnquiries();
+  }catch(e){
+    console.error(e);
+    showMsg("Status update failed. Firestore /inquiries update permission check karein.","error");
+  }
+}
+
+async function removeEnquiry(id){
+  if(!confirm("Is enquiry ko permanently delete karna hai?")) return;
+  try{
+    await deleteDoc(doc(db,"inquiries",id));
+    await loadEnquiries();
+  }catch(e){
+    console.error(e);
+    showMsg("Delete failed. Firestore /inquiries delete permission check karein.","error");
+  }
+}
+
+document.getElementById("googleLogin").addEventListener("click",login);
+document.getElementById("logoutBtn").addEventListener("click",()=>signOut(auth));
+document.getElementById("refreshBtn").addEventListener("click",loadEnquiries);
+document.getElementById("searchBox").addEventListener("input",render);
+document.getElementById("statusFilter").addEventListener("change",render);
+
+document.getElementById("enquiryList").addEventListener("click",async e=>{
+  const b=e.target.closest("[data-action]");
+  if(!b) return;
+  const id=b.dataset.id, action=b.dataset.action;
+  if(action==="delete") return removeEnquiry(id);
+  if(action==="read" || action==="closed" || action==="new") return changeStatus(id,action);
+});
+
+initFirebase().catch(e=>{
+  console.error(e);
+  document.getElementById("loginMsg").innerHTML='<div class="error">'+esc(e.message||"Firebase initialization failed.")+'</div>';
+});
+</script>
+</body>
+</html>
