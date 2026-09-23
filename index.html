@@ -215,7 +215,7 @@ function generateSummary(name, role, exp, skills, education, jd){
 
 // Phase 2: Secure AI Resume Builder
 // IMPORTANT: Keep the OpenAI API key on the backend. Never put it in this HTML file.
-const RESUME_API_URL = "https://YOUR-VERCEL-PROJECT.vercel.app/api/generate-resume";
+const RESUME_API_URL = "https://rajasthan-job-ai-backend.vercel.app/api/generate-resume";
 
 function getResumeFormData(){
   return {
@@ -310,21 +310,24 @@ async function generateResumeAI(){
     return;
   }
 
-  if(RESUME_API_URL.indexOf('YOUR-VERCEL-PROJECT') !== -1){
-    setResumeStatus('AI backend URL abhi set nahi hua. Pehle Vercel backend deploy karke RESUME_API_URL mein apna backend URL paste karein.','error');
-    return;
-  }
-
   btn.disabled=true;
   btn.textContent='⏳ AI is preparing your resume...';
   setResumeStatus('AI job description aur aapki details ko analyse kar raha hai...','ok');
 
   try{
-    var response=await fetch(RESUME_API_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(data)
-    });
+    var controller = new AbortController();
+    var timeoutId = setTimeout(function(){ controller.abort(); }, 60000);
+    var response;
+    try{
+      response=await fetch(RESUME_API_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(data),
+        signal:controller.signal
+      });
+    }finally{
+      clearTimeout(timeoutId);
+    }
 
     var result=await response.json().catch(function(){return {};});
 
@@ -341,7 +344,10 @@ async function generateResumeAI(){
     document.getElementById('resumeOutput').scrollIntoView({behavior:'smooth',block:'start'});
   }catch(error){
     console.error(error);
-    setResumeStatus(error.message || 'Something went wrong. Please try again.','error');
+    var msg = error && error.name === 'AbortError'
+      ? 'AI response mein zyada time lag raha hai. 1 minute baad dobara try karein.'
+      : (error.message || 'Something went wrong. Please try again.');
+    setResumeStatus(msg,'error');
   }finally{
     btn.disabled=false;
     btn.textContent='✨ Generate AI Job Resume';
