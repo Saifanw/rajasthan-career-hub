@@ -42,42 +42,71 @@ section{padding:34px 0 70px}.layout{display:grid;grid-template-columns:1.55fr .8
 <div class="field full"><label>Additional Notes</label><textarea id="notes" placeholder="Any important recruiter instructions or vacancy details"></textarea></div>
 </div>
 <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn primary" type="submit">📤 Submit Job for Review</button><a class="btn light" href="jobs.html">View Jobs</a></div>
-<div class="success" id="success">Submission details prepared. WhatsApp will open so you can send the vacancy details for review.</div>
+<div class="success" id="success">Your vacancy will be submitted to Rajasthan Job for review.</div>
 </form></div></main>
 <aside class="side"><div class="card sidebox"><h2>How it works</h2><ul><li>Employer submits vacancy details.</li><li>Rajasthan Job reviews the information.</li><li>Suitable verified/authorized vacancy can be published.</li><li>Job page can include the employer's official application route.</li></ul></div>
 <div class="card"><h2>Before submitting</h2><p class="help">Use a company-controlled email/phone where possible. Keep job title, salary, eligibility, location and deadline accurate. Do not submit another portal's copied listing without authorization.</p></div></aside>
 </div></section>
 <footer class="footer"><div class="wrap foot"><div><h3>Rajasthan Job</h3><p>Jaipur & Rajasthan ke liye jobs, government job information aur job support.</p></div><div><h3>Explore</h3><a href="index.html">Home</a><a href="jobs.html">All Jobs</a><a href="index.html#govt">Government Jobs</a></div><div><h3>Employer</h3><a href="post-a-job.html">Post a Job</a><a href="index.html#contact">Contact / Inquiry</a></div></div><div class="wrap copy">© 2026 Rajasthan Job • Job submissions are subject to review.</div></footer>
-<script>
-document.getElementById('jobForm').addEventListener('submit',function(e){
-e.preventDefault();
-const v=id=>document.getElementById(id).value.trim();
-const msg=`Rajasthan Job - New Employer Job Submission
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-Company: ${v('company')}
-Contact Person: ${v('contact')}
-Email: ${v('email')}
-Phone/WhatsApp: ${v('phone')}
+const firebaseConfig = {
+  apiKey: "AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
+  authDomain: "rajasthan-job.firebaseapp.com",
+  projectId: "rajasthan-job",
+  storageBucket: "rajasthan-job.firebasestorage.app",
+  messagingSenderId: "894888753938",
+  appId: "1:894888753938:web:92e66d7a7237be1fd9d1cb",
+  measurementId: "G-15S2XJQK80"
+};
 
-Job Title: ${v('title')}
-Location: ${v('location')}
-Category: ${v('category')}
-Job Type: ${v('type')}
-Experience: ${v('experience')}
-Salary/CTC: ${v('salary')}
-Qualification: ${v('qualification')}
-Deadline: ${v('deadline')}
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const form = document.getElementById('jobForm');
+const success = document.getElementById('success');
 
-Job Description:
-${v('description')}
+form.addEventListener('submit', async function(e){
+  e.preventDefault();
+  const v=id=>document.getElementById(id).value.trim();
+  const btn=form.querySelector('button[type="submit"]');
+  btn.disabled=true;
+  btn.textContent='⏳ Submitting...';
 
-Apply Link:
-${v('apply')}
+  try {
+    await addDoc(collection(db,'jobs'),{
+      company:v('company'),
+      contact:v('contact'),
+      email:v('email'),
+      phone:v('phone'),
+      title:v('title'),
+      location:v('location'),
+      category:v('category'),
+      type:v('type'),
+      experience:v('experience'),
+      salary:v('salary'),
+      qualification:v('qualification'),
+      deadline:v('deadline'),
+      description:v('description'),
+      apply:v('apply'),
+      notes:v('notes'),
+      status:'pending',
+      createdAt:serverTimestamp(),
+      updatedAt:serverTimestamp()
+    });
 
-Additional Notes:
-${v('notes')}`;
-document.getElementById('success').style.display='block';
-window.open('https://wa.me/916350566010?text='+encodeURIComponent(msg),'_blank');
+    success.innerHTML='<b>✅ Job submission received.</b><br>Thank you. The vacancy is now <b>Pending Review</b>. Rajasthan Job will review the information before publication.';
+    success.style.display='block';
+    form.reset();
+  } catch(err) {
+    console.error(err);
+    success.innerHTML='<b>❌ Submission failed.</b><br>Please check your internet connection and try again.';
+    success.style.display='block';
+  } finally {
+    btn.disabled=false;
+    btn.textContent='📤 Submit Job for Review';
+  }
 });
 </script>
 </body>
