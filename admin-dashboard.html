@@ -1,224 +1,221 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rajasthan Job — Admin Dashboard</title>
 <style>
-:root{--navy:#102a43;--blue:#1769e8;--green:#16865b;--orange:#e78b16;--red:#c94747;--bg:#f5f8fc;--line:#dce5ef;--muted:#64748b}
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:#182536}
-a{text-decoration:none}
-header{background:var(--navy);color:#fff;padding:18px 5%}
-.head{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}
-.brand{font-size:22px;font-weight:900}.sub{font-size:12px;color:#dce9f8;margin-top:3px}
-.wrap{max-width:1100px;width:92%;margin:26px auto}
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin-bottom:20px}
-h1{margin:0;color:var(--navy);font-size:30px}.muted{color:var(--muted);font-size:13px}
-.btn{display:inline-block;border:0;border-radius:9px;padding:11px 15px;font-weight:850;cursor:pointer}
-.primary{background:var(--blue);color:#fff}.light{background:#fff;color:var(--navy);border:1px solid #cbd8e7}
-.login{max-width:470px;margin:55px auto;text-align:center}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 8px 25px #102a430b;margin-bottom:18px}
-.login h2{color:var(--navy);margin:0 0 8px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px}
-.stat b{display:block;font-size:28px;color:var(--navy);margin-bottom:5px}
-.stat span{font-size:11px;font-weight:900;color:var(--muted)}
-.stat.blue{border-top:4px solid var(--blue)}.stat.green{border-top:4px solid var(--green)}.stat.orange{border-top:4px solid var(--orange)}.stat.purple{border-top:4px solid #7257c7}
-.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.action{border:1px solid var(--line);border-radius:15px;padding:19px;background:#fff;transition:.15s}
-.action:hover{transform:translateY(-2px);box-shadow:0 8px 22px #102a4312}
-.icon{font-size:27px;margin-bottom:10px}.action h3{margin:0 0 6px;color:var(--navy);font-size:17px}.action p{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.5}
-.badge{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:900;background:#eef4fa;color:#35546e}
-.notice{background:#eef6ff;border:1px solid #cfe3ff;color:#244766;border-radius:11px;padding:13px;font-size:13px;margin-bottom:18px}
-.user{font-size:12px;color:#dce9f8}
-.status{display:none;padding:10px;border-radius:9px;margin-top:12px;font-size:12px}
-footer{padding:15px 0 40px;text-align:center;color:var(--muted);font-size:11px}
-@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.actions{grid-template-columns:1fr 1fr}.head{align-items:flex-start;flex-direction:column}.top{align-items:flex-start;flex-direction:column}}
-@media(max-width:520px){.grid,.actions{grid-template-columns:1fr}h1{font-size:25px}}
+:root{--navy:#102d49;--blue:#1769e8;--bg:#f4f7fb;--line:#dbe4ef;--muted:#63758b;--green:#16845b;--orange:#e78b17;--red:#c83b3b}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--navy)}
+a{text-decoration:none;color:inherit}.hidden{display:none!important}
+.header{background:var(--navy);color:#fff}.head{max-width:1120px;margin:auto;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-size:21px;font-weight:800}.sub{font-size:11px;color:#d8e5f2;margin-top:3px}
+.wrap{max-width:1120px;margin:auto;padding:20px}.card{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 7px 24px #102d490b}
+.btn{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:9px;padding:9px 13px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}.btn.green{background:#edf8f2;color:#087047}.btn.red{background:#fff0f0;color:#a62e2e}
+.login{max-width:510px;margin:55px auto;padding:30px;text-align:center}.login h1{margin:8px 0;font-size:27px}.login p{color:var(--muted);font-size:13px}
+.err{margin-top:12px;background:#fff0f0;color:#a62e2e;border:1px solid #f2caca;border-radius:9px;padding:10px;font-size:12px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:15px}.top h1{margin:3px 0;font-size:25px}.actions{display:flex;gap:7px;flex-wrap:wrap}
+.notice{background:#edf5ff;border:1px solid #cfe2ff;border-radius:10px;padding:10px 12px;font-size:12px;margin-bottom:14px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:14px}.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;font-size:23px}.stat span{font-size:9px;font-weight:900;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1.35fr .65fr;gap:14px}.section{padding:17px}.section h2{font-size:18px;margin:0}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:11px}
+.manage{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.manageItem{border:1px solid var(--line);border-radius:11px;padding:13px}.manageItem .ico{font-size:21px}.manageItem h3{font-size:14px;margin:6px 0 3px}.manageItem p{font-size:11px;color:var(--muted);line-height:1.45;margin:0 0 8px}
+.activity{border-bottom:1px solid #edf1f5;padding:10px 0;display:flex;gap:9px;align-items:flex-start}.activity:last-child{border-bottom:0}.activityIcon{width:31px;height:31px;border-radius:9px;background:#edf5ff;display:flex;align-items:center;justify-content:center;flex:none}.activity b{font-size:12px}.activity small{display:block;color:var(--muted);font-size:10px;margin-top:3px;line-height:1.4}
+.empty{padding:16px;border:1px dashed var(--line);border-radius:9px;text-align:center;color:var(--muted);font-size:12px}
+.job{padding:10px 0;border-bottom:1px solid #edf1f5}.job:last-child{border-bottom:0}.job b{font-size:13px}.job small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.badge{font-size:9px;font-weight:900;padding:4px 7px;border-radius:20px;background:#fff4df;color:#955b00;margin-left:5px}
+.popup{position:fixed;right:20px;top:20px;width:350px;max-width:calc(100vw - 30px);background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 15px 45px #102d4930;z-index:50;overflow:hidden}
+.popupHead{background:var(--navy);color:#fff;padding:11px 13px;display:flex;justify-content:space-between;font-size:12px;font-weight:800}.popupBody{padding:13px;font-size:12px}.popupBody b{display:block;margin-bottom:5px}.popupBody small{color:var(--muted)}.bell{position:relative}.dot{position:absolute;right:-5px;top:-5px;background:#e33;color:#fff;border-radius:20px;min-width:16px;height:16px;font-size:9px;display:flex;align-items:center;justify-content:center;border:2px solid var(--navy)}
+footer{text-align:center;padding:20px;color:var(--muted);font-size:10px}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}.manage{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.wrap{padding:12px}.head{padding:12px}.brand{font-size:18px}.top{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr 1fr}.manage{grid-template-columns:1fr}.popup{right:10px;top:10px}}
 </style>
 </head>
 <body>
 
-<header>
+<header class="header">
   <div class="head">
-    <div>
-      <div class="brand">Rajasthan Job — Admin Dashboard</div>
-      <div class="sub">Private management area</div>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <div><div class="brand">Rajasthan Job — Admin Dashboard</div><div class="sub">Private management area</div></div>
+    <div class="actions">
+      <button id="bellBtn" class="btn light bell">🔔 Notifications <span id="bellCount" class="dot hidden">0</span></button>
       <a class="btn light" href="index.html">Website</a>
-      <button id="logoutBtn" class="btn light" style="display:none">Logout</button>
+      <button id="logoutBtn" class="btn light hidden">Logout</button>
     </div>
   </div>
 </header>
 
+<div id="popup" class="popup hidden">
+  <div class="popupHead"><span>🔔 New Activity</span><button id="closePopup" style="background:none;border:0;color:#fff;cursor:pointer">✕</button></div>
+  <div id="popupBody" class="popupBody"></div>
+</div>
+
 <main class="wrap">
-  <section id="loginBox" class="card login">
-    <h2>🔐 Admin Login</h2>
-    <p class="muted">Google se login karke Rajasthan Job website manage karein.</p>
-    <button id="loginBtn" class="btn primary">🔑 Login with Google</button>
-    <div id="loginStatus" class="status"></div>
+
+<section id="loginBox" class="card login">
+  <div style="font-size:42px">🔐</div>
+  <h1>Admin Login</h1>
+  <p>Authorized Rajasthan Job admin only.</p>
+  <button id="loginBtn" class="btn blue">🔑 Login with Google</button>
+  <div id="loginError"></div>
+</section>
+
+<section id="dashboard" class="hidden">
+
+  <div class="top">
+    <div><div class="sub" style="color:var(--blue);font-weight:900">ADMIN CONTROL CENTER</div><h1>Welcome, Admin 👋</h1><div id="email" class="sub"></div></div>
+    <div class="actions"><a class="btn blue" href="jobs.html">🔎 Live Jobs</a><button id="refreshBtn" class="btn">↻ Refresh</button></div>
+  </div>
+
+  <div class="notice"><b>Live Activity:</b> New jobs, enquiries, comments aur notifications yahan automatically monitor honge.</div>
+
+  <div class="stats">
+    <div class="stat"><b id="jobTotal">0</b><span>TOTAL JOBS</span></div>
+    <div class="stat"><b id="jobPending" style="color:var(--orange)">0</b><span>PENDING</span></div>
+    <div class="stat"><b id="jobApproved" style="color:var(--green)">0</b><span>APPROVED</span></div>
+    <div class="stat"><b id="noticeTotal">0</b><span>NOTIFICATIONS</span></div>
+    <div class="stat"><b id="inqNew" style="color:var(--red)">0</b><span>NEW ENQUIRIES</span></div>
+  </div>
+
+  <div class="grid">
+    <section class="card section">
+      <div class="sectionhead"><h2>⚡ Manage Website</h2></div>
+      <div class="manage">
+        <div class="manageItem"><div class="ico">💼</div><h3>Jobs Manager</h3><p>Add, edit, approve and delete jobs.</p><a class="btn blue" href="job-manager.html">Open →</a></div>
+        <div class="manageItem"><div class="ico">📩</div><h3>Enquiries</h3><p>Visitor enquiries, read/close status.</p><a class="btn blue" href="enquiry-manager.html">Open →</a></div>
+        <div class="manageItem"><div class="ico">🔔</div><h3>Notifications</h3><p>Homepage updates publish/manage.</p><a class="btn blue" href="notification-manager.html">Open →</a></div>
+        <div class="manageItem"><div class="ico">📋</div><h3>Post a Job</h3><p>Employer vacancy submission.</p><a class="btn" href="post-a-job.html">Open →</a></div>
+        <div class="manageItem"><div class="ico">🔎</div><h3>All Jobs</h3><p>Public jobs page check karein.</p><a class="btn" href="jobs.html">View →</a></div>
+        <div class="manageItem"><div class="ico">🏠</div><h3>Website</h3><p>Public homepage open karein.</p><a class="btn" href="index.html">Open →</a></div>
+      </div>
+    </section>
+
+    <section class="card section">
+      <div class="sectionhead"><h2>🔔 Activity Center</h2><button id="clearUnread" class="btn">Mark read</button></div>
+      <div id="activityList"><div class="empty">Loading activity...</div></div>
+    </section>
+  </div>
+
+  <section class="card section" style="margin-top:14px">
+    <div class="sectionhead"><h2>🆕 Latest Jobs</h2><a class="btn" href="job-manager.html">Manage Jobs →</a></div>
+    <div id="latestJobs"><div class="empty">Loading jobs...</div></div>
   </section>
 
-  <section id="dashboard" style="display:none">
-    <div class="top">
-      <div>
-        <div class="muted">ADMIN DASHBOARD</div>
-        <h1>Welcome, Admin 👋</h1>
-        <div id="signedIn" class="muted"></div>
-      </div>
-      <a class="btn primary" href="jobs.html">🔎 View Live Jobs</a>
-    </div>
-
-    <div class="notice">
-      <b>Quick control:</b> Yahin se Notifications, Jobs aur Employer submissions manage karein.
-      Public visitors ko sirf approved/published content dikhaya jayega.
-    </div>
-
-    <div class="grid">
-      <div class="stat blue"><b id="jobCount">—</b><span>TOTAL JOBS</span></div>
-      <div class="stat orange"><b id="pendingCount">—</b><span>PENDING JOBS</span></div>
-      <div class="stat green"><b id="approvedCount">—</b><span>APPROVED JOBS</span></div>
-      <div class="stat purple"><b id="noticeCount">—</b><span>NOTIFICATIONS</span></div>
-    </div>
-
-    <div class="card" style="margin-top:18px">
-      <h2 style="margin:0 0 15px;color:var(--navy)">⚡ Manage Website</h2>
-      <div class="actions">
-        <div class="action">
-          <div class="icon">🔔</div>
-          <h3>Notifications</h3>
-          <p>Homepage ke top par latest updates publish, edit ya delete karein.</p>
-          <a class="btn primary" href="notification-manager.html">Manage Notifications →</a>
-        </div>
-
-        <div class="action">
-          <div class="icon">💼</div>
-          <h3>Jobs Manager</h3>
-          <p>Jobs add karein, employer submissions review karein aur approve karein.</p>
-          <a class="btn primary" href="job-manager.html">Manage Jobs →</a>
-        </div>
-
-        <div class="action">
-          <div class="icon">📋</div>
-          <h3>Post a Job</h3>
-          <p>Employer vacancy submission page check karein aur public form test karein.</p>
-          <a class="btn light" href="post-a-job.html">Open Post a Job →</a>
-        </div>
-
-        <div class="action">
-          <div class="icon">🔎</div>
-          <h3>All Jobs</h3>
-          <p>Website par users ko jo live job listings dikhengi unhe check karein.</p>
-          <a class="btn light" href="jobs.html">View All Jobs →</a>
-        </div>
-
-        <div class="action">
-          <div class="icon">🏠</div>
-          <h3>Website</h3>
-          <p>Homepage, quick access, notifications aur public sections ko open karein.</p>
-          <a class="btn light" href="index.html">Open Website →</a>
-        </div>
-
-        <div class="action">
-          <div class="icon">💬</div>
-          <h3>Inquiries</h3>
-          <p>Public inquiry system ko next step mein Firebase database se connect karenge.</p>
-          <span class="badge">NEXT STEP</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2 style="margin:0 0 8px;color:var(--navy)">📌 Admin Workflow</h2>
-      <p class="muted" style="margin:0;line-height:1.7">
-        Employer Job Submit → Pending → Admin Review → Approve → Jobs Page → User Apply
-        <br>
-        Notification Add → Published → Homepage par automatic show
-      </p>
-    </div>
+  <section class="card section" style="margin-top:14px">
+    <div class="sectionhead"><h2>📩 Latest Enquiries</h2><a class="btn" href="enquiry-manager.html">View All →</a></div>
+    <div id="latestInquiries"><div class="empty">Loading enquiries...</div></div>
   </section>
+
+</section>
 </main>
-
-<footer>Rajasthan Job • Private Admin Area</footer>
+<footer>Rajasthan Job • Private Admin Dashboard</footer>
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {getFirestore,collection,getDocs} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {getFirestore,collection,getDocs,query,orderBy,limit,onSnapshot,doc,updateDoc,writeBatch} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig={
- apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
- authDomain:"rajasthan-job.firebaseapp.com",
- projectId:"rajasthan-job",
- storageBucket:"rajasthan-job.firebasestorage.app",
- messagingSenderId:"894888753938",
- appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",
- measurementId:"G-15S2XJQK80"
+  apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
+  authDomain:"rajasthan-job.firebaseapp.com",
+  projectId:"rajasthan-job",
+  storageBucket:"rajasthan-job.firebasestorage.app",
+  messagingSenderId:"894888753938",
+  appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",
+  measurementId:"G-15S2XJQK80"
 };
-
-const app=initializeApp(firebaseConfig,"admin-dashboard");
-const auth=getAuth(app),db=getFirestore(app);
 const ADMIN_EMAIL="saif.anwar1618@gmail.com";
-const loginBox=document.getElementById("loginBox");
-const dashboard=document.getElementById("dashboard");
-const loginStatus=document.getElementById("loginStatus");
-const logoutBtn=document.getElementById("logoutBtn");
+const app=initializeApp(firebaseConfig,"adminCenter");
+const auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const time=v=>{try{if(v?.toDate)return v.toDate().toLocaleString("en-IN");return v?new Date(v).toLocaleString("en-IN"):"Just now"}catch{return"Just now"}};
 
-function showError(msg){
- loginStatus.style.display="block";
- loginStatus.style.background="#fff0f0";
- loginStatus.style.color="#a63d3d";
- loginStatus.textContent=msg;
-}
+let unsubs=[],activities=[],initialLoad=true,lastIds=new Set(),unread=0;
 
-document.getElementById("loginBtn").onclick=async()=>{
- try{
-   await signInWithPopup(auth,new GoogleAuthProvider());
- }catch(e){
-   showError("Login failed: "+e.message);
- }
+$("loginBtn").onclick=async()=>{
+  $("loginError").innerHTML="";
+  try{await signInWithPopup(auth,new GoogleAuthProvider())}
+  catch(e){$("loginError").innerHTML='<div class="err">Login failed: '+esc(e.message||e.code)+'</div>'}
 };
-
-logoutBtn.onclick=()=>signOut(auth);
+$("logoutBtn").onclick=()=>signOut(auth);
+$("refreshBtn").onclick=()=>loadAll();
+$("bellBtn").onclick=()=>{ $("popup").classList.toggle("hidden"); };
+$("closePopup").onclick=()=>$("popup").classList.add("hidden");
+$("clearUnread").onclick=()=>{unread=0;updateBell();};
 
 onAuthStateChanged(auth,async user=>{
- if(!user){
-   loginBox.style.display="block";
-   dashboard.style.display="none";
-   logoutBtn.style.display="none";
-   return;
- }
- if(user.email!==ADMIN_EMAIL){
-   showError("This Google account is not authorised for the admin dashboard.");
-   await signOut(auth);
-   return;
- }
- loginBox.style.display="none";
- dashboard.style.display="block";
- logoutBtn.style.display="inline-block";
- document.getElementById("signedIn").textContent="Signed in as: "+user.email;
- await loadStats();
+  if(!user){showLogin();return}
+  if((user.email||"").toLowerCase()!==ADMIN_EMAIL.toLowerCase()){
+    await signOut(auth);
+    $("loginError").innerHTML='<div class="err">This Google account is not authorised.</div>';
+    return;
+  }
+  $("loginBox").classList.add("hidden");$("dashboard").classList.remove("hidden");$("logoutBtn").classList.remove("hidden");
+  $("email").textContent="Signed in as: "+user.email;
+  initialLoad=true;await loadAll();startLiveMonitoring();
 });
 
-async function loadStats(){
- try{
-   const jobsSnap=await getDocs(collection(db,"jobs"));
-   const jobs=jobsSnap.docs.map(d=>d.data());
-   document.getElementById("jobCount").textContent=jobs.length;
-   document.getElementById("pendingCount").textContent=jobs.filter(j=>j.status==="pending").length;
-   document.getElementById("approvedCount").textContent=jobs.filter(j=>j.status==="approved").length;
+function showLogin(){$("loginBox").classList.remove("hidden");$("dashboard").classList.add("hidden");$("logoutBtn").classList.add("hidden");unsubs.forEach(u=>u&&u());unsubs=[];}
 
-   const noticesSnap=await getDocs(collection(db,"announcements"));
-   document.getElementById("noticeCount").textContent=noticesSnap.size;
- }catch(e){
-   document.getElementById("jobCount").textContent="—";
-   document.getElementById("pendingCount").textContent="—";
-   document.getElementById("approvedCount").textContent="—";
-   document.getElementById("noticeCount").textContent="—";
-   console.error(e);
- }
+async function loadAll(){
+  try{
+    const [jobs,notes,inq,acts]=await Promise.all([
+      getDocs(collection(db,"jobs")),
+      getDocs(collection(db,"announcements")),
+      getDocs(collection(db,"inquiries")),
+      getDocs(query(collection(db,"activities"),orderBy("createdAt","desc"),limit(30))).catch(()=>null)
+    ]);
+    let p=0,a=0; jobs.forEach(d=>{let s=(d.data().status||"").toLowerCase();if(s==="pending")p++;if(s==="approved")a++});
+    $("jobTotal").textContent=jobs.size;$("jobPending").textContent=p;$("jobApproved").textContent=a;
+    $("noticeTotal").textContent=notes.size;$("inqNew").textContent=[...inq.docs].filter(d=>(d.data().status||"new").toLowerCase()==="new").length;
+    renderJobs(jobs);renderInquiries(inq);
+    if(acts){activities=acts.docs.map(d=>({id:d.id,...d.data()}));renderActivities();}
+    else $("activityList").innerHTML='<div class="empty">Activity collection abhi create nahi hui. New activity aate hi yahan dikhegi.</div>';
+  }catch(e){console.error(e);$("activityList").innerHTML='<div class="empty">Data load nahi hua. Firebase rules check karein.</div>'}
+}
+
+function renderJobs(snap){
+  let arr=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,6);
+  $("latestJobs").innerHTML=arr.length?arr.map(j=>'<div class="job"><b>'+esc(j.title||"Untitled Job")+'</b><span class="badge">'+esc((j.status||"").toUpperCase())+'</span><small>'+esc(j.company||"Company not specified")+' • '+esc(j.location||"Location not specified")+' • '+esc(time(j.createdAt))+'</small></div>').join(""):'<div class="empty">No jobs found.</div>';
+}
+function renderInquiries(snap){
+  let arr=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,6);
+  $("latestInquiries").innerHTML=arr.length?arr.map(i=>'<div class="job"><b>'+esc(i.name||"Visitor")+'</b><span class="badge">'+esc((i.status||"new").toUpperCase())+'</span><small>📱 '+esc(i.mobile||i.phone||"No mobile")+' • '+esc(i.service||"General enquiry")+' • '+esc(time(i.createdAt))+'</small></div>').join(""):'<div class="empty">No enquiries found.</div>';
+}
+function icon(type){return ({job:"💼",enquiry:"📩",comment:"💬",notification:"🔔",approved:"✅",deleted:"🗑️",edit:"📝",default:"🔔"})[type]||"🔔"}
+function renderActivities(){
+  let arr=activities.slice(0,20);
+  $("activityList").innerHTML=arr.length?arr.map(a=>'<div class="activity"><div class="activityIcon">'+icon(a.type)+'</div><div><b>'+esc(a.title||a.message||"Activity")+'</b><small>'+esc(a.message||"")+'<br>'+esc(time(a.createdAt))+'</small></div></div>').join(""):'<div class="empty">No activity yet.</div>';
+  updateBell();
+}
+function updateBell(){
+  if(unread>0){$("bellCount").textContent=unread>99?"99+":unread;$("bellCount").classList.remove("hidden")}else $("bellCount").classList.add("hidden");
+}
+function popup(type,title,message){
+  $("popupBody").innerHTML='<b>'+icon(type)+' '+esc(title)+'</b><small>'+esc(message)+'</small>';
+  $("popup").classList.remove("hidden");unread++;updateBell();
+  clearTimeout(window.popupTimer);window.popupTimer=setTimeout(()=>$("popup").classList.add("hidden"),7000);
+}
+function startLiveMonitoring(){
+  unsubs.forEach(u=>u&&u());unsubs=[];
+  const watch=(name,type,titleField)=>{
+    const unsub=onSnapshot(collection(db,name),snap=>{
+      if(initialLoad){snap.docs.forEach(d=>lastIds.add(name+":"+d.id));return}
+      snap.docChanges().forEach(ch=>{
+        if(ch.type==="added"&&!lastIds.has(name+":"+ch.doc.id)){
+          lastIds.add(name+":"+ch.doc.id);
+          const x=ch.doc.data(), title=x[titleField]||x.title||name;
+          popup(type,"New "+title, name==="jobs" ? (x.company||"New job submitted")+" • "+(x.status||"pending") : name==="inquiries" ? (x.name||"Visitor")+" • "+(x.service||"New enquiry") : "A new item was added.");
+        }
+      });
+    },e=>console.log(name,e));
+    unsubs.push(unsub);
+  };
+  ["jobs","inquiries","announcements","comments"].forEach((n,i)=>watch(n,i===0?"job":i===1?"enquiry":i===2?"notification":"comment","title"));
+  onSnapshot(query(collection(db,"activities"),orderBy("createdAt","desc"),limit(30)),snap=>{
+    activities=snap.docs.map(d=>({id:d.id,...d.data()}));renderActivities();
+  },e=>console.log("activities",e));
+  setTimeout(()=>{initialLoad=false},1500);
 }
 </script>
 </body>
