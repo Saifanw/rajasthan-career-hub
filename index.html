@@ -72,6 +72,8 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 
 .btn:disabled{opacity:.65;cursor:not-allowed}\n@media(max-width:900px){.menu{display:none}.heroGrid,.featureGrid,.jobs,.resumeBox,.inquiry{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.noteGrid{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr}.foot{grid-template-columns:1fr 1fr}}
 @media(max-width:580px){.topin{justify-content:center}.topin span:last-child{display:none}.navin{height:63px}.brand small{display:none}.cards,.noteGrid,.steps{grid-template-columns:1fr}.hero{padding:45px 0}.hero p{font-size:16px}h1{font-size:40px}.dynamicin{height:40px}.dynamictrack{font-size:12px}.cta{display:block}.feature{padding:25px}}
+
+.noticeSection{background:#f8fbff;padding:28px 0;border-bottom:1px solid var(--line)}.noticeHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:16px}.noticeHeader h2{margin:5px 0;font-size:26px}.noticeHeader p{margin:0;color:var(--muted);font-size:14px}.liveBadge{display:inline-flex;align-items:center;gap:5px;background:#edf8f2;color:#11623f;border:1px solid #c9ead9;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:900;white-space:nowrap}.lightLive{background:var(--sky);color:var(--blue);border-color:#d6e7ff}.announcementList{display:grid;gap:10px}.announcement{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:12px;padding:13px 15px;box-shadow:0 5px 18px rgba(16,42,67,.04)}.announcementTop{display:flex;justify-content:space-between;gap:12px;align-items:center}.announcementTitle{font-weight:900;color:var(--navy)}.announcementDate{font-size:11px;color:var(--muted)}.announcementText{font-size:13px;color:#40516a;margin-top:4px}.loadingAnn{color:var(--muted)}.commentMeta{display:flex;justify-content:space-between;gap:10px;align-items:center}.commentText{margin-top:4px;color:#40516a;font-size:13px;white-space:pre-wrap}.commentUser{font-weight:850;color:var(--navy)}.commentTime{font-size:10px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -81,7 +83,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <nav><div class="wrap navin">
 <a href="#home" class="brand"><div class="logo">RC</div><div>Rajasthan Job<small>Jobs • Learning • Job Support</small></div></a>
 <div class="menu">
-<a href="jobs.html">Jobs</a><a href="#govt">Govt Jobs</a><a href="#notes">Notes</a><a href="#resume">AI Resume</a><a href="#services">Services</a><a class="btn light" href="post-a-job.html">🏢 Post a Job</a><a class="btn primary" href="#contact">Inquiry</a>
+<a href="jobs.html">Jobs</a><a href="#govt">Govt Jobs</a><a href="#notes">Notes</a><a href="#resume">AI Resume</a><a href="#services">Services</a><a class="btn primary" href="#contact">Inquiry</a>
 </div></div></nav>
 
 <!-- DYNAMIC ADVERTISEMENT / MESSAGE STRIP -->
@@ -90,11 +92,18 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <span>Jaipur mein job chahiye? Contact karein</span><span>Rajasthan Government Job Updates</span><span>Fresher Job Support Available</span><span>Resume banwana hai? AI Job Resume Builder</span><span>Premium Exam Notes & Practice Sets</span><span>Excel • MIS • Power BI • SQL • Python Skills</span><span>Job Guidance & Interview Preparation</span>
 </div></div></div>
 
+<section class="noticeSection" id="updates">
+<div class="wrap">
+  <div class="noticeHeader"><div><div class="kick">LATEST UPDATES</div><h2>🔔 Notifications & Announcements</h2><p>New job updates, notes, recruitment information aur Rajasthan Job announcements yahin dekhein.</p></div><span class="liveBadge">● LIVE</span></div>
+  <div id="announcementList" class="announcementList"><div class="announcement loadingAnn">Loading latest updates…</div></div>
+</div>
+</section>
+
 <section class="hero" id="home"><div class="wrap heroGrid"><div>
 <span class="eyebrow">JAIPUR & RAJASTHAN JOB PLATFORM</span>
 <h1>Jobs, Skills & <em>Job Growth</em> — Ek Jagah.</h1>
 <p>Private jobs, government job information, exam notes, job-oriented resume, interview preparation aur practical skills — Rajasthan ke students, freshers aur job seekers ke liye.</p>
-<div class="actions"><a class="btn primary" href="jobs.html">🔎 Jobs Dekhein</a><a class="btn light" href="post-a-job.html">🏢 Post a Job</a><a class="btn light" href="#notes">📚 Premium Notes</a><a class="btn green" href="#contact">💬 Inquiry Karein</a></div>
+<div class="actions"><a class="btn primary" href="jobs.html">🔎 Jobs Dekhein</a><a class="btn light" href="#notes">📚 Premium Notes</a><a class="btn green" href="#contact">💬 Inquiry Karein</a></div>
 <div class="tags"><span class="tag">Jaipur Jobs</span><span class="tag">Rajasthan Jobs</span><span class="tag">Government Jobs</span><span class="tag">RPSC</span><span class="tag">RSSB</span><span class="tag">CET</span><span class="tag">Rajasthan GK</span><span class="tag">Resume</span><span class="tag">Interview</span><span class="tag">Excel</span><span class="tag">Power BI</span><span class="tag">SQL</span><span class="tag">Python</span><span class="tag">AI Skills</span></div>
 </div>
 <div class="heroPanel"><h3>Yahan kya milega?</h3><div class="miniGrid">
@@ -173,17 +182,35 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 
 <section><div class="wrap"><div class="cta"><div><div class="kick" style="color:#acd4ff">Jaipur Job Support</div><h2>Job chahiye, resume banana hai ya notes chahiye?</h2><p>Apni requirement bhejiye. Future mein inquiry system ko database, WhatsApp notifications aur admin dashboard se connect kiya ja sakta hai.</p></div><a class="btn light" href="tel:+916350566010">📞 Contact Now</a></div></div></section>
 
-<section class="white" id="contact"><div class="wrap"><div class="head"><div class="kick">Contact & Inquiry</div><h2>Apni requirement bhejein</h2><p>Job, notes, resume, interview, skills ya employer service — jo chahiye clearly batayein.</p></div>
-<div class="inquiry"><div class="formbox"><label>Name *</label><input placeholder="Your Name"><label>Mobile *</label><input placeholder="Mobile Number"><label>Service</label><select><option>Choose Service</option><option>Jaipur / Rajasthan Job</option><option>Government Job</option><option>Premium Notes</option><option>AI Job Resume</option><option>Interview Preparation</option><option>Excel / MIS</option><option>Power BI / SQL / Python</option><option>AI Course</option><option>Employer Job Posting</option><option>Other</option></select><label>Your Requirement</label><textarea placeholder="Apni requirement likhiye..."></textarea><button class="btn primary" type="button" onclick="alert('Demo inquiry form ready hai. Firebase/secure database connect hone ke baad submissions save hongi.')">📩 Submit Inquiry</button></div>
-<div class="comments"><h3 style="color:var(--navy)">Public Updates & Comments</h3><p style="color:var(--muted);font-size:13px">Future version mein approved public comments, FAQs, job inquiries aur announcements yahan live show kiye ja sakte hain.</p>
-<div class="comment"><b>Latest Update</b><small> • Career resources regularly update honge.</small></div>
-<div class="comment"><b>New Notes</b><small> • New exam topics ke notes add kiye ja sakte hain.</small></div>
-<div class="comment"><b>Job Support</b><small> • Jaipur job inquiries ke liye contact option available.</small></div>
-</div></div></div></section>
-
+<section class="white" id="contact">
+<div class="wrap"><div class="head"><div class="kick">CONTACT & COMMUNITY</div><h2>Apni requirement bhejein</h2><p>Job, notes, resume, interview, skills ya employer service — inquiry bhejein aur community mein comment bhi karein.</p></div>
+<div class="inquiry">
+  <div class="formbox">
+    <h3 style="color:var(--navy);margin-top:0">📩 Job / Service Inquiry</h3>
+    <p class="resumeHint">Aapki inquiry Firebase mein securely save hogi aur admin panel mein review ki ja sakegi.</p>
+    <form id="inquiryForm">
+      <label>Name <span class="required">*</span></label><input id="inqName" required placeholder="Your Name">
+      <label>Mobile <span class="required">*</span></label><input id="inqMobile" required inputmode="numeric" placeholder="10-digit mobile number">
+      <label>Service</label><select id="inqService"><option value="">Choose Service</option><option>Jaipur / Rajasthan Job</option><option>Government Job</option><option>Premium Notes</option><option>AI Job Resume</option><option>Interview Preparation</option><option>Excel / MIS</option><option>Power BI / SQL / Python</option><option>AI Course</option><option>Employer Job Posting</option><option>Other</option></select>
+      <label>Your Requirement <span class="required">*</span></label><textarea id="inqMessage" required placeholder="Apni requirement clearly likhiye..."></textarea>
+      <button id="inqBtn" class="btn primary" type="submit">📩 Submit Inquiry</button>
+      <div id="inqStatus" class="resumeStatus"></div>
+    </form>
+  </div>
+  <div class="comments">
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><div><h3 style="color:var(--navy);margin:0">💬 Public Comments</h3><p style="color:var(--muted);font-size:13px;margin:4px 0 0">Comment submit karein. Review ke baad public page par sabko visible hoga.</p></div><span class="liveBadge lightLive">PUBLIC</span></div>
+    <form id="commentForm" style="margin-top:15px">
+      <label>Name <span class="required">*</span></label><input id="commentName" required maxlength="50" placeholder="Your Name">
+      <label>Comment <span class="required">*</span></label><textarea id="commentText" required maxlength="500" placeholder="Aap kya kehna chahte hain?"></textarea>
+      <button id="commentBtn" class="btn green" type="submit">💬 Post Comment</button>
+      <div id="commentStatus" class="resumeStatus"></div>
+    </form>
+    <div id="publicComments" style="margin-top:18px"><div class="comment"><small>Loading comments…</small></div></div>
+  </div>
+</div></div></section>
 <footer><div class="wrap foot"><div><h3>Rajasthan Job</h3><p>Jaipur & Rajasthan ke liye jobs, government job information, premium study material, career resume, interview support aur job skills.</p></div>
 <div><h3>Explore</h3><a href="jobs.html">Private Jobs</a><a href="#govt">Government Jobs</a><a href="#notes">Premium Notes</a><a href="#resume">AI Resume</a><a href="#services">All Services</a></div>
-<div><h3>Job Services</h3><a href="#contact">Job Inquiry</a><a href="#contact">Resume Support</a><a href="#contact">Interview Preparation</a><a href="post-a-job.html">🏢 Post a Job</a><a href="#contact">Employer Services</a></div></div>
+<div><h3>Job Services</h3><a href="#contact">Job Inquiry</a><a href="#contact">Resume Support</a><a href="#contact">Interview Preparation</a><a href="#contact">Employer Services</a></div></div>
 <div class="wrap copy">© 2026 Rajasthan Job • Recruitment details should be verified from the relevant official source before applying.</div></footer>
 
 
@@ -366,5 +393,28 @@ function clearResume(){
   document.getElementById('resumeStatus').style.display='none';
 }
 </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+const app2=initializeApp({apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",authDomain:"rajasthan-job.firebaseapp.com",projectId:"rajasthan-job",storageBucket:"rajasthan-job.firebasestorage.app",messagingSenderId:"894888753938",appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",measurementId:"G-15S2XJQK80"},'public-home');
+const db2=getFirestore(app2);
+const esc2=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt2=t=>{if(!t)return '';try{return new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'short',year:'numeric'}).format(t.toDate? t.toDate():new Date(t));}catch{return ''}};
+const annBox=document.getElementById('announcementList');
+try{onSnapshot(query(collection(db2,'announcements'),where('status','==','published'),orderBy('createdAt','desc'),limit(5)),snap=>{
+  if(!snap.docs.length){annBox.innerHTML='<div class="announcement"><div class="announcementTitle">No new notifications</div><div class="announcementText">New updates yahan automatically show honge.</div></div>';return;}
+  annBox.innerHTML=snap.docs.map(d=>{const a=d.data();return `<div class="announcement"><div class="announcementTop"><div class="announcementTitle">🔔 ${esc2(a.title||'Update')}</div><div class="announcementDate">${esc2(fmt2(a.createdAt))}</div></div><div class="announcementText">${esc2(a.message||'')}</div></div>`}).join('');
+},()=>{annBox.innerHTML='<div class="announcement"><div class="announcementTitle">Updates temporarily unavailable</div><div class="announcementText">Please refresh the page later.</div></div>';});}catch(e){}
+const commentBox=document.getElementById('publicComments');
+try{onSnapshot(query(collection(db2,'comments'),where('status','==','approved'),orderBy('createdAt','desc'),limit(10)),snap=>{
+ if(!snap.docs.length){commentBox.innerHTML='<div class="comment"><small>No public comments yet. Be the first to comment.</small></div>';return;}
+ commentBox.innerHTML=snap.docs.map(d=>{const c=d.data();return `<div class="comment"><div class="commentMeta"><span class="commentUser">${esc2(c.name||'Visitor')}</span><span class="commentTime">${esc2(fmt2(c.createdAt))}</span></div><div class="commentText">${esc2(c.comment||'')}</div></div>`}).join('');
+},()=>{commentBox.innerHTML='<div class="comment"><small>Comments temporarily unavailable.</small></div>';});}catch(e){}
+const inquiryForm=document.getElementById('inquiryForm');
+inquiryForm.addEventListener('submit',async e=>{e.preventDefault();const btn=document.getElementById('inqBtn'),st=document.getElementById('inqStatus');const name=document.getElementById('inqName').value.trim(),mobile=document.getElementById('inqMobile').value.trim(),service=document.getElementById('inqService').value,message=document.getElementById('inqMessage').value.trim();if(!/^\d{10}$/.test(mobile)){st.style.display='block';st.textContent='Please enter a valid 10-digit mobile number.';st.style.color='#a63d3d';st.style.background='#fff5f5';st.style.borderColor='#f2cccc';return;}btn.disabled=true;btn.textContent='⏳ Sending...';try{await addDoc(collection(db2,'inquiries'),{name,mobile,service,message,status:'new',createdAt:serverTimestamp()});st.style.display='block';st.textContent='✅ Inquiry submitted successfully. Rajasthan Job admin ise review karega.';st.style.color='#11623f';st.style.background='#edf8f2';st.style.borderColor='#c9ead9';inquiryForm.reset();}catch(err){console.error(err);st.style.display='block';st.textContent='❌ Inquiry submit nahi ho saki. Please try again.';st.style.color='#a63d3d';st.style.background='#fff5f5';st.style.borderColor='#f2cccc';}finally{btn.disabled=false;btn.textContent='📩 Submit Inquiry';}});
+const commentForm=document.getElementById('commentForm');
+commentForm.addEventListener('submit',async e=>{e.preventDefault();const btn=document.getElementById('commentBtn'),st=document.getElementById('commentStatus');const name=document.getElementById('commentName').value.trim(),comment=document.getElementById('commentText').value.trim();if(name.length<2||comment.length<1){st.style.display='block';st.textContent='Name aur comment dono fill karein.';st.style.color='#a63d3d';return;}btn.disabled=true;btn.textContent='⏳ Posting...';try{await addDoc(collection(db2,'comments'),{name,comment,status:'pending',createdAt:serverTimestamp()});st.style.display='block';st.textContent='✅ Comment submitted. Review ke baad public page par show hoga.';st.style.color='#11623f';st.style.background='#edf8f2';st.style.borderColor='#c9ead9';commentForm.reset();}catch(err){console.error(err);st.style.display='block';st.textContent='❌ Comment submit nahi ho saka.';st.style.color='#a63d3d';st.style.background='#fff5f5';st.style.borderColor='#f2cccc';}finally{btn.disabled=false;btn.textContent='💬 Post Comment';}});
+</script>
+
 </body>
 </html>
