@@ -96,16 +96,75 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
   }
 }
 </style>
+<style>
+.livePopup{position:fixed;right:22px;bottom:22px;width:min(390px,calc(100% - 28px));background:#fff;border:1px solid #dce5ef;border-radius:18px;box-shadow:0 18px 55px rgba(16,42,67,.22);z-index:9999;overflow:hidden;transform:translateY(130%);opacity:0;pointer-events:none;transition:.35s ease}
+.livePopup.show{transform:translateY(0);opacity:1;pointer-events:auto}
+.livePopupBar{height:5px;background:linear-gradient(90deg,var(--blue),var(--orange))}
+.livePopupInner{padding:16px 17px 15px}.livePopupTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.livePopupLabel{font-size:10px;font-weight:950;color:var(--blue);letter-spacing:1px}.livePopupClose{border:0;background:#f1f5f9;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--navy)}
+.livePopupTitle{font-size:17px;font-weight:900;color:var(--navy);margin:7px 0 4px}.livePopupText{font-size:13px;color:#52657c;line-height:1.5}
+.livePopupAction{display:inline-flex;margin-top:12px;background:var(--blue);color:#fff;padding:8px 12px;border-radius:9px;font-size:12px;font-weight:850}.livePopupAction:hover{background:var(--blue2)}
+@media(max-width:600px){.livePopup{right:14px;bottom:14px;width:calc(100% - 28px)}}
+</style>
 
+<style>
+
+/* FACEBOOK-STYLE NOTIFICATION CENTER */
+.notifWrap{position:relative;display:inline-flex;align-items:center}
+.notifBell{position:relative;width:40px;height:40px;border:1px solid #d7e2f0;border-radius:12px;background:#f7faff;color:#102a43;display:grid;place-items:center;font-size:19px;cursor:pointer;transition:.2s}
+.notifBell:hover{background:#eef5ff;transform:translateY(-1px)}
+.notifBadge{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 5px;border-radius:20px;background:#d84b4b;color:#fff;border:2px solid #fff;font-size:10px;font-weight:900;display:none;align-items:center;justify-content:center}
+.notifPanel{position:absolute;right:0;top:48px;width:355px;max-width:calc(100vw - 24px);background:#fff;border:1px solid #dfe7f0;border-radius:16px;box-shadow:0 18px 45px rgba(16,42,67,.18);z-index:1000;display:none;overflow:hidden}
+.notifPanel.open{display:block}
+.notifPanelHead{padding:14px 15px 10px;border-bottom:1px solid #e8eef5;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.notifPanelHead strong{font-size:17px;color:#102a43}
+.notifPanelHead button{border:0;background:transparent;color:#1769e8;font-size:11px;font-weight:850;cursor:pointer}
+.notifItems{max-height:390px;overflow:auto}
+.notifItem{display:flex;gap:11px;padding:12px 14px;border-bottom:1px solid #edf1f5;cursor:pointer;transition:.15s}
+.notifItem:hover{background:#f7faff}
+.notifItem.unread{background:#eef6ff}
+.notifIcon{width:34px;height:34px;min-width:34px;border-radius:11px;background:#edf5ff;display:grid;place-items:center;font-size:17px}
+.notifBody{min-width:0;flex:1}
+.notifTitle{font-size:12.5px;font-weight:900;color:#102a43}
+.notifMsg{font-size:11.5px;color:#64748b;line-height:1.4;margin-top:2px}
+.notifTime{font-size:9.5px;color:#94a3b8;margin-top:4px}
+.notifEmpty{padding:28px 15px;text-align:center;color:#64748b;font-size:12px}
+.notifFooter{padding:10px;text-align:center;border-top:1px solid #e8eef5}
+.notifFooter a{font-size:11px;font-weight:900;color:#1769e8}
+@media(max-width:800px){
+  .notifPanel{right:-8px;width:340px}
+  .notifBell{width:36px;height:36px}
+}
+
+</style>
 </head>
 <body>
+<!-- LIVE NOTIFICATION POPUP -->
+<div id="livePopup" class="livePopup" aria-live="polite">
+<div class="livePopupBar"></div><div class="livePopupInner"><div class="livePopupTop"><div class="livePopupLabel">🔔 NEW UPDATE</div><button id="livePopupClose" class="livePopupClose" aria-label="Close">×</button></div>
+<div id="livePopupTitle" class="livePopupTitle">Latest Rajasthan Job Update</div><div id="livePopupText" class="livePopupText">New update available.</div><a id="livePopupAction" class="livePopupAction" href="#updates">View Update →</a></div></div>
+
+
 
 <div class="top"><div class="wrap topin"><span>📍 Jaipur, Rajasthan</span><span>Jobs • Government Jobs • Notes • Job Services</span></div></div>
 
 <nav><div class="wrap navin">
 <a href="#home" class="brand"><div class="logo">RJ</div><div>Rajasthan Job<small>Jobs • Government Jobs • Job Support</small></div></a>
 <div class="menu">
-<a href="jobs.html">Jobs</a><a href="#govt">Govt Jobs</a><a href="#notes">Notes</a><a href="post-a-job.html">Post a Job</a><a href="#services">Services</a><a class="btn primary" href="inquiry.html">Inquiry</a><a class="admin-top-link" href="job-manager.html">🔐 Admin</a>
+<a href="jobs.html">Jobs</a><a href="#govt">Govt Jobs</a><a href="#notes">Notes</a><a href="post-a-job.html">Post a Job</a><a href="#services">Services</a><a class="btn primary" href="inquiry.html">Inquiry</a><div class="notifWrap">
+  <button id="notifBell" class="notifBell" aria-label="Notifications" title="Notifications">🔔<span id="notifBadge" class="notifBadge">0</span></button>
+  <div id="notifPanel" class="notifPanel">
+    <div class="notifPanelHead">
+      <strong>🔔 Notifications</strong>
+      <button id="markAllRead" type="button">Mark all as read</button>
+    </div>
+    <div id="notifItems" class="notifItems">
+      <div class="notifEmpty">Loading notifications…</div>
+    </div>
+    <div class="notifFooter"><a href="#updates" id="viewAllNotif">View all updates</a></div>
+  </div>
+</div>
+<a class="admin-top-link" href="job-manager.html">🔐 Admin</a>
 </div></div></nav>
 
 <!-- DYNAMIC ADVERTISEMENT / MESSAGE STRIP -->
@@ -224,17 +283,128 @@ function jdKeywords(jd, skills){
   var own=splitList(skills).map(function(x){return x.toLowerCase();});
   return Array.from(new Set(fromJD.concat(own))).slice(0,12);
 }
+
+<script>
+/* Notification center local read-state */
+window.RJNotificationRead = {
+  key: "rj_read_notifications_v1",
+  get: function(){
+    try{return JSON.parse(localStorage.getItem(this.key)||"[]")}catch(e){return []}
+  },
+  save: function(a){try{localStorage.setItem(this.key,JSON.stringify(a.slice(-100)))}catch(e){}},
+  has: function(id){return this.get().indexOf(id)>=0},
+  mark: function(id){var a=this.get();if(a.indexOf(id)<0)a.push(id);this.save(a)},
+  all: function(ids){this.save(Array.from(new Set(this.get().concat(ids))))}
+};
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import { getFirestore, collection, addDoc, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 const app2=initializeApp({apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",authDomain:"rajasthan-job.firebaseapp.com",projectId:"rajasthan-job",storageBucket:"rajasthan-job.firebasestorage.app",messagingSenderId:"894888753938",appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",measurementId:"G-15S2XJQK80"},'public-home');
 const db2=getFirestore(app2);
+
+const notifBell=document.getElementById('notifBell');
+const notifPanel=document.getElementById('notifPanel');
+const notifBadge=document.getElementById('notifBadge');
+const notifItems=document.getElementById('notifItems');
+const markAllRead=document.getElementById('markAllRead');
+let latestNotifications=[];
+
+function notifIcon(type){
+  type=String(type||'').toLowerCase();
+  if(type.includes('job')) return '💼';
+  if(type.includes('gov')) return '🏛️';
+  if(type.includes('note')) return '📚';
+  if(type.includes('course')) return '🎓';
+  if(type.includes('alert')) return '⚠️';
+  return '🔔';
+}
+function notifTime(ts){
+  if(!ts) return 'Just now';
+  try{
+    const d=ts.toDate?ts.toDate():new Date(ts);
+    const diff=Math.max(0,Date.now()-d.getTime());
+    if(diff<60000) return 'Just now';
+    if(diff<3600000) return Math.floor(diff/60000)+' min ago';
+    if(diff<86400000) return Math.floor(diff/3600000)+' hr ago';
+    return new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'short',year:'numeric'}).format(d);
+  }catch(e){return '';}
+}
+function renderNotificationCenter(){
+  const read=window.RJNotificationRead.get();
+  const unread=latestNotifications.filter(n=>!read.includes(n.id));
+  notifBadge.textContent=unread.length>99?'99+':unread.length;
+  notifBadge.style.display=unread.length?'flex':'none';
+
+  if(!latestNotifications.length){
+    notifItems.innerHTML='<div class="notifEmpty">🔔 No notifications yet.<br>New updates yahan automatically aayenge.</div>';
+    return;
+  }
+  notifItems.innerHTML=latestNotifications.map(n=>{
+    const unreadClass=read.includes(n.id)?'':' unread';
+    return `<div class="notifItem${unreadClass}" data-notif-id="${esc2(n.id)}">
+      <div class="notifIcon">${notifIcon(n.type||n.title)}</div>
+      <div class="notifBody">
+        <div class="notifTitle">${esc2(n.title||'New Update')}</div>
+        <div class="notifMsg">${esc2(n.message||'')}</div>
+        <div class="notifTime">${esc2(notifTime(n.createdAt))}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+notifBell.addEventListener('click',function(e){
+  e.stopPropagation();
+  notifPanel.classList.toggle('open');
+});
+document.addEventListener('click',function(e){
+  if(!notifPanel.contains(e.target) && !notifBell.contains(e.target)) notifPanel.classList.remove('open');
+});
+markAllRead.addEventListener('click',function(){
+  window.RJNotificationRead.all(latestNotifications.map(n=>n.id));
+  renderNotificationCenter();
+});
+notifItems.addEventListener('click',function(e){
+  const item=e.target.closest('.notifItem');
+  if(!item)return;
+  const id=item.getAttribute('data-notif-id');
+  window.RJNotificationRead.mark(id);
+  renderNotificationCenter();
+  notifPanel.classList.remove('open');
+  const updates=document.getElementById('updates');
+  if(updates) updates.scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+try{
+  onSnapshot(query(collection(db2,'announcements'),where('status','==','published'),orderBy('createdAt','desc'),limit(15)),snap=>{
+    latestNotifications=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderNotificationCenter();
+  },err=>{
+    console.error('Notification center:',err);
+    notifItems.innerHTML='<div class="notifEmpty">Notifications temporarily unavailable.</div>';
+  });
+}catch(e){console.error(e);}
+
 const esc2=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt2=t=>{if(!t)return '';try{return new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'short',year:'numeric'}).format(t.toDate? t.toDate():new Date(t));}catch{return ''}};
 const annBox=document.getElementById('announcementList');
+const livePopup=document.getElementById('livePopup');
+const livePopupTitle=document.getElementById('livePopupTitle');
+const livePopupText=document.getElementById('livePopupText');
+const livePopupAction=document.getElementById('livePopupAction');
+let popupTimer=null, initialAnnouncements=true, knownAnnouncementIds=new Set();
+function showLivePopup(title,message,href='#updates'){
+ livePopupTitle.textContent=title||'Latest Rajasthan Job Update';
+ livePopupText.textContent=message||'New update available.';
+ livePopupAction.href=href; livePopup.classList.add('show');
+ clearTimeout(popupTimer); popupTimer=setTimeout(()=>livePopup.classList.remove('show'),9000);
+}
+document.getElementById('livePopupClose').onclick=()=>livePopup.classList.remove('show');
 try{onSnapshot(query(collection(db2,'announcements'),where('status','==','published'),orderBy('createdAt','desc'),limit(3)),snap=>{
-  if(!snap.docs.length){annBox.innerHTML='<div class="announcement"><div class="announcementTitle">No new notifications</div><div class="announcementText">New updates yahan automatically show honge.</div></div>';return;}
-  annBox.innerHTML=snap.docs.map(d=>{const a=d.data();return `<div class="announcement"><div class="announcementTop"><div class="announcementTitle">🔔 ${esc2(a.title||'Update')}</div><div class="announcementDate">${esc2(fmt2(a.createdAt))}</div></div><div class="announcementText">${esc2(a.message||'')}</div></div>`}).join('');
+ if(!snap.docs.length){annBox.innerHTML='<div class="announcement"><div class="announcementTitle">No new notifications</div><div class="announcementText">New updates yahan automatically show honge.</div></div>';return;}
+ annBox.innerHTML=snap.docs.map(d=>{const a=d.data();return `<div class="announcement"><div class="announcementTop"><div class="announcementTitle">🔔 ${esc2(a.title||'Update')}</div><div class="announcementDate">${esc2(fmt2(a.createdAt))}</div></div><div class="announcementText">${esc2(a.message||'')}</div></div>`}).join('');
+ if(initialAnnouncements){snap.docs.forEach(d=>knownAnnouncementIds.add(d.id));initialAnnouncements=false;}
+ else{const fresh=snap.docChanges().find(ch=>ch.type==='added'&&!knownAnnouncementIds.has(ch.doc.id));if(fresh){const a=fresh.doc.data();knownAnnouncementIds.add(fresh.doc.id);showLivePopup(a.title,a.message,'#updates');}}
 },()=>{annBox.innerHTML='<div class="announcement"><div class="announcementTitle">Updates temporarily unavailable</div><div class="announcementText">Please refresh the page later.</div></div>';});}catch(e){}
 const commentBox=document.getElementById('publicComments');
 try{onSnapshot(query(collection(db2,'comments'),where('status','==','approved'),orderBy('createdAt','desc'),limit(10)),snap=>{
