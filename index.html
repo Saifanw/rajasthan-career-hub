@@ -376,14 +376,28 @@ notifItems.addEventListener('click',function(e){
 });
 
 try{
-  onSnapshot(query(collection(db2,'announcements'),where('status','==','published'),orderBy('createdAt','desc'),limit(15)),snap=>{
-    latestNotifications=snap.docs.map(d=>({id:d.id,...d.data()}));
+  // Read announcements without a Firestore composite-index dependency.
+  // We filter and sort on the browser so the bell keeps working even if
+  // Firestore has not created an index for status + createdAt yet.
+  onSnapshot(collection(db2,'announcements'),snap=>{
+    latestNotifications=snap.docs
+      .map(d=>({id:d.id,...d.data()}))
+      .filter(n=>String(n.status||'').toLowerCase()==='published')
+      .sort((a,b)=>{
+        const ta=a.createdAt?.toDate?a.createdAt.toDate().getTime():new Date(a.createdAt||0).getTime();
+        const tb=b.createdAt?.toDate?b.createdAt.toDate().getTime():new Date(b.createdAt||0).getTime();
+        return tb-ta;
+      })
+      .slice(0,15);
     renderNotificationCenter();
   },err=>{
     console.error('Notification center:',err);
-    notifItems.innerHTML='<div class="notifEmpty">Notifications temporarily unavailable.</div>';
+    notifItems.innerHTML='<div class="notifEmpty">Notifications temporarily unavailable.<br><small>Please check Firebase announcements read access.</small></div>';
   });
-}catch(e){console.error(e);}
+}catch(e){
+  console.error('Notification center init:',e);
+  notifItems.innerHTML='<div class="notifEmpty">Notifications temporarily unavailable.</div>';
+}
 
 const esc2=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt2=t=>{if(!t)return '';try{return new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'short',year:'numeric'}).format(t.toDate? t.toDate():new Date(t));}catch{return ''}};
