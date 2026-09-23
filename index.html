@@ -379,7 +379,7 @@ try{
   // Read announcements without a Firestore composite-index dependency.
   // We filter and sort on the browser so the bell keeps working even if
   // Firestore has not created an index for status + createdAt yet.
-  onSnapshot(collection(db2,'announcements'),snap=>{
+  onSnapshot(query(collection(db2,'announcements'),where('status','==','published')),snap=>{
     latestNotifications=snap.docs
       .map(d=>({id:d.id,...d.data()}))
       .filter(n=>String(n.status||'').toLowerCase()==='published')
@@ -414,9 +414,9 @@ function showLivePopup(title,message,href='#updates'){
  clearTimeout(popupTimer); popupTimer=setTimeout(()=>livePopup.classList.remove('show'),9000);
 }
 document.getElementById('livePopupClose').onclick=()=>livePopup.classList.remove('show');
-try{onSnapshot(query(collection(db2,'announcements'),where('status','==','published'),orderBy('createdAt','desc'),limit(3)),snap=>{
+try{onSnapshot(query(collection(db2,'announcements'),where('status','==','published')),snap=>{
  if(!snap.docs.length){annBox.innerHTML='<div class="announcement"><div class="announcementTitle">No new notifications</div><div class="announcementText">New updates yahan automatically show honge.</div></div>';return;}
- annBox.innerHTML=snap.docs.map(d=>{const a=d.data();return `<div class="announcement"><div class="announcementTop"><div class="announcementTitle">🔔 ${esc2(a.title||'Update')}</div><div class="announcementDate">${esc2(fmt2(a.createdAt))}</div></div><div class="announcementText">${esc2(a.message||'')}</div></div>`}).join('');
+ const docs=snap.docs.slice().sort((x,y)=>{const a=x.data(),b=y.data();const ta=a.createdAt?.toDate?a.createdAt.toDate().getTime():new Date(a.createdAt||0).getTime();const tb=b.createdAt?.toDate?b.createdAt.toDate().getTime():new Date(b.createdAt||0).getTime();return tb-ta;}).slice(0,3); annBox.innerHTML=docs.map(d=>{const a=d.data();return `<div class="announcement"><div class="announcementTop"><div class="announcementTitle">🔔 ${esc2(a.title||'Update')}</div><div class="announcementDate">${esc2(fmt2(a.createdAt))}</div></div><div class="announcementText">${esc2(a.message||'')}</div></div>`}).join('');
  if(initialAnnouncements){snap.docs.forEach(d=>knownAnnouncementIds.add(d.id));initialAnnouncements=false;}
  else{const fresh=snap.docChanges().find(ch=>ch.type==='added'&&!knownAnnouncementIds.has(ch.doc.id));if(fresh){const a=fresh.doc.data();knownAnnouncementIds.add(fresh.doc.id);showLivePopup(a.title,a.message,'#updates');}}
 },()=>{annBox.innerHTML='<div class="announcement"><div class="announcementTitle">Updates temporarily unavailable</div><div class="announcementText">Please refresh the page later.</div></div>';});}catch(e){}
