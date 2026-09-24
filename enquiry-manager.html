@@ -26,6 +26,14 @@
 .modal-backdrop{position:fixed;inset:0;background:rgba(10,27,45,.58);display:flex;align-items:center;justify-content:center;padding:18px;z-index:1000}.modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.22)}
 .modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #e4ebf2;padding-bottom:13px}.modal-head h2{margin:0;font-size:21px}.close-x{border:0;background:#f0f3f7;border-radius:50%;width:35px;height:35px;cursor:pointer;font-size:18px}
 .detail{padding:12px 0;border-bottom:1px solid #edf1f5}.detail label{display:block;font-size:11px;text-transform:uppercase;color:#71839a;font-weight:800;margin-bottom:5px}.detail div{line-height:1.55;white-space:pre-wrap}.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.inquiry-toast{position:fixed;right:22px;bottom:22px;width:min(390px,calc(100% - 30px));background:#fff;border:1px solid #d7e2ee;border-left:5px solid #1769e8;border-radius:15px;padding:15px;box-shadow:0 18px 45px rgba(16,43,73,.2);z-index:2000;display:none}
+.inquiry-toast.show{display:block;animation:toastIn .22s ease-out}
+.inquiry-toast-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.inquiry-toast h3{margin:0 0 4px;font-size:16px;color:#102b49}
+.inquiry-toast p{margin:0;color:#60738a;font-size:12px;line-height:1.5}
+.inquiry-toast-close{border:0;background:#f0f3f7;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:17px}
+.inquiry-toast-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+@keyframes toastIn{from{transform:translateY(15px);opacity:0}to{transform:translateY(0);opacity:1}}
 @media(max-width:850px){.toolbar{grid-template-columns:1fr 1fr}.stats{grid-template-columns:repeat(2,1fr)}.header{padding:18px 4%}}
 @media(max-width:560px){.toolbar{grid-template-columns:1fr}.header{align-items:flex-start;flex-direction:column}.wrap{width:94%}.enq-top{flex-direction:column}.enq-actions .btn{flex:1;min-width:110px}}
 </style>
@@ -40,6 +48,16 @@
 <div class="stats"><div class="stat">📊<b id="totalCount">0</b><span>Total Inquiries</span></div><div class="stat">🆕<b id="newCount">0</b><span>New</span></div><div class="stat">👁️<b id="readCount">0</b><span>Read</span></div><div class="stat">✅<b id="closedCount">0</b><span>Closed</span></div></div>
 <section class="panel"><h2>📩 Inquiry Submissions</h2><div class="toolbar"><input id="searchBox" placeholder="Search name, mobile, email, service or message..."><select id="statusFilter"><option value="all">All Status</option><option value="new">New</option><option value="read">Read</option><option value="closed">Closed</option></select><select id="dateFilter"><option value="all">All Dates</option><option value="today">Today</option><option value="7">Last 7 Days</option><option value="30">Last 30 Days</option></select><button class="btn btn-dark" id="clearFilters">Clear</button></div><div id="statusMsg" class="status-msg">Loading inquiries...</div><div id="enquiryList"><div class="loading">Loading inquiries…</div></div></section>
 </main></div><div id="modalRoot"></div>
+<div id="inquiryToast" class="inquiry-toast">
+  <div class="inquiry-toast-top">
+    <div><h3>🔔 New Inquiry Received</h3><p id="toastText">A new website inquiry has arrived.</p></div>
+    <button class="inquiry-toast-close" id="toastClose" type="button">×</button>
+  </div>
+  <div class="inquiry-toast-actions">
+    <button class="btn btn-dark" id="toastView" type="button">👁️ View Inquiry</button>
+    <button class="btn btn-light" id="toastLater" type="button">Later</button>
+  </div>
+</div>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
@@ -54,12 +72,51 @@ function dateText(v){const d=dateObj(v);return d?d.toLocaleString("en-IN",{dateS
 function showMsg(t,type=""){const e=$("statusMsg");e.className=type==="error"?"error":type==="success"?"success":"status-msg";e.textContent=t}
 async function loadConfig(){const text=await fetch(CONFIG_FILE+"?v="+Date.now()).then(r=>{if(!r.ok)throw Error("firebase-config.js nahi mila.");return r.text()});const cfg={};for(const k of["apiKey","authDomain","projectId","storageBucket","messagingSenderId","appId","measurementId"]){const m=text.match(new RegExp(k+"\\s*:\\s*[\\"']([^\\"']+)[\\"']"));if(m)cfg[k]=m[1]}if(!cfg.apiKey||!cfg.projectId||!cfg.appId)throw Error("firebase-config.js mein valid Firebase configuration nahi mili.");return cfg}
 async function initFirebase(){const config=await loadConfig();app=initializeApp(config);auth=getAuth(app);db=getFirestore(app);onAuthStateChanged(auth,async user=>{if(!user){$("loginView").classList.remove("hidden");$("appView").classList.add("hidden");if(unsubscribe){unsubscribe();unsubscribe=null}return}if((user.email||"").toLowerCase()!==ADMIN_EMAIL.toLowerCase()){await signOut(auth);$("loginMsg").innerHTML='<div class="error">This Google account is not authorized for Rajasthan Job admin.</div>';return}$("loginView").classList.add("hidden");$("appView").classList.remove("hidden");startRealtime()})}
-async function login(){$("loginMsg").innerHTML="";try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){$("loginMsg").innerHTML='<div class="error">Login failed: '+esc(e.message||e.code||"Unknown error")+"</div>"}}
-function startRealtime(){if(unsubscribe)unsubscribe();showMsg("Connecting to live inquiries...");unsubscribe=onSnapshot(collection(db,"inquiries"),snap=>{allEnquiries=snap.docs.map(d=>({id:d.id,...d.data()}));allEnquiries.sort((a,b)=>(dateObj(b.createdAt)?.getTime()||0)-(dateObj(a.createdAt)?.getTime()||0));render();showMsg(allEnquiries.length?"Live inquiries connected.":"No inquiries yet.")},err=>{console.error(err);showMsg("Unable to load inquiries. Firestore rules mein /inquiries admin read permission check karein.","error")})}
+async function login(){$("loginMsg").innerHTML="";try{await signInWithPopup(auth,new GoogleAuthProvider());if("Notification" in window && Notification.permission==="default"){try{await Notification.requestPermission()}catch(e){}}}catch(e){$("loginMsg").innerHTML='<div class="error">Login failed: '+esc(e.message||e.code||"Unknown error")+"</div>"}}
+let firstInquirySnapshot=true,lastNewInquiryId=null;
+function showInquiryToast(x){
+  const phone=x.mobile||x.phone||"";
+  $("toastText").textContent=(x.name||"Visitor")+" • "+(x.service||"General inquiry")+" • "+(phone||"No mobile");
+  $("inquiryToast").classList.add("show");
+  $("toastView").onclick=()=>{closeToast();openDetails(x.id)};
+  $("toastClose").onclick=closeToast;
+  $("toastLater").onclick=closeToast;
+  clearTimeout(window.__inquiryToastTimer);
+  window.__inquiryToastTimer=setTimeout(closeToast,10000);
+}
+function closeToast(){$("inquiryToast").classList.remove("show")}
+function startRealtime(){
+  if(unsubscribe)unsubscribe();
+  firstInquirySnapshot=true;
+  showMsg("Connecting to live inquiries...");
+  unsubscribe=onSnapshot(collection(db,"inquiries"),snap=>{
+    if(!firstInquirySnapshot){
+      snap.docChanges().forEach(change=>{
+        if(change.type==="added" && change.doc.id!==lastNewInquiryId){
+          lastNewInquiryId=change.doc.id;
+          const x={id:change.doc.id,...change.doc.data()};
+          showInquiryToast(x);
+          if("Notification" in window && Notification.permission==="granted"){
+            try{new Notification("Rajasthan Job — New Inquiry",{body:(x.name||"Visitor")+" submitted a new inquiry."})}catch(e){}
+          }
+        }
+      });
+    }
+    firstInquirySnapshot=false;
+    allEnquiries=snap.docs.map(d=>({id:d.id,...d.data()}));
+    allEnquiries.sort((a,b)=>(dateObj(b.createdAt)?.getTime()||0)-(dateObj(a.createdAt)?.getTime()||0));
+    render();
+    showMsg(allEnquiries.length?"Live inquiries connected.":"No inquiries yet.");
+  },err=>{
+    console.error(err);
+    showMsg("Unable to load inquiries. Firestore rules mein /inquiries admin read permission check karein.","error");
+  });
+}
 function matchesDate(v,f){if(f==="all")return true;const d=dateObj(v);if(!d)return false;const now=new Date();if(f==="today")return d.toDateString()===now.toDateString();const n=Number(f);return now-d<=n*86400000&&d<=now}
 function render(){const q=$("searchBox").value.trim().toLowerCase(),sf=$("statusFilter").value,df=$("dateFilter").value,c={total:allEnquiries.length,new:0,read:0,closed:0};allEnquiries.forEach(x=>{const s=(x.status||"new").toLowerCase();if(c[s]!==undefined)c[s]++});$("totalCount").textContent=c.total;$("newCount").textContent=c.new;$("readCount").textContent=c.read;$("closedCount").textContent=c.closed;const f=allEnquiries.filter(x=>{const hay=[x.name,x.mobile,x.phone,x.email,x.service,x.requirement,x.message].join(" ").toLowerCase(),s=(x.status||"new").toLowerCase();return(!q||hay.includes(q))&&(sf==="all"||s===sf)&&matchesDate(x.createdAt,df)});$("enquiryList").innerHTML=f.length?f.map(cardHTML).join(""):'<div class="empty">📭 No matching inquiries found.</div>'}
-function cardHTML(x){const s=(x.status||"new").toLowerCase(),badge=s==="closed"?"badge-closed":s==="read"?"badge-read":"badge-new",phone=x.mobile||x.phone||"",email=x.email||"",digits=phone.replace(/\D/g,""),wa=digits.length===10?"91"+digits:digits;return`<article class="enquiry"><div class="enq-top"><div><div class="enq-name">${esc(x.name||"Unnamed")}</div><div class="meta">📱 ${esc(phone||"No mobile")} ${email?" • ✉️ "+esc(email):""}<br>🎯 ${esc(x.service||"Not specified")} • 🕒 ${esc(dateText(x.createdAt))}</div></div><span class="badge ${badge}">${esc(s.toUpperCase())}</span></div><div class="message">${esc(x.requirement||x.message||"No requirement provided")}</div><div class="enq-actions"><button class="btn btn-dark" data-action="view" data-id="${esc(x.id)}">👁️ View Details</button>${phone?`<a class="btn btn-green" href="tel:${esc(phone)}">📞 Call</a>`:""}${wa?`<a class="btn btn-green" target="_blank" rel="noopener" href="https://wa.me/${esc(wa)}">💬 WhatsApp</a>`:""}${s!=="read"?`<button class="btn btn-blue" data-action="read" data-id="${esc(x.id)}">✓ Mark Read</button>`:""}${s!=="closed"?`<button class="btn btn-green" data-action="closed" data-id="${esc(x.id)}">✓ Close</button>`:""}${s!=="new"?`<button class="btn btn-light" data-action="new" data-id="${esc(x.id)}">↺ New</button>`:""}<button class="btn btn-red" data-action="delete" data-id="${esc(x.id)}">🗑 Delete</button></div></article>`}
-function openDetails(id){const x=allEnquiries.find(a=>a.id===id);if(!x)return;const phone=x.mobile||x.phone||"",email=x.email||"",s=(x.status||"new").toLowerCase();$("modalRoot").innerHTML=`<div class="modal-backdrop" id="backdrop"><div class="modal"><div class="modal-head"><h2>📩 Inquiry Details</h2><button class="close-x" id="closeModal">×</button></div><div class="detail"><label>Name</label><div>${esc(x.name||"Not provided")}</div></div><div class="detail"><label>Mobile</label><div>${esc(phone||"Not provided")}</div></div><div class="detail"><label>Email</label><div>${esc(email||"Not provided")}</div></div><div class="detail"><label>Service</label><div>${esc(x.service||"Not specified")}</div></div><div class="detail"><label>Requirement / Message</label><div>${esc(x.requirement||x.message||"No message provided")}</div></div><div class="detail"><label>Submitted</label><div>${esc(dateText(x.createdAt))}</div></div><div class="detail"><label>Last Updated</label><div>${esc(dateText(x.updatedAt))}</div></div><div class="detail"><label>Status</label><div><span class="badge ${s==="closed"?"badge-closed":s==="read"?"badge-read":"badge-new"}">${esc(s.toUpperCase())}</span></div></div><div class="modal-actions">${phone?`<a class="btn btn-green" href="tel:${esc(phone)}">📞 Call</a>`:""}${email?`<a class="btn btn-blue" href="mailto:${esc(email)}">✉️ Email</a>`:""}<button class="btn btn-dark" id="modalCloseBtn">Close Window</button></div></div></div>`;$("closeModal").onclick=closeModal;$("modalCloseBtn").onclick=closeModal;$("backdrop").onclick=e=>{if(e.target.id==="backdrop")closeModal()}}
+function cardHTML(x){const s=(x.status||"new").toLowerCase(),badge=s==="closed"?"badge-closed":s==="read"?"badge-read":"badge-new",phone=x.mobile||x.phone||"",email=x.email||"",digits=phone.replace(/\D/g,""),wa=digits.length===10?"91"+digits:digits;return`<article class="enquiry"><div class="enq-top"><div><div class="enq-name">${esc(x.name||"Unnamed")}</div><div class="meta">📱 ${esc(phone||"No mobile")} ${email?" • ✉️ "+esc(email):""}<br>🎯 ${esc(x.service||"Not specified")} • 🕒 ${esc(dateText(x.createdAt))}</div></div><span class="badge ${badge}">${esc(s.toUpperCase())}</span></div><div class="message">${esc(x.requirement||x.message||"No requirement provided")}</div><div class="enq-actions"><button class="btn btn-dark" data-action="view" data-id="${esc(x.id)}">👁️ View Details</button>${phone?`<a class="btn btn-green" href="tel:${esc(phone)}">📞 Call</a>`:""}${wa?`<a class="btn btn-green" target="_blank" rel="noopener" href="https://wa.me/${esc(wa)}">💬 WhatsApp</a>`:""}
+      ${wa?`<a class="btn btn-blue" target="_blank" rel="noopener" href="https://wa.me/${esc(wa)}?text=${encodeURIComponent("Hello "+(x.name||"")+" 👋, Rajasthan Job se aapki inquiry mili hai. Aapki requirement ke regarding aapse baat karna chahte hain.")}">↩️ Reply</a>`:""}${s!=="read"?`<button class="btn btn-blue" data-action="read" data-id="${esc(x.id)}">✓ Mark Read</button>`:""}${s!=="closed"?`<button class="btn btn-green" data-action="closed" data-id="${esc(x.id)}">✓ Close</button>`:""}${s!=="new"?`<button class="btn btn-light" data-action="new" data-id="${esc(x.id)}">↺ New</button>`:""}<button class="btn btn-red" data-action="delete" data-id="${esc(x.id)}">🗑 Delete</button></div></article>`}
+function openDetails(id){const x=allEnquiries.find(a=>a.id===id);if(!x)return;const phone=x.mobile||x.phone||"",email=x.email||"",s=(x.status||"new").toLowerCase();$("modalRoot").innerHTML=`<div class="modal-backdrop" id="backdrop"><div class="modal"><div class="modal-head"><h2>📩 Inquiry Details</h2><button class="close-x" id="closeModal">×</button></div><div class="detail"><label>Name</label><div>${esc(x.name||"Not provided")}</div></div><div class="detail"><label>Mobile</label><div>${esc(phone||"Not provided")}</div></div><div class="detail"><label>Email</label><div>${esc(email||"Not provided")}</div></div><div class="detail"><label>Service</label><div>${esc(x.service||"Not specified")}</div></div><div class="detail"><label>Requirement / Message</label><div>${esc(x.requirement||x.message||"No message provided")}</div></div><div class="detail"><label>Submitted</label><div>${esc(dateText(x.createdAt))}</div></div><div class="detail"><label>Last Updated</label><div>${esc(dateText(x.updatedAt))}</div></div><div class="detail"><label>Status</label><div><span class="badge ${s==="closed"?"badge-closed":s==="read"?"badge-read":"badge-new"}">${esc(s.toUpperCase())}</span></div></div><div class="modal-actions">${phone?`<a class="btn btn-green" href="tel:${esc(phone)}">📞 Call</a>`:""}${email?`<a class="btn btn-blue" href="mailto:${esc(email)}">✉️ Email</a>`:""}${phone?`<a class="btn btn-blue" target="_blank" rel="noopener" href="https://wa.me/${esc((phone.replace(/\D/g,"").length===10?"91":"")+phone.replace(/\D/g,""))}?text=${encodeURIComponent("Hello "+(x.name||"")+" 👋, Rajasthan Job se aapki inquiry mili hai. Aapki requirement ke regarding aapse baat karna chahte hain.")}">↩️ Reply on WhatsApp</a>`:""}<button class="btn btn-dark" id="modalCloseBtn">Close Window</button></div></div></div>`;$("closeModal").onclick=closeModal;$("modalCloseBtn").onclick=closeModal;$("backdrop").onclick=e=>{if(e.target.id==="backdrop")closeModal()}}
 function closeModal(){$("modalRoot").innerHTML=""}
 async function changeStatus(id,status){try{await updateDoc(doc(db,"inquiries",id),{status,updatedAt:serverTimestamp()});showMsg("Inquiry status updated successfully.","success")}catch(e){console.error(e);showMsg("Status update failed. Firestore /inquiries update permission check karein.","error")}}
 async function removeInquiry(id){if(!confirm("Is inquiry ko permanently delete karna hai?"))return;try{await deleteDoc(doc(db,"inquiries",id));showMsg("Inquiry deleted.","success")}catch(e){console.error(e);showMsg("Delete failed. Firestore /inquiries delete permission check karein.","error")}}
