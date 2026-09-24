@@ -1,66 +1,161 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Post a Job — Rajasthan Job</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rajasthan Job — Admin Dashboard</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#102d49}
-.header{background:#102d49;color:#fff}.head{max-width:900px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.brand{font-size:22px;font-weight:800}.sub{font-size:11px;opacity:.8;margin-top:3px}
-.wrap{max-width:900px;margin:auto;padding:24px 20px}.card{background:#fff;border:1px solid #dbe4ef;border-radius:16px;padding:22px;box-shadow:0 7px 24px #102d490b}
-h1{font-size:26px;margin:0 0 6px}.intro{color:#63758b;font-size:13px;line-height:1.5;margin-bottom:20px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.full{grid-column:1/-1}
-label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d5dfeb;border-radius:9px;font:inherit;font-size:13px;outline:none;background:#fff;color:#102d49}
-input:focus,select:focus,textarea:focus{border-color:#1769e8;box-shadow:0 0 0 3px #1769e814}textarea{min-height:120px;resize:vertical}
-.req{color:#c83b3b}.btn{border:0;border-radius:10px;padding:12px 18px;background:#1769e8;color:#fff;font-weight:800;cursor:pointer}.btn:disabled{opacity:.6;cursor:not-allowed}
-.actions{display:flex;gap:9px;align-items:center;margin-top:18px}.back{background:#fff;color:#102d49;border:1px solid #dbe4ef}
-.msg{margin-top:14px;padding:11px 13px;border-radius:10px;font-size:12px;display:none}.success{display:block;background:#edf8f2;color:#087047;border:1px solid #c9eadb}.error{display:block;background:#fff0f0;color:#a52e2e;border:1px solid #f1cccc}
-.note{background:#edf5ff;border:1px solid #cfe2ff;color:#365674;border-radius:11px;padding:11px 13px;font-size:12px;line-height:1.5;margin-bottom:18px}
-footer{text-align:center;padding:24px;color:#63758b;font-size:10px}
-@media(max-width:650px){.head{padding:14px}.brand{font-size:19px}.wrap{padding:15px 12px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.card{padding:17px}}
+:root{--navy:#102a43;--blue:#1769e8;--green:#16865b;--orange:#e78b16;--red:#c94747;--bg:#f5f8fc;--line:#dce5ef;--muted:#64748b}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:#182536}
+a{text-decoration:none}
+header{background:var(--navy);color:#fff;padding:18px 5%}
+.head{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.brand{font-size:22px;font-weight:900}.sub{font-size:12px;color:#dce9f8;margin-top:3px}
+.wrap{max-width:1100px;width:92%;margin:26px auto}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin-bottom:20px}
+h1{margin:0;color:var(--navy);font-size:30px}.muted{color:var(--muted);font-size:13px}
+.btn{display:inline-block;border:0;border-radius:9px;padding:11px 15px;font-weight:850;cursor:pointer}
+.primary{background:var(--blue);color:#fff}.light{background:#fff;color:var(--navy);border:1px solid #cbd8e7}
+.login{max-width:470px;margin:55px auto;text-align:center}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 8px 25px #102a430b;margin-bottom:18px}
+.login h2{color:var(--navy);margin:0 0 8px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px}
+.stat b{display:block;font-size:28px;color:var(--navy);margin-bottom:5px}
+.stat span{font-size:11px;font-weight:900;color:var(--muted)}
+.stat.blue{border-top:4px solid var(--blue)}.stat.green{border-top:4px solid var(--green)}.stat.orange{border-top:4px solid var(--orange)}.stat.purple{border-top:4px solid #7257c7}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.action{border:1px solid var(--line);border-radius:15px;padding:19px;background:#fff;transition:.15s}
+.action:hover{transform:translateY(-2px);box-shadow:0 8px 22px #102a4312}
+.icon{font-size:27px;margin-bottom:10px}.action h3{margin:0 0 6px;color:var(--navy);font-size:17px}.action p{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.5}
+.badge{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:900;background:#eef4fa;color:#35546e}
+.notice{background:#eef6ff;border:1px solid #cfe3ff;color:#244766;border-radius:11px;padding:13px;font-size:13px;margin-bottom:18px}
+.user{font-size:12px;color:#dce9f8}
+.status{display:none;padding:10px;border-radius:9px;margin-top:12px;font-size:12px}
+footer{padding:15px 0 40px;text-align:center;color:var(--muted);font-size:11px}
+@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.actions{grid-template-columns:1fr 1fr}.head{align-items:flex-start;flex-direction:column}.top{align-items:flex-start;flex-direction:column}}
+@media(max-width:520px){.grid,.actions{grid-template-columns:1fr}h1{font-size:25px}}
 </style>
 </head>
 <body>
-<header class="header"><div class="head">
-<div><div class="brand">Rajasthan Job</div><div class="sub">Post a Job</div></div>
-<a href="index.html" style="color:#fff;font-size:12px;font-weight:800">← Website</a>
-</div></header>
+
+<header>
+  <div class="head">
+    <div>
+      <div class="brand">Rajasthan Job — Admin Dashboard</div>
+      <div class="sub">Private management area</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a class="btn light" href="index.html">Website</a>
+      <button id="logoutBtn" class="btn light" style="display:none">Logout</button>
+    </div>
+  </div>
+</header>
 
 <main class="wrap">
-<section class="card">
-<h1>Post a Job</h1>
-<p class="intro">Employer apni genuine vacancy submit karein. Submission pehle <b>Pending</b> rahegi; admin review ke baad listing approve hogi.</p>
-<div class="note">🔒 <b>Important:</b> Job submit hone ke baad admin ko activity notification milegi. Fake, misleading ya incomplete vacancy publish nahi ki jayegi.</div>
+  <section id="loginBox" class="card login">
+    <h2>🔐 Admin Login</h2>
+    <p class="muted">Google se login karke Rajasthan Job website manage karein.</p>
+    <button id="loginBtn" class="btn primary">🔑 Login with Google</button>
+    <div id="loginStatus" class="status"></div>
+  </section>
 
-<form id="jobForm">
-<div class="grid">
-<div><label>Job Title <span class="req">*</span></label><input id="title" required placeholder="e.g. MIS Executive"></div>
-<div><label>Company Name <span class="req">*</span></label><input id="company" required placeholder="Company name"></div>
-<div><label>Location <span class="req">*</span></label><input id="location" required placeholder="Jaipur, Rajasthan"></div>
-<div><label>Category <span class="req">*</span></label>
-<select id="category" required><option value="">Select category</option><option>MIS / Reporting</option><option>Data Analytics</option><option>Sales / Marketing</option><option>Accounts / Finance</option><option>HR / Admin</option><option>IT / Software</option><option>Engineering</option><option>Government</option><option>Other</option></select></div>
-<div><label>Experience</label><input id="experience" placeholder="Fresher / 1-2 Years"></div>
-<div><label>Job Type</label><select id="jobType"><option>Full Time</option><option>Part Time</option><option>Internship</option><option>Contract</option><option>Work From Home</option></select></div>
-<div><label>Salary</label><input id="salary" placeholder="₹15,000 - ₹25,000 / month"></div>
-<div><label>Qualification</label><input id="qualification" placeholder="Graduate / Any Degree"></div>
-<div class="full"><label>Job Description <span class="req">*</span></label><textarea id="description" required placeholder="Responsibilities, skills, working hours, requirements..."></textarea></div>
-<div><label>Application Link</label><input id="applyLink" type="url" placeholder="https://company.com/careers/..."></div>
-<div><label>Contact Email</label><input id="contactEmail" type="email" placeholder="hr@company.com"></div>
-<div><label>Employer Contact Number</label><input id="contactPhone" type="tel" placeholder="10 digit mobile number"></div>
-<div><label>Last Date</label><input id="lastDate" type="date"></div>
-<div class="full"><label>Additional Note</label><textarea id="note" style="min-height:80px" placeholder="Any additional information for applicants"></textarea></div>
-</div>
-<div class="actions"><button id="submitBtn" class="btn" type="submit">📤 Submit Job</button><a class="btn back" href="index.html">Cancel</a></div>
-<div id="msg" class="msg"></div>
-</form>
-</section>
+  <section id="dashboard" style="display:none">
+    <div class="top">
+      <div>
+        <div class="muted">ADMIN DASHBOARD</div>
+        <h1>Welcome, Admin 👋</h1>
+        <div id="signedIn" class="muted"></div>
+      </div>
+      <a class="btn primary" href="jobs.html">🔎 View Live Jobs</a>
+    </div>
+
+    <div class="notice">
+      <b>Quick control:</b> Yahin se Jobs, Notifications, Study Notes aur Enquiries manage karein.
+      Public visitors ko sirf approved/published content dikhaya jayega.
+    </div>
+
+    <div class="grid">
+      <div class="stat blue"><b id="jobCount">—</b><span>TOTAL JOBS</span></div>
+      <div class="stat orange"><b id="pendingCount">—</b><span>PENDING JOBS</span></div>
+      <div class="stat green"><b id="approvedCount">—</b><span>APPROVED JOBS</span></div>
+      <div class="stat purple"><b id="noticeCount">—</b><span>NOTIFICATIONS</span></div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h2 style="margin:0 0 15px;color:var(--navy)">⚡ Manage Website</h2>
+      <div class="actions">
+        <div class="action">
+          <div class="icon">🔔</div>
+          <h3>Notifications</h3>
+          <p>Homepage ke top par latest updates publish, edit ya delete karein.</p>
+          <a class="btn primary" href="notification-manager.html">Manage Notifications →</a>
+        </div>
+
+        <div class="action">
+          <div class="icon">💼</div>
+          <h3>Jobs Manager</h3>
+          <p>Jobs add karein, employer submissions review karein aur approve karein.</p>
+          <a class="btn primary" href="job-manager.html">Manage Jobs →</a>
+        </div>
+
+        <div class="action">
+          <div class="icon">📚</div>
+          <h3>Study Notes Manager</h3>
+          <p>Users ke uploaded Notes review karein, approve/reject karein aur public Notes page manage karein.</p>
+          <a class="btn primary" href="notes-manager.html">Manage Study Notes →</a>
+        </div>
+
+        <div class="action">
+          <div class="icon">📋</div>
+          <h3>Post a Job</h3>
+          <p>Employer vacancy submission page check karein aur public form test karein.</p>
+          <a class="btn light" href="post-a-job.html">Open Post a Job →</a>
+        </div>
+
+        <div class="action">
+          <div class="icon">🔎</div>
+          <h3>All Jobs</h3>
+          <p>Website par users ko jo live job listings dikhengi unhe check karein.</p>
+          <a class="btn light" href="jobs.html">View All Jobs →</a>
+        </div>
+
+        <div class="action">
+          <div class="icon">🏠</div>
+          <h3>Website</h3>
+          <p>Homepage, quick access, notifications aur public sections ko open karein.</p>
+          <a class="btn light" href="index.html">Open Website →</a>
+        </div>
+
+        <div class="action">
+          <div class="icon">💬</div>
+          <h3>Inquiries</h3>
+          <p>Visitor enquiries dekhein, call/WhatsApp/email reply karein aur status manage karein.</p>
+          <a class="btn light" href="enquiry-manager.html">Manage Inquiries →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 8px;color:var(--navy)">📌 Admin Workflow</h2>
+      <p class="muted" style="margin:0;line-height:1.7">
+        Employer Job Submit → Pending → Admin Review → Approve → Jobs Page → User Apply
+        <br>
+        Notification Add → Published → Homepage par automatic show
+        <br>
+        Study Material Upload → Pending → Admin Review → Approve → Notes Page
+      </p>
+    </div>
+  </section>
 </main>
-<footer>Rajasthan Job • Job submissions are subject to admin verification</footer>
+
+<footer>Rajasthan Job • Private Admin Area</footer>
 
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import{getFirestore,collection,addDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {getFirestore,collection,getDocs} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig={
  apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
@@ -71,57 +166,69 @@ const firebaseConfig={
  appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",
  measurementId:"G-15S2XJQK80"
 };
-const app=initializeApp(firebaseConfig,"postJobPage");
-const db=getFirestore(app);
-const $=id=>document.getElementById(id);
 
-$("jobForm").addEventListener("submit",async e=>{
- e.preventDefault();
- const btn=$("submitBtn"),msg=$("msg");
- btn.disabled=true;btn.textContent="Submitting...";
- msg.className="msg";msg.textContent="";
- const job={
-   title:$("title").value.trim(),
-   company:$("company").value.trim(),
-   location:$("location").value.trim(),
-   category:$("category").value,
-   experience:$("experience").value.trim(),
-   jobType:$("jobType").value,
-   salary:$("salary").value.trim(),
-   qualification:$("qualification").value.trim(),
-   description:$("description").value.trim(),
-   applyLink:$("applyLink").value.trim(),
-   contactEmail:$("contactEmail").value.trim(),
-   contactPhone:$("contactPhone").value.trim(),
-   lastDate:$("lastDate").value||"",
-   note:$("note").value.trim(),
-   status:"pending",
-   source:"employer_submission",
-   createdAt:serverTimestamp(),
-   updatedAt:serverTimestamp()
- };
+const app=initializeApp(firebaseConfig,"admin-dashboard");
+const auth=getAuth(app),db=getFirestore(app);
+const ADMIN_EMAIL="saif.anwar1618@gmail.com";
+const loginBox=document.getElementById("loginBox");
+const dashboard=document.getElementById("dashboard");
+const loginStatus=document.getElementById("loginStatus");
+const logoutBtn=document.getElementById("logoutBtn");
+
+function showError(msg){
+ loginStatus.style.display="block";
+ loginStatus.style.background="#fff0f0";
+ loginStatus.style.color="#a63d3d";
+ loginStatus.textContent=msg;
+}
+
+document.getElementById("loginBtn").onclick=async()=>{
  try{
-   const ref=await addDoc(collection(db,"jobs"),job);
-   // This creates the activity consumed by the Admin Dashboard.
-   await addDoc(collection(db,"activities"),{
-     type:"job",
-     title:"New Job Submitted",
-     message:job.title+" — "+job.company+" • "+job.location+" • Pending",
-     jobId:ref.id,
-     createdAt:serverTimestamp(),
-     read:false
-   });
-   msg.className="msg success";
-   msg.innerHTML="<b>Job submitted successfully.</b><br>Your vacancy is now Pending for admin review.";
-   $("jobForm").reset();
- }catch(err){
-   console.error(err);
-   msg.className="msg error";
-   msg.textContent="Job submit nahi hua. Firebase Firestore rules check karein.";
- }finally{
-   btn.disabled=false;btn.textContent="📤 Submit Job";
+   await signInWithPopup(auth,new GoogleAuthProvider());
+ }catch(e){
+   showError("Login failed: "+e.message);
  }
+};
+
+logoutBtn.onclick=()=>signOut(auth);
+
+onAuthStateChanged(auth,async user=>{
+ if(!user){
+   loginBox.style.display="block";
+   dashboard.style.display="none";
+   logoutBtn.style.display="none";
+   return;
+ }
+ if(user.email!==ADMIN_EMAIL){
+   showError("This Google account is not authorised for the admin dashboard.");
+   await signOut(auth);
+   return;
+ }
+ loginBox.style.display="none";
+ dashboard.style.display="block";
+ logoutBtn.style.display="inline-block";
+ document.getElementById("signedIn").textContent="Signed in as: "+user.email;
+ await loadStats();
 });
+
+async function loadStats(){
+ try{
+   const jobsSnap=await getDocs(collection(db,"jobs"));
+   const jobs=jobsSnap.docs.map(d=>d.data());
+   document.getElementById("jobCount").textContent=jobs.length;
+   document.getElementById("pendingCount").textContent=jobs.filter(j=>j.status==="pending").length;
+   document.getElementById("approvedCount").textContent=jobs.filter(j=>j.status==="approved").length;
+
+   const noticesSnap=await getDocs(collection(db,"announcements"));
+   document.getElementById("noticeCount").textContent=noticesSnap.size;
+ }catch(e){
+   document.getElementById("jobCount").textContent="—";
+   document.getElementById("pendingCount").textContent="—";
+   document.getElementById("approvedCount").textContent="—";
+   document.getElementById("noticeCount").textContent="—";
+   console.error(e);
+ }
+}
 </script>
 </body>
 </html>
