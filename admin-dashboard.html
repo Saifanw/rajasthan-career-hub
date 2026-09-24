@@ -43,7 +43,38 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
 .muted{color:#6d7d8d}.message{padding:10px;border-radius:8px;background:#f5f8fb;margin-top:10px}
 .actions{display:flex;gap:7px;flex-wrap:wrap}
 .small{font-size:11px}
+
 .hidden{display:none}
+#liveToastWrap{
+  position:fixed;
+  top:82px;
+  right:22px;
+  z-index:99999;
+  width:min(390px,calc(100vw - 30px));
+  pointer-events:none;
+}
+.liveToast{
+  pointer-events:auto;
+  background:#fff;
+  border:1px solid #d9e5f1;
+  border-left:5px solid #1769aa;
+  border-radius:14px;
+  box-shadow:0 16px 45px rgba(16,42,67,.22);
+  padding:15px 16px;
+  margin-bottom:10px;
+  animation:toastIn .28s ease;
+}
+.liveToast.job{border-left-color:#c56a00}
+.liveToast.candidate{border-left-color:#15803d}
+.liveToast.notice{border-left-color:#1769aa}
+.liveToastTop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.liveToastTitle{font-weight:900;color:#12355b;font-size:15px}
+.liveToastClose{border:0;background:transparent;color:#64748b;font-size:20px;cursor:pointer;padding:0 2px}
+.liveToastMsg{font-size:13px;color:#526477;margin-top:5px;line-height:1.45}
+.liveToastTime{font-size:10px;color:#8a98a8;margin-top:7px}
+@keyframes toastIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+@media(max-width:600px){#liveToastWrap{top:70px;right:15px}}
+
 .error{background:#fff0ef;color:#a21d16;padding:12px;border-radius:9px}
 .success{background:#eaf8ef;color:#166534;padding:12px;border-radius:9px}
 @media(max-width:800px){
@@ -53,6 +84,7 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
 </style>
 </head>
 <body>
+<div id="liveToastWrap" aria-live="polite" aria-atomic="true"></div>
 
 <header>
   <div class="header">
@@ -63,6 +95,16 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
     <button id="logoutBtn" class="logout" style="display:none">Logout</button>
   </div>
 </header>
+
+<div style="background:#fff;border-bottom:1px solid #dbe5ef;padding:10px 0;">
+  <div style="max-width:1250px;margin:auto;padding:0 15px;display:flex;gap:8px;flex-wrap:wrap;">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:9px;background:#edf5fc;color:#12355b;text-decoration:none;font-weight:800;font-size:13px;">← 🏠 Main Website</a>
+    <a href="job-manager.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:9px;background:#edf5fc;color:#12355b;text-decoration:none;font-weight:800;font-size:13px;">💼 Job Manager</a>
+    <a href="candidate-manager.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:9px;background:#edf5fc;color:#12355b;text-decoration:none;font-weight:800;font-size:13px;">👤 Job Seekers</a>
+    <a href="notification-manager.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:9px;background:#edf5fc;color:#12355b;text-decoration:none;font-weight:800;font-size:13px;">🔔 Notifications</a>
+    <a href="enquiry-manager.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:9px;background:#edf5fc;color:#12355b;text-decoration:none;font-weight:800;font-size:13px;">📩 Enquiries</a>
+  </div>
+</div>
 
 <main class="wrap">
   <section id="loginBox" class="card login">
@@ -193,7 +235,7 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}
   from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {getFirestore,collection,getDocs,doc,updateDoc,deleteDoc,serverTimestamp}
+import {getFirestore,collection,getDocs,doc,updateDoc,deleteDoc,serverTimestamp,onSnapshot}
   from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig={
@@ -263,6 +305,7 @@ onAuthStateChanged(auth,async user=>{
 
 async function loadAll(){
   await Promise.all([loadJobs(),loadCandidates(),loadNoticeCount()]);
+  startLiveNotifications();
 }
 
 async function loadJobs(){
@@ -302,6 +345,99 @@ async function loadNoticeCount(){
   }catch(e){
     $("noticeCount").textContent="—";
   }
+}
+
+
+let liveReady = {
+  jobs:false,
+  candidates:false,
+  announcements:false
+};
+const seenLive = {
+  jobs:new Set(),
+  candidates:new Set(),
+  announcements:new Set()
+};
+
+function showLiveToast(type,title,message){
+  const wrap=document.getElementById("liveToastWrap");
+  const div=document.createElement("div");
+  div.className="liveToast "+type;
+  div.innerHTML=`
+    <div class="liveToastTop">
+      <div class="liveToastTitle">${esc(title)}</div>
+      <button class="liveToastClose" aria-label="Close">×</button>
+    </div>
+    <div class="liveToastMsg">${esc(message)}</div>
+    <div class="liveToastTime">Abhi • Live update</div>`;
+  div.querySelector(".liveToastClose").onclick=()=>div.remove();
+  wrap.prepend(div);
+  setTimeout(()=>{ if(div.isConnected) div.remove(); },7000);
+}
+
+function startLiveNotifications(){
+  // New job submission
+  onSnapshot(collection(db,"jobs"),snap=>{
+    const current=new Set();
+    snap.docChanges().forEach(change=>{
+      current.add(change.doc.id);
+      if(change.type==="added" && liveReady.jobs){
+        const j=change.doc.data()||{};
+        showLiveToast(
+          "job",
+          "💼 New Job Submitted",
+          `${j.title||"New job"} • ${j.company||"Company not specified"} • ${j.location||"Location not specified"}`
+        );
+      }
+    });
+    if(!liveReady.jobs){
+      seenLive.jobs.clear();
+      current.forEach(x=>seenLive.jobs.add(x));
+      liveReady.jobs=true;
+    }
+  },err=>console.warn("Live jobs listener:",err));
+
+  // New job seeker registration
+  onSnapshot(collection(db,"candidates"),snap=>{
+    const current=new Set();
+    snap.docChanges().forEach(change=>{
+      current.add(change.doc.id);
+      if(change.type==="added" && liveReady.candidates){
+        const c=change.doc.data()||{};
+        showLiveToast(
+          "candidate",
+          "👤 New Job Seeker",
+          `${c.name||"New candidate"} • ${c.role||"Role not specified"} • ${c.city||"Location not specified"}`
+        );
+      }
+    });
+    if(!liveReady.candidates){
+      seenLive.candidates.clear();
+      current.forEach(x=>seenLive.candidates.add(x));
+      liveReady.candidates=true;
+    }
+  },err=>console.warn("Live candidates listener:",err));
+
+  // New published notification
+  onSnapshot(collection(db,"announcements"),snap=>{
+    const current=new Set();
+    snap.docChanges().forEach(change=>{
+      current.add(change.doc.id);
+      if(change.type==="added" && liveReady.announcements){
+        const a=change.doc.data()||{};
+        showLiveToast(
+          "notice",
+          "🔔 New Notification",
+          `${a.title||"New update"}${a.message?" • "+a.message:""}`
+        );
+      }
+    });
+    if(!liveReady.announcements){
+      seenLive.announcements.clear();
+      current.forEach(x=>seenLive.announcements.add(x));
+      liveReady.announcements=true;
+    }
+  },err=>console.warn("Live announcements listener:",err));
 }
 
 function filteredJobs(){
