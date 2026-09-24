@@ -1,20 +1,84 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rajasthan Notes & Study Material</title>
-<style>*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f4f7fb;color:#102b49}.wrap{width:min(1160px,92%);margin:auto}header{background:linear-gradient(135deg,#102f4d,#1769e8);color:#fff;padding:23px 0}.head{display:flex;justify-content:space-between;align-items:center;gap:15px}h1{margin:0;font-size:27px}header p{margin:6px 0;color:#dbeafe}nav{display:flex;gap:8px;flex-wrap:wrap}nav a{background:#fff;color:#102f4d;padding:9px 12px;border-radius:9px;font-weight:800;font-size:12px;text-decoration:none}.toolbar{margin:20px 0;background:#fff;border:1px solid #d9e3ef;border-radius:15px;padding:14px;display:grid;grid-template-columns:1.7fr 1fr;gap:9px}input,select{padding:11px;border:1px solid #ccd9e7;border-radius:9px;font:inherit}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.card{background:#fff;border:1px solid #d9e3ef;border-radius:15px;padding:16px;box-shadow:0 5px 18px #102b4908}.tag{display:inline-block;background:#eaf3ff;color:#1769e8;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800}.card h2{font-size:18px;margin:10px 0 6px}.desc{font-size:12px;color:#60738a;line-height:1.5;min-height:38px}.meta{font-size:11px;color:#60738a;margin:9px 0}.btn{display:inline-block;background:#1769e8;color:#fff;padding:9px 11px;border-radius:8px;text-decoration:none;font-size:11px;font-weight:800}.empty{grid-column:1/-1;background:#fff;padding:45px;text-align:center;border-radius:15px;color:#60738a}@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.head{flex-direction:column;align-items:flex-start}}@media(max-width:520px){.grid,.toolbar{grid-template-columns:1fr}h1{font-size:23px}}</style></head><body>
-<header><div class="wrap head"><div><h1>📚 Notes & Study Material</h1><p>Rajasthan GK • CET • Reasoning • Maths • Computer • Government Exams</p></div><nav><a href="index.html">🏠 Home</a><a href="government-jobs.html">🏛️ Govt Jobs</a><a href="upload-notes.html">📤 Upload Notes</a></nav></div></header>
-<main class="wrap"><div class="toolbar"><input id="search" placeholder="Search notes, subject, title..."><select id="cat"><option value="">All Categories</option><option>Rajasthan GK</option><option>Reasoning</option><option>Maths</option><option>English</option><option>Hindi</option><option>Computer</option><option>CET</option><option>Government Exams</option><option>Current Affairs</option><option>Other</option></select></div><p id="count" style="font-size:12px;color:#60738a"></p><section id="grid" class="grid"><div class="empty">Loading notes…</div></section></main>
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Upload Notes & Study Material | Rajasthan Job</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f7fb;color:#18324a}
+header{background:linear-gradient(135deg,#1769e8,#2b83f6);color:#fff;padding:28px 18px}
+.wrap{max-width:760px;margin:auto}.card{background:#fff;margin:28px auto;padding:28px;border-radius:18px;box-shadow:0 8px 28px #14375a1a}
+h1{margin:0 0 8px}label{display:block;font-weight:700;margin:15px 0 7px}
+input,select,textarea{width:100%;border:1px solid #cbd9e8;border-radius:10px;padding:12px;font-size:15px}
+textarea{min-height:110px;resize:vertical}.file{border:2px dashed #bfd5eb;padding:18px;border-radius:12px;background:#f8fbff}
+.btn{border:0;border-radius:10px;padding:13px 18px;font-size:15px;font-weight:700;cursor:pointer;background:#1769e8;color:white}
+.btn:disabled{opacity:.65}.muted,.note{font-size:13px;color:#58718a}
+.progressBox{display:none;margin-top:18px;padding:15px;background:#f4f8fc;border:1px solid #dbe7f2;border-radius:12px}
+.progressTop{display:flex;justify-content:space-between;font-weight:700;margin-bottom:8px}
+.progress{height:10px;background:#dfe8f1;border-radius:20px;overflow:hidden}.bar{width:0;height:100%;background:#1769e8}
+.msg{display:none;margin-top:15px;padding:12px;border-radius:10px}.msg.ok{display:block;background:#edf8f2;color:#11623f}.msg.err{display:block;background:#fff1f1;color:#a63d3d}
+a{color:#1769e8;font-weight:700}
+</style></head><body>
+<header><div class="wrap"><h1>📚 Upload Notes & Study Material</h1><p>Anyone can submit material. Admin approval ke baad public hoga.</p></div></header>
+<main class="wrap"><div class="card">
+<label>Your Name *</label><input id="name" maxlength="60" placeholder="Your name">
+<label>Email *</label><input id="email" type="email" maxlength="120" placeholder="your@email.com">
+<label>Mobile</label><input id="mobile" maxlength="10" inputmode="numeric" placeholder="10-digit mobile (optional)">
+<label>Material Title *</label><input id="title" maxlength="120" placeholder="e.g. Rajasthan GK Practice Set">
+<label>Category *</label><select id="category"><option value="">Select Category</option><option>Rajasthan GK</option><option>Reasoning</option><option>Maths</option><option>English</option><option>Hindi</option><option>Computer</option><option>CET</option><option>Government Exams</option><option>Current Affairs</option><option>Other</option></select>
+<label>Description</label><textarea id="description" maxlength="500" placeholder="Short description"></textarea>
+<label>File *</label><div class="file"><input id="file" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"><p class="muted">PDF, DOC, DOCX, JPG, PNG • Maximum 10 MB</p></div>
+<p class="note">Only upload material you have the right to share.</p>
+<button class="btn" id="submit">📤 Submit for Review</button>
+<div class="progressBox" id="progressBox"><div class="progressTop"><span id="progressText">Preparing upload...</span><span id="progressPercent">0%</span></div><div class="progress"><div class="bar" id="progressBar"></div></div></div>
+<div id="msg" class="msg"></div>
+<p><a href="notes.html">📚 View Notes</a> &nbsp;|&nbsp; <a href="index.html">🏠 Home</a></p>
+</div></main>
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";import {getFirestore,collection,getDocs,query,where} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
-  authDomain: "rajasthan-job.firebaseapp.com",
-  projectId: "rajasthan-job",
-  storageBucket: "rajasthan-job.firebasestorage.app",
-  messagingSenderId: "894888753938",
-  appId: "1:894888753938:web:92e66d7a7237be1fd9d1cb",
-  measurementId: "G-15S2XJQK80"
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {getFirestore,collection,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+/* AFTER CREATING CLOUDINARY PRESET, REPLACE THESE TWO VALUES. */
+const CLOUD_NAME="ebknzymz";
+const UPLOAD_PRESET="rajasthan_job_notes";
+
+const firebaseConfig={
+ apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
+ authDomain:"rajasthan-job.firebaseapp.com",projectId:"rajasthan-job",
+ storageBucket:"rajasthan-job.firebasestorage.app",messagingSenderId:"894888753938",
+ appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",measurementId:"G-15S2XJQK80"
 };
-const db=getFirestore(initializeApp(firebaseConfig)),$=id=>document.getElementById(id);let notes=[];
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function render(){const q=$("search").value.toLowerCase().trim(),c=$("cat").value,a=notes.filter(n=>(!q||[n.title,n.category,n.description,n.name].join(" ").toLowerCase().includes(q))&&(!c||n.category===c));$("count").textContent=a.length+" published material"+(a.length===1?"":"s");$("grid").innerHTML=a.length?a.map(n=>`<article class="card"><span class="tag">${esc(n.category)}</span><h2>${esc(n.title)}</h2><div class="desc">${esc(n.description||"Study material")}</div><div class="meta">👤 ${esc(n.name||"Contributor")}</div><a class="btn" target="_blank" rel="noopener" href="${esc(n.fileUrl)}">📄 Open / Download</a></article>`).join(""):'<div class="empty">📭 No published material found.</div>'}
-async function load(){try{const s=await getDocs(query(collection(db,"notes"),where("status","==","approved")));notes=s.docs.map(d=>({id:d.id,...d.data()}));render()}catch(e){console.error(e);$("grid").innerHTML='<div class="empty">Notes load nahi ho paaye. Firestore rules check karein.</div>'}}$("search").oninput=render;$("cat").onchange=render;load();
+const app=initializeApp(firebaseConfig),db=getFirestore(app),$=id=>document.getElementById(id);
+function msg(t,c){const e=$("msg");e.textContent=t;e.className="msg "+c}
+function prog(p,t){$("progressBox").style.display="block";$("progressBar").style.width=p+"%";$("progressPercent").textContent=Math.round(p)+"%";$("progressText").textContent=t}
+
+$("submit").onclick=async()=>{
+ const name=$("name").value.trim(),email=$("email").value.trim(),mobile=$("mobile").value.trim(),
+ title=$("title").value.trim(),category=$("category").value,description=$("description").value.trim(),file=$("file").files[0];
+ $("msg").style.display="none";$("progressBox").style.display="none";
+ if(CLOUD_NAME.startsWith("PASTE_")||UPLOAD_PRESET.startsWith("PASTE_"))return msg("⚠️ Cloudinary setup pending. CLOUD_NAME aur UPLOAD_PRESET add karein.","err");
+ if(!name||!email||!title||!category||!file)return msg("Please fill all required fields and select a file.","err");
+ if(!$("email").checkValidity())return msg("Please enter a valid email.","err");
+ if(mobile&&!/^\d{10}$/.test(mobile))return msg("Mobile number should contain exactly 10 digits.","err");
+ if(file.size>10*1024*1024)return msg("File must be 10 MB or smaller.","err");
+ const allowed=["application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","image/jpeg","image/png"];
+ if(!allowed.includes(file.type))return msg("Only PDF, DOC, DOCX, JPG or PNG files are allowed.","err");
+ const btn=$("submit");btn.disabled=true;btn.textContent="⏳ Uploading...";
+ try{
+  const endpoint="https://api.cloudinary.com/v1_1/"+encodeURIComponent(CLOUD_NAME)+"/raw/upload";
+  const fd=new FormData();fd.append("file",file);fd.append("upload_preset",UPLOAD_PRESET);fd.append("folder","rajasthan-job/notes");
+  prog(0,"Starting upload...");
+  const result=await new Promise((resolve,reject)=>{
+   const x=new XMLHttpRequest();x.open("POST",endpoint,true);
+   x.upload.onprogress=e=>{if(e.lengthComputable){const p=e.loaded/e.total*100;prog(p,p>=100?"Upload complete. Saving material...":"Uploading file...")}};
+   x.onload=()=>{let d={};try{d=JSON.parse(x.responseText||"{}")}catch(e){};if(x.status>=200&&x.status<300)resolve(d);else reject(new Error(d?.error?.message||"Cloudinary upload failed (HTTP "+x.status+")"))};
+   x.onerror=()=>reject(new Error("Network error while uploading to Cloudinary."));
+   x.onabort=()=>reject(new Error("Upload was cancelled."));x.send(fd);
+  });
+  if(!result.secure_url)throw new Error("Cloudinary did not return a file URL.");
+  prog(100,"Upload complete. Saving material...");
+  await addDoc(collection(db,"notes"),{name,email,mobile,title,category,description,fileName:file.name,fileUrl:result.secure_url,storagePath:result.public_id||"",fileType:file.type,fileSize:file.size,cloudinaryPublicId:result.public_id||"",cloudinaryResourceType:result.resource_type||"raw",status:"pending",createdAt:serverTimestamp()});
+  prog(100,"Submitted successfully.");msg("✅ Material submitted successfully. Admin approval ke baad Notes page par show hoga.","ok");
+  ["name","email","mobile","title","description"].forEach(id=>$(id).value="");$("category").value="";$("file").value="";
+ }catch(e){console.error(e);msg("❌ "+(e.message||"Upload failed. Please try again."),"err");$("progressText").textContent="Upload stopped."}
+ finally{btn.disabled=false;btn.textContent="📤 Submit for Review"}
+};
 </script></body></html>
