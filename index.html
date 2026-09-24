@@ -259,17 +259,13 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <section class="white" id="contact">
 <div class="wrap"><div class="head"><div class="kick">CONTACT & COMMUNITY</div><h2>Apni requirement bhejein</h2><p>Job, notes, resume, interview, skills ya employer service — inquiry bhejein aur community mein comment bhi karein.</p></div>
 <div class="inquiry">
-  
-<div class="formGroup">
-  <label for="inqEmail">📧 Email Address <span style="color:#888;font-weight:500">(Optional)</span></label>
-  <input type="email" id="inqEmail" placeholder="yourname@example.com" autocomplete="email">
-</div>
-<div class="formbox">
+  <div class="formbox">
     <h3 style="color:var(--navy);margin-top:0">📩 Job / Service Inquiry</h3>
     <p class="resumeHint">Aapki inquiry Firebase mein securely save hogi aur admin panel mein review ki ja sakegi.</p>
     <form id="inquiryForm">
       <label>Name <span class="required">*</span></label><input id="inqName" required placeholder="Your Name">
       <label>Mobile <span class="required">*</span></label><input id="inqMobile" required inputmode="numeric" placeholder="10-digit mobile number">
+      <label>📧 Email Address <span style="color:#888;font-weight:500">(Optional)</span></label><input id="inqEmail" type="email" autocomplete="email" placeholder="yourname@example.com">
       <label>Service</label><select id="inqService"><option value="">Choose Service</option><option>Jaipur / Rajasthan Job</option><option>Government Job</option><option>Premium Notes</option><option>Interview Preparation</option><option>Excel / MIS</option><option>Power BI / SQL / Python</option><option>Other</option><option>Employer Job Posting</option><option>Other</option></select>
       <label>Your Requirement <span class="required">*</span></label><textarea id="inqMessage" required placeholder="Apni requirement clearly likhiye..."></textarea>
       <button id="inqBtn" class="btn primary" type="submit">📩 Submit Inquiry</button>
