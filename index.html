@@ -25,7 +25,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-
 .dynamic{background:#fff;border-bottom:1px solid var(--line);overflow:hidden}.dynamicin{height:34px;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
 .dynamictrack{display:flex;gap:34px;animation:move 27s linear infinite;font-size:13px;font-weight:850}.dynamictrack span:before{content:"•";color:var(--orange);margin-right:12px}
 @keyframes move{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.quickActions{background:#fff;padding:16px 0;border-bottom:1px solid var(--line);box-shadow:0 7px 22px rgba(16,42,67,.06)}.quickTitle{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:14px}.quickTitle h2{margin:1px 0 0;color:var(--navy);font-size:21px}.quickTitle p{margin:0;color:var(--muted);font-size:13px}.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.quickCard{min-height:72px;padding:10px 12px;border:1px solid var(--line);border-radius:16px;display:flex;align-items:center;gap:12px;background:#fff;transition:.2s;box-shadow:0 6px 18px rgba(16,42,67,.06)}.quickCard:hover{transform:translateY(-2px);box-shadow:0 11px 25px rgba(16,42,67,.11)}.quickCard>span{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:19px;background:var(--sky);flex:0 0 40px}.quickCard div{flex:1}.quickCard strong{display:block;color:var(--navy);font-size:14px}.quickCard small{display:block;color:var(--muted);font-size:9.5px;line-height:1.35;margin-top:2px}.quickCard>b{font-size:20px;color:var(--blue)}.quickCard.orange>span{background:#fff4e7}.quickCard.orange>b{color:var(--orange)}.quickCard.navy>span{background:#eef2f7}.quickCard.navy>b{color:var(--navy)}.quickCard.green>span{background:#eaf8f1}.quickCard.green>b{color:var(--green)}
+.quickActions{background:#fff;padding:13px 0 12px;border-bottom:1px solid var(--line);box-shadow:0 6px 18px rgba(16,42,67,.05)}.quickTitle{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:10px}.quickTitle h2{margin:1px 0 0;color:var(--navy);font-size:21px}.quickTitle p{margin:0;color:var(--muted);font-size:13px}.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.quickCard{min-height:62px;padding:8px 11px;border:1px solid #d6e7fa;border-radius:13px;display:flex;align-items:center;gap:10px;background:#f5f9ff;transition:.2s;box-shadow:0 4px 13px rgba(16,42,67,.045)}.quickCard:hover{transform:translateY(-1px);background:#edf6ff;border-color:#bcd9f8;box-shadow:0 8px 20px rgba(16,42,67,.09)}.quickCard>span{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:17px;background:#e5f1ff;flex:0 0 36px}.quickCard div{flex:1}.quickCard strong{display:block;color:var(--navy);font-size:13px}.quickCard small{display:block;color:#5e7690;font-size:9px;line-height:1.25;margin-top:1px}.quickCard>b{font-size:18px;color:var(--blue)}.quickCard.orange>span{background:#fff4e7}.quickCard.orange>b{color:var(--orange)}.quickCard.navy>span{background:#eef2f7}.quickCard.navy>b{color:var(--navy)}.quickCard.green>span{background:#eaf8f1}.quickCard.green>b{color:var(--green)}
 .hero{background:#fff;padding:24px 0 22px;border-bottom:1px solid var(--line)}
 .heroGrid{display:grid;grid-template-columns:1.12fr .88fr;gap:30px;align-items:center}.eyebrow{display:inline-flex;background:var(--sky);border:1px solid #d6e7ff;color:var(--blue);padding:6px 12px;border-radius:30px;font-size:12px;font-weight:900}
 h1{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-2px;color:var(--navy);margin:16px 0 17px}h1 em{font-style:normal;color:var(--blue)}
@@ -67,6 +67,10 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 .compactNotice .announcementDate{font-size:10px;color:var(--muted);white-space:nowrap}
 .compactNotice .announcementText{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
+.hindiJobStrip{background:linear-gradient(90deg,#eef7ff,#f8fbff,#eef7ff);border-bottom:1px solid #d9e8f7;border-top:1px solid #d9e8f7;overflow:hidden}
+.hindiJobTrack{height:38px;display:flex;align-items:center;gap:42px;white-space:nowrap;width:max-content;animation:hindiMove 32s linear infinite;font-size:12px;font-weight:850;color:#17466f}
+.hindiJobTrack span:before{content:"•";color:#1769e8;margin-right:11px}
+@keyframes hindiMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .categoryStrip{background:#f8fbff;border-bottom:1px solid var(--line);padding:10px 0}.categoryInner{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.categoryInner strong{font-size:11px;color:var(--navy);margin-right:3px}.categoryInner a{font-size:10.5px;font-weight:800;color:#40516a;background:#fff;border:1px solid #dbe5ef;border-radius:20px;padding:4px 9px}.categoryInner a:hover{color:var(--blue);border-color:#bcd6fb}
 </style>
 
@@ -181,6 +185,24 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 </section>
 
 <section class="quickActions"><div class="wrap"><div class="quickTitle"><div><div class="kick">MOST IMPORTANT</div><h2>Job ke liye Quick Access</h2></div><p>Sabse zaroori options yahin se direct open karein.</p></div><div class="quickGrid"><a class="quickCard blue" href="jobs.html"><span>🔎</span><div><strong>Jobs Dekhein</strong><small>Latest Jaipur & Rajasthan Jobs</small></div><b>→</b></a><a class="quickCard orange" href="post-a-job.html"><span>🏢</span><div><strong>Post a Job</strong><small>Employer vacancy submit karein</small></div><b>→</b></a><a class="quickCard navy" href="#govt"><span>🏛️</span><div><strong>Government Jobs</strong><small>RPSC • RSSB • CET Updates</small></div><b>→</b></a><a class="quickCard green" href="inquiry.html"><span>💬</span><div><strong>Inquiry Karein</strong><small>Job & career support</small></div><b>→</b></a></div></div></section>
+
+<!-- HINDI JOB SEARCH MESSAGE STRIP -->
+<div class="hindiJobStrip">
+  <div class="wrap">
+    <div class="hindiJobTrack">
+      <span>🔎 अगर आप नौकरी की तलाश में हैं, तो सही जगह आए हैं — यहाँ Jobs मिलेंगी।</span>
+      <span>💼 Jaipur और Rajasthan की नई Job Opportunities यहाँ देखें।</span>
+      <span>🧑‍💼 Freshers के लिए भी Job Updates और Career Support उपलब्ध है।</span>
+      <span>🏛️ Government Jobs और Recruitment Updates भी यहाँ मिलेंगे।</span>
+      <span>📄 Resume, Interview और Job Support के लिए Inquiry करें।</span>
+      <span>🔎 अगर आप नौकरी की तलाश में हैं, तो सही जगह आए हैं — यहाँ Jobs मिलेंगी।</span>
+      <span>💼 Jaipur और Rajasthan की नई Job Opportunities यहाँ देखें।</span>
+      <span>🧑‍💼 Freshers के लिए भी Job Updates और Career Support उपलब्ध है।</span>
+      <span>🏛️ Government Jobs और Recruitment Updates भी यहाँ मिलेंगे।</span>
+      <span>📄 Resume, Interview और Job Support के लिए Inquiry करें।</span>
+    </div>
+  </div>
+</div>
 
 <section class="categoryStrip"><div class="wrap"><div class="categoryInner"><strong>Quick Search:</strong><a href="jobs.html">Jaipur Jobs</a><a href="jobs.html">Fresher Jobs</a><a href="jobs.html">MIS Jobs</a><a href="jobs.html">Data Analyst</a><a href="jobs.html">Sales Jobs</a><a href="#govt">Govt Jobs</a><a href="#notes">Exam Notes</a></div></div></section>
 
