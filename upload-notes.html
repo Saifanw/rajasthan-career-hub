@@ -1,21 +1,199 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Upload Notes | Rajasthan Job</title>
-<style>*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f4f7fb;color:#102b49}.wrap{width:min(760px,92%);margin:30px auto}header{background:linear-gradient(135deg,#102f4d,#1769e8);color:#fff;padding:22px 0}h1{margin:0;font-size:25px}header p{margin:6px 0;color:#dbeafe}.card{background:#fff;border:1px solid #d9e3ef;border-radius:17px;padding:22px;box-shadow:0 8px 25px #102b4910}label{display:block;font-size:12px;font-weight:800;margin:15px 0 6px}input,select,textarea{width:100%;padding:12px;border:1px solid #ccd9e7;border-radius:9px;font:inherit}textarea{min-height:100px}.btn{border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer}.primary{background:#1769e8;color:#fff}.muted{font-size:12px;color:#667b91;line-height:1.5}.msg{margin-top:14px;padding:12px;border-radius:10px;display:none}.ok{display:block;background:#eaf8f0;color:#087443}.err{display:block;background:#fff0f0;color:#b42318}.file{border:2px dashed #bfd5eb;padding:18px;text-align:center;border-radius:12px;background:#f8fbff}a{color:#1769e8;font-weight:700}</style></head><body>
-<header><div class="wrap"><h1>📚 Upload Notes & Study Material</h1><p>Anyone can submit material. Admin approval ke baad public hoga.</p></div></header>
-<main class="wrap"><div class="card">
-<label>Your Name *</label><input id="name" maxlength="60" placeholder="Your name">
-<label>Email *</label><input id="email" type="email" maxlength="120" placeholder="your@email.com">
-<label>Mobile</label><input id="mobile" maxlength="10" inputmode="numeric" placeholder="10-digit mobile (optional)">
-<label>Material Title *</label><input id="title" maxlength="120" placeholder="e.g. Rajasthan GK Practice Set">
-<label>Category *</label><select id="category"><option value="">Select Category</option><option>Rajasthan GK</option><option>Reasoning</option><option>Maths</option><option>English</option><option>Hindi</option><option>Computer</option><option>CET</option><option>Government Exams</option><option>Current Affairs</option><option>Other</option></select>
-<label>Description</label><textarea id="description" maxlength="500" placeholder="Short description"></textarea>
-<label>File *</label><div class="file"><input id="file" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"><p class="muted">PDF, DOC, DOCX, JPG, PNG • Maximum 10 MB</p></div>
-<p class="muted">Only upload material you have the right to share.</p><button class="btn primary" id="submit">📤 Submit for Review</button><div id="msg" class="msg"></div>
-<p><a href="notes.html">📚 View Notes</a> &nbsp;|&nbsp; <a href="index.html">🏠 Home</a></p>
-</div></main>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload Notes & Study Material | Rajasthan Job</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f3f7fb;
+  color:#18324a;
+}
+header{
+  background:linear-gradient(135deg,#1769e8,#2b83f6);
+  color:#fff;
+  padding:28px 18px;
+}
+.wrap{max-width:760px;margin:auto}
+header h1{margin:0 0 8px;font-size:28px}
+header p{margin:0;opacity:.94}
+.card{
+  background:#fff;
+  margin:28px auto;
+  padding:28px;
+  border-radius:18px;
+  box-shadow:0 8px 28px rgba(20,55,90,.10);
+}
+label{
+  display:block;
+  font-weight:700;
+  margin:15px 0 7px;
+}
+input,select,textarea{
+  width:100%;
+  border:1px solid #cbd9e8;
+  border-radius:10px;
+  padding:12px;
+  font-size:15px;
+  outline:none;
+  background:#fff;
+}
+input:focus,select:focus,textarea:focus{border-color:#1769e8}
+textarea{min-height:110px;resize:vertical}
+.file{
+  border:2px dashed #bfd5eb;
+  padding:18px;
+  border-radius:12px;
+  background:#f8fbff;
+}
+.file input{border:0;padding:0}
+.muted{font-size:13px;color:#58718a}
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:13px 18px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+}
+.primary{background:#1769e8;color:#fff}
+.btn:disabled{opacity:.65;cursor:not-allowed}
+.progressBox{
+  display:none;
+  margin-top:18px;
+  padding:15px;
+  background:#f4f8fc;
+  border:1px solid #dbe7f2;
+  border-radius:12px;
+}
+.progressTop{
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+.progress{
+  width:100%;
+  height:10px;
+  background:#dfe8f1;
+  border-radius:20px;
+  overflow:hidden;
+}
+.bar{
+  width:0%;
+  height:100%;
+  background:#1769e8;
+  transition:width .2s ease;
+}
+.msg{
+  display:none;
+  margin-top:15px;
+  padding:12px;
+  border-radius:10px;
+  font-size:14px;
+}
+.msg.ok{display:block;background:#edf8f2;color:#11623f;border:1px solid #c9ead9}
+.msg.err{display:block;background:#fff1f1;color:#a63d3d;border:1px solid #f0cccc}
+a{color:#1769e8;font-weight:700}
+.note{
+  margin-top:15px;
+  font-size:13px;
+  color:#58718a;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>📚 Upload Notes & Study Material</h1>
+    <p>Anyone can submit material. Admin approval ke baad public hoga.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="card">
+
+    <label for="name">Your Name *</label>
+    <input id="name" maxlength="60" placeholder="Your name" autocomplete="name">
+
+    <label for="email">Email *</label>
+    <input id="email" type="email" maxlength="120" placeholder="your@email.com" autocomplete="email">
+
+    <label for="mobile">Mobile</label>
+    <input id="mobile" maxlength="10" inputmode="numeric" placeholder="10-digit mobile (optional)">
+
+    <label for="title">Material Title *</label>
+    <input id="title" maxlength="120" placeholder="e.g. Rajasthan GK Practice Set">
+
+    <label for="category">Category *</label>
+    <select id="category">
+      <option value="">Select Category</option>
+      <option>Rajasthan GK</option>
+      <option>Reasoning</option>
+      <option>Maths</option>
+      <option>English</option>
+      <option>Hindi</option>
+      <option>Computer</option>
+      <option>CET</option>
+      <option>Government Exams</option>
+      <option>Current Affairs</option>
+      <option>Other</option>
+    </select>
+
+    <label for="description">Description</label>
+    <textarea id="description" maxlength="500" placeholder="Short description"></textarea>
+
+    <label for="file">File *</label>
+    <div class="file">
+      <input id="file" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+      <p class="muted">PDF, DOC, DOCX, JPG, PNG • Maximum 10 MB</p>
+    </div>
+
+    <p class="note">Only upload material you have the right to share.</p>
+
+    <button class="btn primary" id="submit">📤 Submit for Review</button>
+
+    <div class="progressBox" id="progressBox">
+      <div class="progressTop">
+        <span id="progressText">Preparing upload...</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress">
+        <div class="bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <div id="msg" class="msg"></div>
+
+    <p style="margin-top:20px">
+      <a href="notes.html">📚 View Notes</a>
+      &nbsp; | &nbsp;
+      <a href="index.html">🏠 Home</a>
+    </p>
+  </div>
+</main>
+
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import {getFirestore,collection,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-import {getStorage,ref,uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
   authDomain: "rajasthan-job.firebaseapp.com",
@@ -25,22 +203,192 @@ const firebaseConfig = {
   appId: "1:894888753938:web:92e66d7a7237be1fd9d1cb",
   measurementId: "G-15S2XJQK80"
 };
-const app=initializeApp(firebaseConfig),db=getFirestore(app),storage=getStorage(app),$=id=>document.getElementById(id);
-function msg(t,c){const e=$("msg");e.textContent=t;e.className="msg "+c}
-$("submit").onclick=async()=>{
- const name=$("name").value.trim(),email=$("email").value.trim(),mobile=$("mobile").value.trim(),title=$("title").value.trim(),category=$("category").value,description=$("description").value.trim(),file=$("file").files[0];
- if(!name||!email||!title||!category||!file)return msg("Please fill all required fields and select a file.","err");
- if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return msg("Please enter a valid email.","err");
- if(file.size>10*1024*1024)return msg("File must be 10 MB or smaller.","err");
- const allowed=["application/pdf","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","image/jpeg","image/png"];
- if(!allowed.includes(file.type))return msg("Only PDF, DOC, DOCX, JPG or PNG files are allowed.","err");
- const btn=$("submit");btn.disabled=true;btn.textContent="Uploading…";
- try{
-  const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"_"),r=ref(storage,"notes/"+Date.now()+"_"+safe),up=await uploadBytes(r,file,{contentType:file.type}),url=await getDownloadURL(up.ref);
-  await addDoc(collection(db,"notes"),{name,email,mobile,title,category,description,fileName:file.name,fileUrl:url,storagePath:up.ref.fullPath,fileType:file.type,fileSize:file.size,status:"pending",createdAt:serverTimestamp()});
-  msg("✅ Material submitted. Admin approval ke baad Notes page par show hoga.","ok");
-  ["name","email","mobile","title","description"].forEach(id=>$(id).value="");$("category").value="";$("file").value="";
- }catch(e){console.error(e);msg("Upload failed: "+(e.message||"Please try again."),"err")}
- btn.disabled=false;btn.textContent="📤 Submit for Review";
-};
-</script></body></html>
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+const $ = id => document.getElementById(id);
+
+function msg(text, type){
+  const el = $("msg");
+  el.textContent = text;
+  el.className = "msg " + type;
+}
+
+function setProgress(percent, text){
+  const p = Math.max(0, Math.min(100, percent));
+  $("progressBox").style.display = "block";
+  $("progressBar").style.width = p + "%";
+  $("progressPercent").textContent = Math.round(p) + "%";
+  $("progressText").textContent = text;
+}
+
+$("submit").addEventListener("click", async () => {
+
+  const name = $("name").value.trim();
+  const email = $("email").value.trim();
+  const mobile = $("mobile").value.trim();
+  const title = $("title").value.trim();
+  const category = $("category").value;
+  const description = $("description").value.trim();
+  const file = $("file").files[0];
+
+  $("msg").style.display = "none";
+  $("progressBox").style.display = "none";
+
+  // Basic validation
+  if(!name || !email || !title || !category || !file){
+    msg("Please fill all required fields and select a file.", "err");
+    return;
+  }
+
+  // Browser email validation
+  const emailInput = $("email");
+  if(!emailInput.checkValidity()){
+    msg("Please enter a valid email.", "err");
+    emailInput.focus();
+    return;
+  }
+
+  if(mobile && !/^\d{10}$/.test(mobile)){
+    msg("Mobile number should contain exactly 10 digits.", "err");
+    return;
+  }
+
+  if(file.size > 10 * 1024 * 1024){
+    msg("File must be 10 MB or smaller.", "err");
+    return;
+  }
+
+  const allowed = [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "image/jpeg",
+    "image/png"
+  ];
+
+  if(!allowed.includes(file.type)){
+    msg("Only PDF, DOC, DOCX, JPG or PNG files are allowed.", "err");
+    return;
+  }
+
+  const btn = $("submit");
+  btn.disabled = true;
+  btn.textContent = "⏳ Uploading...";
+
+  try{
+
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const storagePath = "notes/" + Date.now() + "_" + safeName;
+    const storageRef = ref(storage, storagePath);
+
+    setProgress(0, "Starting upload...");
+
+    const uploadTask = uploadBytesResumable(
+      storageRef,
+      file,
+      { contentType: file.type }
+    );
+
+    await new Promise((resolve, reject) => {
+
+      uploadTask.on(
+        "state_changed",
+
+        snapshot => {
+          const percent =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+          setProgress(
+            percent,
+            percent >= 100
+              ? "Upload complete. Saving material..."
+              : "Uploading file..."
+          );
+        },
+
+        error => {
+          console.error("Storage upload error:", error);
+          reject(error);
+        },
+
+        () => resolve()
+      );
+
+    });
+
+    setProgress(100, "Upload complete. Saving material...");
+
+    const url = await getDownloadURL(uploadTask.snapshot.ref);
+
+    await addDoc(collection(db, "notes"), {
+      name: name,
+      email: email,
+      mobile: mobile,
+      title: title,
+      category: category,
+      description: description,
+      fileName: file.name,
+      fileUrl: url,
+      storagePath: uploadTask.snapshot.ref.fullPath,
+      fileType: file.type,
+      fileSize: file.size,
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+
+    setProgress(100, "Submitted successfully.");
+
+    msg(
+      "✅ Material submitted successfully. Admin approval ke baad Notes page par show hoga.",
+      "ok"
+    );
+
+    $("name").value = "";
+    $("email").value = "";
+    $("mobile").value = "";
+    $("title").value = "";
+    $("description").value = "";
+    $("category").value = "";
+    $("file").value = "";
+
+  }catch(error){
+
+    console.error("Upload process error:", error);
+
+    let errorMessage = "Upload failed. Please try again.";
+
+    if(error?.code === "storage/unauthorized"){
+      errorMessage =
+        "❌ Firebase Storage permission denied. Storage Rules check karein.";
+    }
+    else if(error?.code === "storage/canceled"){
+      errorMessage = "❌ Upload was canceled.";
+    }
+    else if(error?.code === "storage/quota-exceeded"){
+      errorMessage = "❌ Firebase Storage quota exceeded.";
+    }
+    else if(error?.code === "storage/unknown"){
+      errorMessage = "❌ Firebase Storage error. Please try again.";
+    }
+    else if(error?.message){
+      errorMessage = "❌ " + error.message;
+    }
+
+    msg(errorMessage, "err");
+    $("progressText").textContent = "Upload stopped.";
+
+  }finally{
+
+    btn.disabled = false;
+    btn.textContent = "📤 Submit for Review";
+
+  }
+
+});
+</script>
+
+</body>
+</html>
