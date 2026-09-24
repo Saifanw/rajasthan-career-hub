@@ -12,7 +12,7 @@ a{text-decoration:none}.wrap{width:min(1160px,92%);margin:auto}
 .hero{padding:24px 0 18px}.heroBox{background:#fff;border:1px solid #d9e3ef;border-radius:18px;padding:24px;box-shadow:0 8px 25px rgba(16,43,73,.05)}.eyebrow{font-size:11px;font-weight:900;letter-spacing:1.2px;color:#1769e8}.hero h2{margin:7px 0;font-size:26px}.hero p{color:#60738a;line-height:1.6;margin:8px 0}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}.stat{background:#f5f9ff;border:1px solid #d9e8f7;border-radius:12px;padding:12px}.stat b{font-size:22px;display:block}.stat span{font-size:10px;font-weight:800;color:#6a7d92;text-transform:uppercase}
 .toolbar{background:#fff;border:1px solid #d9e3ef;border-radius:15px;padding:15px;margin:18px 0;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:9px}.toolbar input,.toolbar select{padding:11px;border:1px solid #ccd9e7;border-radius:9px;outline:none;background:#fff;color:#102b49}.toolbar input:focus,.toolbar select:focus{border-color:#1769e8}
-.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:18px 0 10px}.sectionHead h2{margin:0}.count{font-size:12px;color:#60738a}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.tab{border:1px solid #cfddeb;background:#fff;color:#274965;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:800;cursor:pointer}.tab:hover{border-color:#9ec5ef;background:#f1f7ff}.tab.active{background:#1769e8;border-color:#1769e8;color:#fff}.stage.active{background:#102f4d;border-color:#102f4d}.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:18px 0 10px}.sectionHead h2{margin:0}.count{font-size:12px;color:#60738a}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.job{background:#fff;border:1px solid #d9e3ef;border-radius:15px;padding:17px;box-shadow:0 5px 18px rgba(16,43,73,.04)}.top{display:flex;justify-content:space-between;gap:12px}.job h3{margin:0;font-size:18px}.company{color:#1769e8;font-weight:700;font-size:13px;margin-top:4px}.badge{display:inline-block;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800;background:#eaf3ff;color:#1769e8;white-space:nowrap}.badge.rpsc{background:#f0eaff;color:#6546a3}.badge.rssb{background:#e9f7ef;color:#087443}.badge.police{background:#fff1df;color:#8a5a00}
 .meta{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;color:#58708b;font-size:11px}.meta span{background:#f7f9fc;padding:6px 8px;border-radius:7px}.desc{font-size:13px;line-height:1.5;color:#425b73;max-height:62px;overflow:hidden}.bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px}.btn{background:#1769e8;color:#fff;border-radius:9px;padding:9px 12px;font-weight:800;font-size:12px}.apply{background:#e7f7ee;color:#087443}.empty{background:#fff;border:1px dashed #cbd8e6;border-radius:14px;padding:40px;text-align:center;color:#60738a;grid-column:1/-1}
 .note{margin:20px 0;background:#fffdf4;border:1px solid #f1e3ae;border-radius:13px;padding:13px;color:#6b5a16;font-size:12px;line-height:1.5}
@@ -30,10 +30,15 @@ footer{margin-top:30px;background:#102f4d;color:#dbeafe;padding:25px 0;font-size
 
 <section class="toolbar">
 <input id="search" placeholder="Search post, department, qualification...">
-<select id="body"><option value="">All Recruitment Bodies</option><option>RPSC</option><option>RSSB</option><option>CET</option><option>Rajasthan Police</option><option>Teaching</option><option>Other</option></select>
 <select id="location"><option value="">All Locations</option></select>
 <select id="sort"><option value="latest">Latest First</option><option value="deadline">Deadline First</option><option value="title">Post A–Z</option></select>
 </section>
+<div class="tabs" id="bodyTabs">
+<button class="tab active" data-body="">All Jobs</button><button class="tab" data-body="RPSC">RPSC</button><button class="tab" data-body="RSSB">RSSB</button><button class="tab" data-body="CET">CET</button><button class="tab" data-body="Rajasthan Police">Police</button><button class="tab" data-body="Teaching">Teaching</button><button class="tab" data-body="Other">Other</button>
+</div>
+<div class="tabs" id="stageTabs">
+<button class="tab stage active" data-stage="">All Updates</button><button class="tab stage" data-stage="job">🧑‍💼 Recruitment</button><button class="tab stage" data-stage="admit">🎫 Admit Card</button><button class="tab stage" data-stage="answer">📝 Answer Key</button><button class="tab stage" data-stage="result">🏆 Result</button>
+</div>
 
 <div class="sectionHead"><h2>Latest Government Jobs</h2><div class="count" id="count"></div></div>
 <section id="grid" class="grid"><div class="empty">Loading Government Jobs…</div></section>
@@ -46,18 +51,13 @@ footer{margin-top:30px;background:#102f4d;color:#dbeafe;padding:25px 0;font-size
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import{getFirestore,collection,getDocs,query,where}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 const db=getFirestore(initializeApp({apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",authDomain:"rajasthan-job.firebaseapp.com",projectId:"rajasthan-job",storageBucket:"rajasthan-job.firebasestorage.app",messagingSenderId:"894888753938",appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",measurementId:"G-15S2XJQK80"}));
-const $=id=>document.getElementById(id);let jobs=[];
+const $=id=>document.getElementById(id);let jobs=[],selectedBody="",selectedStage="";
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function dateValue(v){if(!v)return null;if(typeof v.toDate==="function")return v.toDate();if(typeof v.seconds==="number")return new Date(v.seconds*1000);const d=new Date(v);return isNaN(d)?null:d}
 function dateText(v){const d=dateValue(v);return d?d.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}):"Not specified"}
 function bodyName(j){return j.govtType||j.recruitmentBody||((j.title||"").match(/RPSC|RSSB|RSMSSB|CET|Police|Teaching/i)?.[0]||"Other")}
-function render(){
- const q=$("search").value.trim().toLowerCase(),b=$("body").value,l=$("location").value,srt=$("sort").value;
- let a=jobs.filter(j=>(!q||[j.title,j.company,j.location,j.qualification,j.description,j.notes,j.govtType].join(" ").toLowerCase().includes(q))&&(!b||bodyName(j).toLowerCase()===b.toLowerCase())&&(!l||j.location===l));
- a.sort((x,y)=>srt==="title"?String(x.title||"").localeCompare(String(y.title||"")):srt==="deadline"?(dateValue(x.deadline)?.getTime()||Infinity)-(dateValue(y.deadline)?.getTime()||Infinity):(dateValue(y.createdAt)?.getTime()||0)-(dateValue(x.createdAt)?.getTime()||0));
- $("count").textContent=a.length+" listing"+(a.length===1?"":"s");
- $("grid").innerHTML=a.length?a.map(j=>{const body=bodyName(j),cls=body.toLowerCase().includes("rpsc")?"rpsc":body.toLowerCase().includes("rssb")?"rssb":body.toLowerCase().includes("police")?"police":"";return `<article class="job"><div class="top"><div><h3>${esc(j.title||"Government Job")}</h3><div class="company">${esc(j.company||"Government Recruitment")}</div></div><span class="badge ${cls}">${esc(body)}</span></div><div class="meta"><span>📍 ${esc(j.location||"Rajasthan")}</span><span>🎓 ${esc(j.qualification||"Not specified")}</span><span>📅 Last Date: ${esc(dateText(j.deadline||j.lastDate))}</span><span>💼 ${esc(j.type||"Recruitment")}</span></div><p class="desc">${esc(j.description||"Recruitment details available on the job detail page.")}</p><div class="bottom"><span style="font-size:11px;color:#6b7d91">Official details required before applying</span><a class="btn apply" href="job-detail.html?id=${encodeURIComponent(j.id)}">View Details →</a></div></article>`}).join(""):'<div class="empty">📭 No Government Jobs found. New approved listings will appear here.</div>';
-}
+function stageName(j){const raw=String(j.govtStage||j.updateType||"").toLowerCase();if(raw.includes("admit"))return"admit";if(raw.includes("answer"))return"answer";if(raw.includes("result"))return"result";if(raw.includes("recruit"))return"job";const t=[j.title,j.description,j.notes].join(" ").toLowerCase();if(/admit card|admitcard|hall ticket/.test(t))return"admit";if(/answer key|answerkey/.test(t))return"answer";if(/result|merit list|selection list/.test(t))return"result";return"job"}
+function render(){const q=$("search").value.trim().toLowerCase(),l=$("location").value,srt=$("sort").value;let a=jobs.filter(j=>(!q||[j.title,j.company,j.location,j.qualification,j.description,j.notes,j.govtType,j.govtStage].join(" ").toLowerCase().includes(q))&&(!selectedBody||bodyName(j).toLowerCase()===selectedBody.toLowerCase())&&(!l||j.location===l)&&(!selectedStage||stageName(j)===selectedStage));a.sort((x,y)=>srt==="title"?String(x.title||"").localeCompare(String(y.title||"")):srt==="deadline"?(dateValue(x.deadline||x.lastDate)?.getTime()||Infinity)-(dateValue(y.deadline||y.lastDate)?.getTime()||Infinity):(dateValue(y.createdAt)?.getTime()||0)-(dateValue(x.createdAt)?.getTime()||0));$("count").textContent=a.length+" listing"+(a.length===1?"":"s");$("grid").innerHTML=a.length?a.map(j=>{const body=bodyName(j),stage=stageName(j),cls=body.toLowerCase().includes("rpsc")?"rpsc":body.toLowerCase().includes("rssb")?"rssb":body.toLowerCase().includes("police")?"police":"";const label=stage==="admit"?"Admit Card":stage==="answer"?"Answer Key":stage==="result"?"Result":"Recruitment";return`<article class="job"><div class="top"><div><h3>${esc(j.title||"Government Update")}</h3><div class="company">${esc(j.company||"Government Recruitment")}</div></div><span class="badge ${cls}">${esc(body)}</span></div><div class="meta"><span>📍 ${esc(j.location||"Rajasthan")}</span><span>🎓 ${esc(j.qualification||"Not specified")}</span><span>📅 Last Date: ${esc(dateText(j.deadline||j.lastDate))}</span><span>📌 ${label}</span></div><p class="desc">${esc(j.description||"Government update details available on the job detail page.")}</p><div class="bottom"><span style="font-size:11px;color:#6b7d91">Check official notification before applying</span><a class="btn apply" href="job-detail.html?id=${encodeURIComponent(j.id)}">View Details →</a></div></article>`}).join(""):'<div class="empty">📭 No Government Jobs found for this filter.</div>'}
 async function load(){
  try{
   const snap=await getDocs(query(collection(db,"jobs"),where("status","==","approved")));
@@ -69,6 +69,9 @@ async function load(){
   const ls=[...new Set(jobs.map(j=>j.location).filter(Boolean))].sort();ls.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;$("location").appendChild(o)});render();
  }catch(e){console.error(e);$("grid").innerHTML='<div class="empty">Government Jobs load nahi ho paaye. Firebase rules/index check karein.</div>'}
 }
-["search","body","location","sort"].forEach(id=>$(id).addEventListener("input",render));load();
+["search","location","sort"].forEach(id=>$(id).addEventListener("input",render));
+document.querySelectorAll("#bodyTabs .tab").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("#bodyTabs .tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");selectedBody=btn.dataset.body||"";render()}));
+document.querySelectorAll("#stageTabs .tab").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("#stageTabs .tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");selectedStage=btn.dataset.stage||"";render()}));
+load();
 </script>
 </body></html>
