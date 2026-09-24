@@ -75,6 +75,59 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 </style>
 
 <style>
+/* STUDY NOTES HUB */
+.quickGrid{grid-template-columns:repeat(5,1fr)}
+.quickCard.study>span{background:#eeeafe}
+.quickCard.study>b{color:#6b55d9}
+
+.studyHub{background:#f8fbff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.studyHero{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:stretch;margin-bottom:28px}
+.studyIntro{background:#fff;border:1px solid #dbe6f2;border-radius:20px;padding:27px;box-shadow:0 9px 28px rgba(16,42,67,.055)}
+.studyIntro h2{font-size:30px;margin:7px 0 9px}
+.studyIntro p{color:var(--muted);font-size:14px;max-width:760px;margin:0}
+.studyActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.studyTrust{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.studyTrust span{font-size:10px;font-weight:850;color:#35617f;background:#f3f8fd;border:1px solid #dce8f3;border-radius:20px;padding:5px 8px}
+.studySide{background:linear-gradient(135deg,#102a43,#175a9f);border-radius:20px;padding:25px;color:#fff;display:flex;flex-direction:column;justify-content:center}
+.studySideIcon{width:52px;height:52px;border-radius:15px;background:#ffffff18;display:grid;place-items:center;font-size:27px;margin-bottom:12px}
+.studySide strong{font-size:20px}
+.studySide p{color:#d9e8f7;font-size:13px;margin:7px 0 17px}
+.studyFlow{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.studyFlow span{font-size:10px;font-weight:900;background:#ffffff16;border:1px solid #ffffff25;padding:5px 7px;border-radius:8px}
+.studyFlow b{font-size:12px;color:#bcdcff}
+.studyHead{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:12px}
+.studyHead h3{font-size:21px;color:var(--navy);margin:4px 0 0}
+.studyAll{font-size:12px;font-weight:900;color:var(--blue);white-space:nowrap}
+.studyGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.studyCard{background:#fff;border:1px solid #dce6ef;border-radius:14px;padding:14px;display:flex;align-items:center;gap:11px;transition:.2s}
+.studyCard:hover{transform:translateY(-2px);border-color:#bcd7f4;box-shadow:0 9px 22px rgba(16,42,67,.08)}
+.studyIcon{width:42px;height:42px;min-width:42px;border-radius:12px;background:#edf5ff;display:grid;place-items:center;font-size:21px}
+.studyCard div:nth-child(2){min-width:0;flex:1}
+.studyCard strong{display:block;color:var(--navy);font-size:14px}
+.studyCard small{display:block;color:#65788d;font-size:10.5px;line-height:1.35;margin-top:2px}
+.studyCard>b{font-size:18px;color:var(--blue)}
+.uploadCallout{margin-top:16px;background:#fff;border:1px dashed #b9cfe5;border-radius:15px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:18px}
+.uploadCallout h3{margin:3px 0;color:var(--navy);font-size:17px}
+.uploadCallout p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.uploadBadge{font-size:9px;letter-spacing:1px;font-weight:950;color:var(--blue);background:#edf5ff;padding:5px 8px;border-radius:20px}
+@media(max-width:1000px){
+  .quickGrid{grid-template-columns:repeat(3,1fr)}
+  .studyHero{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .quickGrid{grid-template-columns:1fr 1fr}
+  .studyGrid{grid-template-columns:1fr}
+  .studyHead{align-items:flex-start}
+  .studyIntro{padding:20px}
+  .studyIntro h2{font-size:25px}
+  .uploadCallout{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:480px){
+  .quickGrid{grid-template-columns:1fr}
+}
+</style>
+
+<style>
 .admin-top-link{
   display:inline-flex;
   align-items:center;
@@ -155,7 +208,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <nav><div class="wrap navin">
 <a href="#home" class="brand"><div class="logo">RJ</div><div>Rajasthan Job<small>Jobs • Government Jobs • Job Support</small></div></a>
 <div class="menu">
-<a href="jobs.html">Jobs</a><a href="government-jobs.html">Govt Jobs</a><a href="#notes">Notes</a><a href="post-a-job.html">Post a Job</a><a href="#services">Services</a><a class="btn primary" href="inquiry.html">Inquiry</a><div class="notifWrap">
+<a href="jobs.html">Jobs</a><a href="government-jobs.html">Govt Jobs</a><a href="notes.html">📚 Notes</a><a href="post-a-job.html">Post a Job</a><a href="#services">Services</a><a class="btn primary" href="inquiry.html">Inquiry</a><div class="notifWrap">
   <button id="notifBell" class="notifBell" aria-label="Notifications" title="Notifications">🔔<span id="notifBadge" class="notifBadge">0</span></button>
   <div id="notifPanel" class="notifPanel">
     <div class="notifPanelHead">
@@ -184,7 +237,13 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 </div>
 </section>
 
-<section class="quickActions"><div class="wrap"><div class="quickTitle"><div><div class="kick">MOST IMPORTANT</div><h2>Job ke liye Quick Access</h2></div><p>Sabse zaroori options yahin se direct open karein.</p></div><div class="quickGrid"><a class="quickCard blue" href="jobs.html"><span>🔎</span><div><strong>Jobs Dekhein</strong><small>Latest Jaipur & Rajasthan Jobs</small></div><b>→</b></a><a class="quickCard orange" href="post-a-job.html"><span>🏢</span><div><strong>Post a Job</strong><small>Employer vacancy submit karein</small></div><b>→</b></a><a class="quickCard navy" href="government-jobs.html"><span>🏛️</span><div><strong>Government Jobs</strong><small>RPSC • RSSB • CET Updates</small></div><b>→</b></a><a class="quickCard green" href="inquiry.html"><span>💬</span><div><strong>Inquiry Karein</strong><small>Job & career support</small></div><b>→</b></a></div></div></section>
+<section class="quickActions"><div class="wrap"><div class="quickTitle"><div><div class="kick">MOST IMPORTANT</div><h2>Job ke liye Quick Access</h2></div><p>Sabse zaroori options yahin se direct open karein.</p></div><div class="quickGrid">
+<a class="quickCard blue" href="jobs.html"><span>🔎</span><div><strong>Jobs Dekhein</strong><small>Latest Jaipur & Rajasthan Jobs</small></div><b>→</b></a>
+<a class="quickCard navy" href="government-jobs.html"><span>🏛️</span><div><strong>Government Jobs</strong><small>RPSC • RSSB • CET Updates</small></div><b>→</b></a>
+<a class="quickCard study" href="notes.html"><span>📚</span><div><strong>Study Notes</strong><small>PDFs • GK • Reasoning • CET</small></div><b>→</b></a>
+<a class="quickCard orange" href="upload-notes.html"><span>📤</span><div><strong>Upload Material</strong><small>Apne notes submit karein</small></div><b>→</b></a>
+<a class="quickCard green" href="inquiry.html"><span>💬</span><div><strong>Inquiry Karein</strong><small>Job & career support</small></div><b>→</b></a>
+</div></div></section>
 
 <!-- HINDI JOB SEARCH MESSAGE STRIP -->
 <div class="hindiJobStrip">
@@ -204,7 +263,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
   </div>
 </div>
 
-<section class="categoryStrip"><div class="wrap"><div class="categoryInner"><strong>Quick Search:</strong><a href="jobs.html">Jaipur Jobs</a><a href="jobs.html">Fresher Jobs</a><a href="jobs.html">MIS Jobs</a><a href="jobs.html">Data Analyst</a><a href="jobs.html">Sales Jobs</a><a href="#govt">Govt Jobs</a><a href="#notes">Exam Notes</a></div></div></section>
+<section class="categoryStrip"><div class="wrap"><div class="categoryInner"><strong>Quick Search:</strong><a href="jobs.html">Jaipur Jobs</a><a href="jobs.html">Fresher Jobs</a><a href="jobs.html">MIS Jobs</a><a href="jobs.html">Data Analyst</a><a href="jobs.html">Sales Jobs</a><a href="#govt">Govt Jobs</a><a href="notes.html">Study Notes</a></div></div></section>
 
 <section class="hero" id="home"><div class="wrap heroGrid"><div>
 <span class="eyebrow">JAIPUR & RAJASTHAN JOB PLATFORM</span>
@@ -236,23 +295,88 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <div class="listbox"><h3 style="color:var(--navy)">Government Job Information</h3><p style="color:var(--muted);font-size:14px">Future government-job pages mein notification, eligibility, posts, important dates, fee, selection process aur official application route ko clearly display kiya ja sakta hai.</p><div class="tags"><span class="tag">RPSC</span><span class="tag">RSSB</span><span class="tag">CET</span><span class="tag">Rajasthan Police</span><span class="tag">Teaching</span><span class="tag">Railway</span><span class="tag">SSC</span><span class="tag">Banking</span><span class="tag">Defence</span><span class="tag">UPSC</span></div></div>
 </div></div></section>
 
-<section class="white" id="notes"><div class="wrap"><div class="head"><div class="kick">Premium Notes Store</div><h2>Notes jo future mein continuously update ho sake</h2><p>New exam pattern, syllabus, recruitment ya learning requirement ke according new digital products add kiye ja sakte hain.</p></div>
-<div class="noteGrid">
-<div class="note"><div class="icon">🧠</div><h3>Analogy Complete Notes</h3><p>Concept + simple explanation + examples + practice.</p><div class="price">Premium PDF</div></div>
-<div class="note"><div class="icon">🧭</div><h3>Reasoning Notes</h3><p>Direction, blood relation, coding-decoding aur other topics.</p><div class="price">Premium PDF</div></div>
-<div class="note"><div class="icon">🇮🇳</div><h3>Rajasthan GK</h3><p>Topic-wise study material and practice resources.</p><div class="price">Premium PDF</div></div>
-<div class="note"><div class="icon">📝</div><h3>CET Practice Pack</h3><p>Practice questions, revision sheets and mock material.</p><div class="price">Practice Pack</div></div>
-</div></div></section>
 
-<section class="future"><div class="wrap"><div class="head"><div class="kick">Future Document Center</div><h2>Naye documents kabhi bhi add kar sakte hain</h2><p>Website ko is tarah structure kiya gaya hai ki future mein PDF, DOC, notes, forms, courses aur job resources ko category-wise add kiya ja sake.</p></div>
-<div class="docGrid">
-<div class="doc"><span>EXAMS</span><h3>📘 New Exam Notes</h3><p>New recruitment ya syllabus aane par fresh notes, PDFs aur revision material.</p><button class="btn light">Coming Soon</button></div>
+<section class="studyHub" id="notes">
+  <div class="wrap">
+    <div class="studyHero">
+      <div class="studyIntro">
+        <div class="kick">📚 STUDY NOTES & MATERIAL</div>
+        <h2>Study Notes — Ek jagah, simple aur organised.</h2>
+        <p>
+          Rajasthan Job par approved study material, PDFs, practice sets aur useful learning resources
+          category-wise milenge. Naya material admin approval ke baad public Notes page par show hoga.
+        </p>
+        <div class="studyActions">
+          <a class="btn primary" href="notes.html">📚 Browse Study Notes →</a>
+          <a class="btn light" href="upload-notes.html">📤 Upload Your Material</a>
+        </div>
+        <div class="studyTrust">
+          <span>✓ PDF / DOC / DOCX / Images</span>
+          <span>✓ Admin Reviewed</span>
+          <span>✓ Category-wise Material</span>
+        </div>
+      </div>
+      <div class="studySide">
+        <div class="studySideIcon">📖</div>
+        <strong>Free Community Material</strong>
+        <p>Students aur contributors apna useful material submit kar sakte hain.</p>
+        <div class="studyFlow">
+          <span>Upload</span><b>→</b><span>Review</span><b>→</b><span>Approve</span><b>→</b><span>Read</span>
+        </div>
+      </div>
+    </div>
 
-<div class="doc"><span>SKILLS</span><h3>💻 Skill Courses</h3><p>Excel, Power BI, SQL, Python, AI aur future job skills ke resources.</p><button class="btn light">Coming Soon</button></div>
-<div class="doc"><span>GOVT JOBS</span><h3>🏛️ Recruitment Documents</h3><p>Official notifications aur important recruitment resources ko organised format mein list karna.</p><button class="btn light">Coming Soon</button></div>
-<div class="doc"><span>INTERVIEW</span><h3>🎯 Interview Packs</h3><p>Role-wise interview questions, mock tests aur preparation documents.</p><button class="btn light">Coming Soon</button></div>
+    <div class="studyHead">
+      <div>
+        <div class="kick">POPULAR CATEGORIES</div>
+        <h3>Apni preparation ke hisaab se Notes dekhein</h3>
+      </div>
+      <a class="studyAll" href="notes.html">View All Notes →</a>
+    </div>
 
-</div></div></section>
+    <div class="studyGrid">
+      <a class="studyCard" href="notes.html?category=Rajasthan%20GK">
+        <div class="studyIcon">🇮🇳</div>
+        <div><strong>Rajasthan GK</strong><small>History • Geography • Culture • General Knowledge</small></div>
+        <b>→</b>
+      </a>
+      <a class="studyCard" href="notes.html?category=Reasoning">
+        <div class="studyIcon">🧠</div>
+        <div><strong>Reasoning</strong><small>Analogy • Direction • Blood Relation • Coding-Decoding</small></div>
+        <b>→</b>
+      </a>
+      <a class="studyCard" href="notes.html?category=Maths">
+        <div class="studyIcon">➗</div>
+        <div><strong>Maths</strong><small>Practice material, formulas aur revision resources</small></div>
+        <b>→</b>
+      </a>
+      <a class="studyCard" href="notes.html?category=English">
+        <div class="studyIcon">🔤</div>
+        <div><strong>English</strong><small>Grammar, vocabulary aur exam practice material</small></div>
+        <b>→</b>
+      </a>
+      <a class="studyCard" href="notes.html?category=Computer">
+        <div class="studyIcon">💻</div>
+        <div><strong>Computer</strong><small>Basics, MCQs aur competitive exam resources</small></div>
+        <b>→</b>
+      </a>
+      <a class="studyCard" href="notes.html?category=CET">
+        <div class="studyIcon">📝</div>
+        <div><strong>CET</strong><small>Practice sets, revision sheets aur useful material</small></div>
+        <b>→</b>
+      </a>
+    </div>
+
+    <div class="uploadCallout">
+      <div>
+        <span class="uploadBadge">CONTRIBUTE</span>
+        <h3>Aapke paas useful Notes ya PDF hai?</h3>
+        <p>Community ke saath share karein. Material pehle pending review mein jayega, approval ke baad public hoga.</p>
+      </div>
+      <a class="btn light" href="upload-notes.html">📤 Material Submit Karein</a>
+    </div>
+  </div>
+</section>
 
 <section><div class="wrap"><div class="cta"><div><div class="kick" style="color:#acd4ff">Jaipur Job Support</div><h2>Job chahiye, resume support ya notes chahiye?</h2><p>Apni requirement bhejiye. Inquiry Firebase database mein save hoti hai aur admin panel se review ki ja sakti hai.</p></div><a class="btn light" href="tel:+916350566010">📞 Contact Now</a></div></div></section>
 
