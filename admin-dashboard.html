@@ -91,6 +91,15 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
         <button class="tab active" data-tab="jobsTab">💼 Jobs</button>
         <button class="tab" data-tab="candidatesTab">👤 Job Seekers</button>
       </div>
+      <div class="card" style="margin:0 0 16px;background:#f8fbff">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <strong style="color:#12355b;margin-right:4px">🛠️ Admin Tools:</strong>
+          <a class="btn light" href="job-manager.html">💼 Job Manager</a>
+          <a class="btn light" href="candidate-manager.html">👤 Candidate Manager</a>
+          <a class="btn light" href="notification-manager.html">🔔 Notifications</a>
+          <a class="btn light" href="enquiry-manager.html">📩 Enquiries</a>
+        </div>
+      </div>
 
       <!-- JOBS -->
       <div id="jobsTab">
@@ -324,7 +333,7 @@ function renderJobs(){
       <td><span class="badge ${esc(status)}">${esc(status.toUpperCase())}</span></td>
       <td><div class="actions">
         ${status!=="approved"?`<button class="btn green" onclick="approveJob('${j.id}')">Approve</button>`:""}
-        <a class="btn light" href="job-manager.html" target="_blank">Manage</a>
+        <a class="btn primary" href="job-manager.html">🛠️ Job Manager</a>
         <button class="btn danger" onclick="deleteJob('${j.id}')">Delete</button>
       </div></td>
     </tr>`;
