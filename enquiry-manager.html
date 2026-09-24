@@ -3,300 +3,67 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rajasthan Job — Enquiry Manager</title>
+<title>Rajasthan Job — Inquiry Manager V2</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#102b49}
-.header{background:#102f4d;color:#fff;padding:22px 7%;display:flex;justify-content:space-between;align-items:center;gap:15px}
-.header h1{margin:0;font-size:24px}.header p{margin:5px 0 0;font-size:13px;opacity:.85}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-light{background:#fff;color:#102b49}.btn-blue{background:#1769e8;color:#fff}.btn-red{background:#ffe9e9;color:#b42318}.btn-green{background:#e7f7ee;color:#087443}
-.wrap{width:min(1100px,92%);margin:22px auto}
-.notice{padding:13px 16px;background:#eef6ff;border:1px solid #c8def8;border-radius:10px;margin-bottom:18px;font-size:14px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.stat{background:#fff;border:1px solid #d9e3ef;border-radius:14px;padding:16px}.stat b{display:block;font-size:26px}.stat span{font-size:11px;font-weight:800;color:#60738a;text-transform:uppercase}
-.panel{background:#fff;border:1px solid #d9e3ef;border-radius:16px;padding:20px;box-shadow:0 8px 24px rgba(16,43,73,.05)}
-.panel h2{margin:0 0 15px;font-size:22px}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
-.toolbar input,.toolbar select{padding:11px 12px;border:1px solid #ccd9e7;border-radius:9px;background:#fff;color:#102b49}
-.toolbar input{flex:1;min-width:220px}
-.enquiry{border:1px solid #dce5ef;border-radius:13px;padding:16px;margin:12px 0;background:#fff}
-.enq-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
-.enq-name{font-size:18px;font-weight:800}.meta{font-size:13px;color:#58708b;margin-top:5px;line-height:1.55}
-.badge{font-size:11px;font-weight:800;border-radius:999px;padding:6px 9px;white-space:nowrap}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#102b49}
+.header{background:linear-gradient(135deg,#102f4d,#1769e8);color:#fff;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;gap:18px}
+.header h1{margin:0;font-size:25px}.header p{margin:5px 0 0;font-size:13px;opacity:.88}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn-light{background:#fff;color:#102b49}.btn-blue{background:#1769e8;color:#fff}.btn-green{background:#e7f7ee;color:#087443}.btn-red{background:#ffe9e9;color:#b42318}.btn-dark{background:#102f4d;color:#fff}
+.wrap{width:min(1180px,92%);margin:22px auto}.notice{padding:13px 16px;background:#eef6ff;border:1px solid #c8def8;border-radius:12px;margin-bottom:18px;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px}.stat{background:#fff;border:1px solid #d9e3ef;border-radius:15px;padding:17px;box-shadow:0 5px 18px rgba(16,43,73,.04)}
+.stat b{display:block;font-size:28px;margin:5px 0}.stat span{font-size:11px;font-weight:800;color:#60738a;text-transform:uppercase;letter-spacing:.5px}
+.panel{background:#fff;border:1px solid #d9e3ef;border-radius:16px;padding:20px;box-shadow:0 8px 24px rgba(16,43,73,.05)}.panel h2{margin:0 0 15px;font-size:21px}
+.toolbar{display:grid;grid-template-columns:1fr 170px 170px auto;gap:10px;margin-bottom:12px}.toolbar input,.toolbar select{width:100%;padding:11px 12px;border:1px solid #ccd9e7;border-radius:9px;background:#fff;color:#102b49;outline:none}
+.toolbar input:focus,.toolbar select:focus{border-color:#1769e8;box-shadow:0 0 0 3px rgba(23,105,232,.1)}.status-msg{font-size:12px;color:#6c7f93;margin:7px 0 15px}
+.enquiry{border:1px solid #dce5ef;border-radius:14px;padding:17px;margin:12px 0;background:#fff}.enq-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.enq-name{font-size:18px;font-weight:800}.meta{font-size:13px;color:#58708b;margin-top:5px;line-height:1.65}.badge{font-size:11px;font-weight:800;border-radius:999px;padding:6px 10px;white-space:nowrap}
 .badge-new{background:#fff3d6;color:#8a5a00}.badge-read{background:#eaf3ff;color:#1769e8}.badge-closed{background:#e9f7ef;color:#087443}
-.message{margin:14px 0;padding:12px;background:#f7f9fc;border-radius:9px;line-height:1.55;white-space:pre-wrap}
-.enq-actions{display:flex;gap:8px;flex-wrap:wrap}
-.empty{text-align:center;color:#6c7f93;padding:35px 10px}
-.login{max-width:520px;margin:70px auto;text-align:center}
-.login .panel{padding:35px}
-.hidden{display:none!important}
-.error{color:#b42318;background:#fff1f1;border:1px solid #f1cccc;padding:11px;border-radius:9px;margin-top:12px}
-.success{color:#087443;background:#effaf3;border:1px solid #c9ead7;padding:11px;border-radius:9px;margin-top:12px}
-.small{font-size:12px;color:#6c7f93}
-@media(max-width:750px){.stats{grid-template-columns:repeat(2,1fr)}.header{padding:18px 4%}.wrap{width:94%}.enq-top{flex-direction:column}}
+.message{margin:14px 0;padding:13px;background:#f7f9fc;border-radius:10px;line-height:1.55;white-space:pre-wrap;color:#263f58}.enq-actions{display:flex;gap:8px;flex-wrap:wrap}
+.empty{text-align:center;color:#6c7f93;padding:42px 10px}.login{max-width:520px;margin:70px auto;text-align:center;width:92%}.login .panel{padding:35px}.hidden{display:none!important}
+.error{color:#b42318;background:#fff1f1;border:1px solid #f1cccc;padding:11px;border-radius:9px;margin-top:12px}.success{color:#087443;background:#effaf3;border:1px solid #c9ead7;padding:11px;border-radius:9px;margin-top:12px}
+.small{font-size:12px;color:#6c7f93}.loading{text-align:center;padding:30px;color:#60738a}
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,27,45,.58);display:flex;align-items:center;justify-content:center;padding:18px;z-index:1000}.modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.22)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #e4ebf2;padding-bottom:13px}.modal-head h2{margin:0;font-size:21px}.close-x{border:0;background:#f0f3f7;border-radius:50%;width:35px;height:35px;cursor:pointer;font-size:18px}
+.detail{padding:12px 0;border-bottom:1px solid #edf1f5}.detail label{display:block;font-size:11px;text-transform:uppercase;color:#71839a;font-weight:800;margin-bottom:5px}.detail div{line-height:1.55;white-space:pre-wrap}.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+@media(max-width:850px){.toolbar{grid-template-columns:1fr 1fr}.stats{grid-template-columns:repeat(2,1fr)}.header{padding:18px 4%}}
+@media(max-width:560px){.toolbar{grid-template-columns:1fr}.header{align-items:flex-start;flex-direction:column}.wrap{width:94%}.enq-top{flex-direction:column}.enq-actions .btn{flex:1;min-width:110px}}
 </style>
 </head>
 <body>
-
-<div id="loginView" class="login">
-  <div class="panel">
-    <div style="font-size:42px">📩</div>
-    <h1>Enquiry Manager</h1>
-    <p class="small">Authorized Rajasthan Job admin only.</p>
-    <button class="btn btn-blue" id="googleLogin">🔐 Login with Google</button>
-    <div id="loginMsg"></div>
-  </div>
-</div>
+<div id="loginView" class="login"><div class="panel"><div style="font-size:44px">📩</div><h1>Inquiry Manager V2</h1><p class="small">Authorized Rajasthan Job admin only.</p><button class="btn btn-blue" id="googleLogin">🔐 Login with Google</button><div id="loginMsg"></div></div></div>
 
 <div id="appView" class="hidden">
-  <header class="header">
-    <div>
-      <h1>Rajasthan Job — Enquiry Manager</h1>
-      <p>Public enquiries received from the website</p>
-    </div>
-    <div class="actions">
-      <a class="btn btn-light" href="index.html">Website</a>
-      <button class="btn btn-light" id="refreshBtn">↻ Refresh</button>
-      <button class="btn btn-light" id="logoutBtn">Logout</button>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <div class="notice">📩 <b>Enquiries:</b> Website visitors ki submitted requirements yahan dikhenगी. New enquiry ko <b>New</b> status milega.</div>
-
-    <div class="stats">
-      <div class="stat"><b id="totalCount">0</b><span>Total</span></div>
-      <div class="stat"><b id="newCount">0</b><span>New</span></div>
-      <div class="stat"><b id="readCount">0</b><span>Read</span></div>
-      <div class="stat"><b id="closedCount">0</b><span>Closed</span></div>
-    </div>
-
-    <section class="panel">
-      <h2>📩 Enquiry Submissions</h2>
-      <div class="toolbar">
-        <input id="searchBox" placeholder="Search name, mobile, service or message...">
-        <select id="statusFilter">
-          <option value="all">All Status</option>
-          <option value="new">New</option>
-          <option value="read">Read</option>
-          <option value="closed">Closed</option>
-        </select>
-      </div>
-      <div id="statusMsg" class="small">Loading enquiries...</div>
-      <div id="enquiryList"></div>
-    </section>
-  </main>
-</div>
+<header class="header"><div><h1>Rajasthan Job — Inquiry Manager</h1><p>Website visitor inquiries • Real-time admin management</p></div><div class="actions"><a class="btn btn-light" href="index.html">🌐 Website</a><button class="btn btn-light" id="refreshBtn">↻ Refresh</button><button class="btn btn-light" id="logoutBtn">Logout</button></div></header>
+<main class="wrap">
+<div class="notice">📩 <b>Inquiry workflow:</b> New → Read → Closed. Call/WhatsApp se visitor ko directly contact kar sakte ho.</div>
+<div class="stats"><div class="stat">📊<b id="totalCount">0</b><span>Total Inquiries</span></div><div class="stat">🆕<b id="newCount">0</b><span>New</span></div><div class="stat">👁️<b id="readCount">0</b><span>Read</span></div><div class="stat">✅<b id="closedCount">0</b><span>Closed</span></div></div>
+<section class="panel"><h2>📩 Inquiry Submissions</h2><div class="toolbar"><input id="searchBox" placeholder="Search name, mobile, email, service or message..."><select id="statusFilter"><option value="all">All Status</option><option value="new">New</option><option value="read">Read</option><option value="closed">Closed</option></select><select id="dateFilter"><option value="all">All Dates</option><option value="today">Today</option><option value="7">Last 7 Days</option><option value="30">Last 30 Days</option></select><button class="btn btn-dark" id="clearFilters">Clear</button></div><div id="statusMsg" class="status-msg">Loading inquiries...</div><div id="enquiryList"><div class="loading">Loading inquiries…</div></div></section>
+</main></div><div id="modalRoot"></div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import {
-  getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import {
-  getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import{getFirestore,collection,doc,updateDoc,deleteDoc,serverTimestamp,onSnapshot}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-const ADMIN_EMAIL = "saif.anwar1618@gmail.com";
-const CONFIG_FILE = "firebase-config.js";
-
-let app, auth, db, allEnquiries = [];
-
-function showMsg(text, type=""){
-  const el=document.getElementById("statusMsg");
-  el.className=type==="error"?"error":type==="success"?"success":"small";
-  el.textContent=text;
-}
-
-function esc(v){
-  return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-}
-
-function dateText(v){
-  try{
-    if(v && typeof v.toDate==="function") return v.toDate().toLocaleString("en-IN");
-    if(v) return new Date(v).toLocaleString("en-IN");
-  }catch(e){}
-  return "Date not available";
-}
-
-async function loadConfig(){
-  const text = await fetch(CONFIG_FILE + "?v=" + Date.now()).then(r=>{
-    if(!r.ok) throw new Error("firebase-config.js nahi mila.");
-    return r.text();
-  });
-
-  // Reads the standard firebaseConfig object without requiring any change
-  // to the existing config file format.
-  const keys=["apiKey","authDomain","projectId","storageBucket","messagingSenderId","appId","measurementId"];
-  const cfg={};
-  for(const key of keys){
-    const re = new RegExp(key + "\\s*:\\s*[\"']([^\"']+)[\"']");
-    const m=text.match(re);
-    if(m) cfg[key]=m[1];
-  }
-  if(!cfg.apiKey || !cfg.projectId || !cfg.appId){
-    throw new Error("firebase-config.js mein valid Firebase configuration nahi mili.");
-  }
-  return cfg;
-}
-
-async function initFirebase(){
-  const config=await loadConfig();
-  app=initializeApp(config);
-  auth=getAuth(app);
-  db=getFirestore(app);
-
-  onAuthStateChanged(auth, async user=>{
-    if(!user){
-      document.getElementById("loginView").classList.remove("hidden");
-      document.getElementById("appView").classList.add("hidden");
-      return;
-    }
-    if((user.email||"").toLowerCase() !== ADMIN_EMAIL.toLowerCase()){
-      await signOut(auth);
-      document.getElementById("loginMsg").innerHTML =
-        '<div class="error">This Google account is not authorized for Rajasthan Job admin.</div>';
-      return;
-    }
-    document.getElementById("loginView").classList.add("hidden");
-    document.getElementById("appView").classList.remove("hidden");
-    loadEnquiries();
-  });
-}
-
-async function login(){
-  const msg=document.getElementById("loginMsg");
-  msg.innerHTML="";
-  try{
-    const provider=new GoogleAuthProvider();
-    await signInWithPopup(auth,provider);
-  }catch(e){
-    console.error(e);
-    msg.innerHTML='<div class="error">Login failed: '+esc(e.message||e.code||"Unknown error")+'</div>';
-  }
-}
-
-async function loadEnquiries(){
-  showMsg("Loading enquiries...");
-  try{
-    const snap=await getDocs(collection(db,"inquiries"));
-    allEnquiries=[];
-    snap.forEach(d=>{
-      const x=d.data();
-      allEnquiries.push({id:d.id,...x});
-    });
-    allEnquiries.sort((a,b)=>{
-      const at=a.createdAt?.seconds||0, bt=b.createdAt?.seconds||0;
-      return bt-at;
-    });
-    render();
-    showMsg(allEnquiries.length ? "Enquiries loaded." : "No enquiries yet.");
-  }catch(e){
-    console.error(e);
-    showMsg("Unable to load enquiries. Firestore rules mein /inquiries admin read permission check karein.", "error");
-  }
-}
-
-function render(){
-  const q=document.getElementById("searchBox").value.trim().toLowerCase();
-  const filter=document.getElementById("statusFilter").value;
-
-  const counts={total:allEnquiries.length,new:0,read:0,closed:0};
-  allEnquiries.forEach(x=>{
-    const s=(x.status||"new").toLowerCase();
-    if(counts[s]!==undefined) counts[s]++;
-  });
-  document.getElementById("totalCount").textContent=counts.total;
-  document.getElementById("newCount").textContent=counts.new;
-  document.getElementById("readCount").textContent=counts.read;
-  document.getElementById("closedCount").textContent=counts.closed;
-
-  const filtered=allEnquiries.filter(x=>{
-    const hay=[x.name,x.mobile,x.phone,x.email,x.service,x.requirement,x.message].join(" ").toLowerCase();
-    const status=(x.status||"new").toLowerCase();
-    return (!q || hay.includes(q)) && (filter==="all" || status===filter);
-  });
-
-  const box=document.getElementById("enquiryList");
-  if(!filtered.length){
-    box.innerHTML='<div class="empty">📭 No matching enquiries.</div>';
-    return;
-  }
-
-  box.innerHTML=filtered.map(x=>{
-    const status=(x.status||"new").toLowerCase();
-    const badgeClass=status==="closed"?"badge-closed":status==="read"?"badge-read":"badge-new";
-    const phone=x.mobile||x.phone||"";
-    const email=x.email||"";
-    const service=x.service||"Not specified";
-    const req=x.requirement||x.message||"No requirement provided";
-    return `
-      <article class="enquiry">
-        <div class="enq-top">
-          <div>
-            <div class="enq-name">${esc(x.name||"Unnamed")}</div>
-            <div class="meta">
-              📱 ${esc(phone||"No mobile")} ${email?` • ✉️ ${esc(email)}`:""}<br>
-              🎯 ${esc(service)} • 🕒 ${esc(dateText(x.createdAt))}
-            </div>
-          </div>
-          <span class="badge ${badgeClass}">${esc(status.toUpperCase())}</span>
-        </div>
-        <div class="message">${esc(req)}</div>
-        <div class="enq-actions">
-          ${phone?`<a class="btn btn-green" href="tel:${esc(phone)}">📞 Call</a>`:""}
-          ${phone?`<a class="btn btn-green" target="_blank" href="https://wa.me/91${esc(phone.replace(/\\D/g,""))}">💬 WhatsApp</a>`:""}
-          ${status!=="read"?`<button class="btn btn-blue" data-action="read" data-id="${esc(x.id)}">✓ Mark Read</button>`:""}
-          ${status!=="closed"?`<button class="btn btn-green" data-action="closed" data-id="${esc(x.id)}">✓ Close</button>`:""}
-          ${status!=="new"?`<button class="btn btn-light" data-action="new" data-id="${esc(x.id)}">↺ New</button>`:""}
-          <button class="btn btn-red" data-action="delete" data-id="${esc(x.id)}">Delete</button>
-        </div>
-      </article>`;
-  }).join("");
-}
-
-async function changeStatus(id,status){
-  try{
-    await updateDoc(doc(db,"inquiries",id),{status,updatedAt:serverTimestamp()});
-    await loadEnquiries();
-  }catch(e){
-    console.error(e);
-    showMsg("Status update failed. Firestore /inquiries update permission check karein.","error");
-  }
-}
-
-async function removeEnquiry(id){
-  if(!confirm("Is enquiry ko permanently delete karna hai?")) return;
-  try{
-    await deleteDoc(doc(db,"inquiries",id));
-    await loadEnquiries();
-  }catch(e){
-    console.error(e);
-    showMsg("Delete failed. Firestore /inquiries delete permission check karein.","error");
-  }
-}
-
-document.getElementById("googleLogin").addEventListener("click",login);
-document.getElementById("logoutBtn").addEventListener("click",()=>signOut(auth));
-document.getElementById("refreshBtn").addEventListener("click",loadEnquiries);
-document.getElementById("searchBox").addEventListener("input",render);
-document.getElementById("statusFilter").addEventListener("change",render);
-
-document.getElementById("enquiryList").addEventListener("click",async e=>{
-  const b=e.target.closest("[data-action]");
-  if(!b) return;
-  const id=b.dataset.id, action=b.dataset.action;
-  if(action==="delete") return removeEnquiry(id);
-  if(action==="read" || action==="closed" || action==="new") return changeStatus(id,action);
-});
-
-initFirebase().catch(e=>{
-  console.error(e);
-  document.getElementById("loginMsg").innerHTML='<div class="error">'+esc(e.message||"Firebase initialization failed.")+'</div>';
-});
+const ADMIN_EMAIL="saif.anwar1618@gmail.com",CONFIG_FILE="firebase-config.js";let app,auth,db,unsubscribe=null,allEnquiries=[];
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function dateObj(v){try{if(v&&typeof v.toDate==="function")return v.toDate();if(v&&typeof v.seconds==="number")return new Date(v.seconds*1000);if(v)return new Date(v)}catch(e){}return null}
+function dateText(v){const d=dateObj(v);return d?d.toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"short"}):"Date not available"}
+function showMsg(t,type=""){const e=$("statusMsg");e.className=type==="error"?"error":type==="success"?"success":"status-msg";e.textContent=t}
+async function loadConfig(){const text=await fetch(CONFIG_FILE+"?v="+Date.now()).then(r=>{if(!r.ok)throw Error("firebase-config.js nahi mila.");return r.text()});const cfg={};for(const k of["apiKey","authDomain","projectId","storageBucket","messagingSenderId","appId","measurementId"]){const m=text.match(new RegExp(k+"\\s*:\\s*[\\"']([^\\"']+)[\\"']"));if(m)cfg[k]=m[1]}if(!cfg.apiKey||!cfg.projectId||!cfg.appId)throw Error("firebase-config.js mein valid Firebase configuration nahi mili.");return cfg}
+async function initFirebase(){const config=await loadConfig();app=initializeApp(config);auth=getAuth(app);db=getFirestore(app);onAuthStateChanged(auth,async user=>{if(!user){$("loginView").classList.remove("hidden");$("appView").classList.add("hidden");if(unsubscribe){unsubscribe();unsubscribe=null}return}if((user.email||"").toLowerCase()!==ADMIN_EMAIL.toLowerCase()){await signOut(auth);$("loginMsg").innerHTML='<div class="error">This Google account is not authorized for Rajasthan Job admin.</div>';return}$("loginView").classList.add("hidden");$("appView").classList.remove("hidden");startRealtime()})}
+async function login(){$("loginMsg").innerHTML="";try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){$("loginMsg").innerHTML='<div class="error">Login failed: '+esc(e.message||e.code||"Unknown error")+"</div>"}}
+function startRealtime(){if(unsubscribe)unsubscribe();showMsg("Connecting to live inquiries...");unsubscribe=onSnapshot(collection(db,"inquiries"),snap=>{allEnquiries=snap.docs.map(d=>({id:d.id,...d.data()}));allEnquiries.sort((a,b)=>(dateObj(b.createdAt)?.getTime()||0)-(dateObj(a.createdAt)?.getTime()||0));render();showMsg(allEnquiries.length?"Live inquiries connected.":"No inquiries yet.")},err=>{console.error(err);showMsg("Unable to load inquiries. Firestore rules mein /inquiries admin read permission check karein.","error")})}
+function matchesDate(v,f){if(f==="all")return true;const d=dateObj(v);if(!d)return false;const now=new Date();if(f==="today")return d.toDateString()===now.toDateString();const n=Number(f);return now-d<=n*86400000&&d<=now}
+function render(){const q=$("searchBox").value.trim().toLowerCase(),sf=$("statusFilter").value,df=$("dateFilter").value,c={total:allEnquiries.length,new:0,read:0,closed:0};allEnquiries.forEach(x=>{const s=(x.status||"new").toLowerCase();if(c[s]!==undefined)c[s]++});$("totalCount").textContent=c.total;$("newCount").textContent=c.new;$("readCount").textContent=c.read;$("closedCount").textContent=c.closed;const f=allEnquiries.filter(x=>{const hay=[x.name,x.mobile,x.phone,x.email,x.service,x.requirement,x.message].join(" ").toLowerCase(),s=(x.status||"new").toLowerCase();return(!q||hay.includes(q))&&(sf==="all"||s===sf)&&matchesDate(x.createdAt,df)});$("enquiryList").innerHTML=f.length?f.map(cardHTML).join(""):'<div class="empty">📭 No matching inquiries found.</div>'}
+function cardHTML(x){const s=(x.status||"new").toLowerCase(),badge=s==="closed"?"badge-closed":s==="read"?"badge-read":"badge-new",phone=x.mobile||x.phone||"",email=x.email||"",digits=phone.replace(/\D/g,""),wa=digits.length===10?"91"+digits:digits;return`<article class="enquiry"><div class="enq-top"><div><div class="enq-name">${esc(x.name||"Unnamed")}</div><div class="meta">📱 ${esc(phone||"No mobile")} ${email?" • ✉️ "+esc(email):""}<br>🎯 ${esc(x.service||"Not specified")} • 🕒 ${esc(dateText(x.createdAt))}</div></div><span class="badge ${badge}">${esc(s.toUpperCase())}</span></div><div class="message">${esc(x.requirement||x.message||"No requirement provided")}</div><div class="enq-actions"><button class="btn btn-dark" data-action="view" data-id="${esc(x.id)}">👁️ View Details</button>${phone?`<a class="btn btn-green" href="tel:${esc(phone)}">📞 Call</a>`:""}${wa?`<a class="btn btn-green" target="_blank" rel="noopener" href="https://wa.me/${esc(wa)}">💬 WhatsApp</a>`:""}${s!=="read"?`<button class="btn btn-blue" data-action="read" data-id="${esc(x.id)}">✓ Mark Read</button>`:""}${s!=="closed"?`<button class="btn btn-green" data-action="closed" data-id="${esc(x.id)}">✓ Close</button>`:""}${s!=="new"?`<button class="btn btn-light" data-action="new" data-id="${esc(x.id)}">↺ New</button>`:""}<button class="btn btn-red" data-action="delete" data-id="${esc(x.id)}">🗑 Delete</button></div></article>`}
+function openDetails(id){const x=allEnquiries.find(a=>a.id===id);if(!x)return;const phone=x.mobile||x.phone||"",email=x.email||"",s=(x.status||"new").toLowerCase();$("modalRoot").innerHTML=`<div class="modal-backdrop" id="backdrop"><div class="modal"><div class="modal-head"><h2>📩 Inquiry Details</h2><button class="close-x" id="closeModal">×</button></div><div class="detail"><label>Name</label><div>${esc(x.name||"Not provided")}</div></div><div class="detail"><label>Mobile</label><div>${esc(phone||"Not provided")}</div></div><div class="detail"><label>Email</label><div>${esc(email||"Not provided")}</div></div><div class="detail"><label>Service</label><div>${esc(x.service||"Not specified")}</div></div><div class="detail"><label>Requirement / Message</label><div>${esc(x.requirement||x.message||"No message provided")}</div></div><div class="detail"><label>Submitted</label><div>${esc(dateText(x.createdAt))}</div></div><div class="detail"><label>Last Updated</label><div>${esc(dateText(x.updatedAt))}</div></div><div class="detail"><label>Status</label><div><span class="badge ${s==="closed"?"badge-closed":s==="read"?"badge-read":"badge-new"}">${esc(s.toUpperCase())}</span></div></div><div class="modal-actions">${phone?`<a class="btn btn-green" href="tel:${esc(phone)}">📞 Call</a>`:""}${email?`<a class="btn btn-blue" href="mailto:${esc(email)}">✉️ Email</a>`:""}<button class="btn btn-dark" id="modalCloseBtn">Close Window</button></div></div></div>`;$("closeModal").onclick=closeModal;$("modalCloseBtn").onclick=closeModal;$("backdrop").onclick=e=>{if(e.target.id==="backdrop")closeModal()}}
+function closeModal(){$("modalRoot").innerHTML=""}
+async function changeStatus(id,status){try{await updateDoc(doc(db,"inquiries",id),{status,updatedAt:serverTimestamp()});showMsg("Inquiry status updated successfully.","success")}catch(e){console.error(e);showMsg("Status update failed. Firestore /inquiries update permission check karein.","error")}}
+async function removeInquiry(id){if(!confirm("Is inquiry ko permanently delete karna hai?"))return;try{await deleteDoc(doc(db,"inquiries",id));showMsg("Inquiry deleted.","success")}catch(e){console.error(e);showMsg("Delete failed. Firestore /inquiries delete permission check karein.","error")}}
+$("googleLogin").addEventListener("click",login);$("logoutBtn").addEventListener("click",()=>signOut(auth));$("refreshBtn").addEventListener("click",()=>{if(auth.currentUser)startRealtime()});$("searchBox").addEventListener("input",render);$("statusFilter").addEventListener("change",render);$("dateFilter").addEventListener("change",render);$("clearFilters").addEventListener("click",()=>{$("searchBox").value="";$("statusFilter").value="all";$("dateFilter").value="all";render()});$("enquiryList").addEventListener("click",e=>{const b=e.target.closest("[data-action]");if(!b)return;const id=b.dataset.id,a=b.dataset.action;if(a==="view")return openDetails(id);if(a==="delete")return removeInquiry(id);if(["new","read","closed"].includes(a))return changeStatus(id,a)});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+initFirebase().catch(e=>{$("loginMsg").innerHTML='<div class="error">'+esc(e.message||"Firebase initialization failed.")+"</div>"});
 </script>
-</body>
-</html>
+</body></html>
