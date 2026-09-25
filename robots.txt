@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Keep private/admin tools out of search crawling
+Disallow: /admin-dashboard.html
+Disallow: /job-manager.html
+Disallow: /candidate-manager.html
+Disallow: /enquiry-manager.html
+Disallow: /notification-manager.html
+Disallow: /private-job-import.html
+Disallow: /notes-manager.html
+Disallow: /upload-notes.html
+
+Sitemap: https://saifanw.github.io/rajasthan-career-hub/sitemap.xml
