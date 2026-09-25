@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Rajasthan Job</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+:root{
+  --navy:#12355b;--blue:#1769aa;--light:#f4f8fc;--border:#dbe5ef;
+  --green:#15803d;--orange:#c56a00;--red:#b42318;--text:#243447;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f8fb;color:var(--text)}
+header{background:linear-gradient(135deg,#12355b,#1769aa);color:#fff;padding:18px 24px}
+.header{max-width:1250px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}
+header h1{margin:0;font-size:25px}
+header p{margin:5px 0 0;opacity:.9;font-size:13px}
+.wrap{max-width:1250px;margin:25px auto;padding:0 15px}
+.card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:0 5px 20px rgba(20,50,80,.06);margin-bottom:18px}
+.login{max-width:500px;margin:60px auto;text-align:center}
+button,.btn{border:0;border-radius:9px;padding:10px 15px;cursor:pointer;font-weight:700;text-decoration:none;display:inline-block}
+.primary{background:var(--blue);color:#fff}.green{background:var(--green);color:#fff}.light{background:#edf5fc;color:var(--navy)}
+.bulk{background:#fff4df;color:#9a5a00;border:1px solid #f0d59f}
+.danger{background:#fff0ef;color:var(--red)}
+.logout{background:#fff;color:var(--navy)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.stat{background:#fff;border:1px solid var(--border);border-radius:13px;padding:18px}
+.stat b{display:block;font-size:28px;color:var(--navy)}
+.stat span{font-size:12px;color:#657789;font-weight:700}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.tab{background:#edf3f8;color:var(--navy)}.tab.active{background:var(--navy);color:#fff}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+input,select{padding:10px 12px;border:1px solid #cbd7e3;border-radius:8px;background:#fff;min-width:170px}
+input.search{flex:1;min-width:250px}
+.tableWrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:950px}
+th,td{padding:11px 10px;border-bottom:1px solid #e7edf3;text-align:left;vertical-align:top;font-size:13px}
+th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
+.badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.pending{background:#fff4df;color:#a45a00}.approved{background:#e7f7ed;color:#16723a}
+.new{background:#eaf3ff;color:#1769aa}.contacted{background:#fff4df;color:#9a5a00}
+.shortlisted{background:#e9e4ff;color:#5b3ca5}.closed{background:#eee;color:#555}
+.muted{color:#6d7d8d}.message{padding:10px;border-radius:8px;background:#f5f8fb;margin-top:10px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.small{font-size:11px}
+.hidden{display:none}
+.error{background:#fff0ef;color:#a21d16;padding:12px;border-radius:9px}
+.success{background:#eaf8ef;color:#166534;padding:12px;border-radius:9px}
+@media(max-width:800px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .header{align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header">
+    <div>
+      <h1>Rajasthan Job — Admin Dashboard</h1>
+      <p id="signedIn">Private Admin Area</p>
+    </div>
+    <button id="logoutBtn" class="logout" style="display:none">Logout</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="loginBox" class="card login">
+    <h2>🔐 Admin Login</h2>
+    <p class="muted">Google se login karke jobs aur job seekers manage karein.</p>
+    <button id="loginBtn" class="primary">🔑 Login with Google</button>
+    <div id="loginStatus" class="message hidden"></div>
+  </section>
+
+  <section id="dashboard" style="display:none">
+    <div class="card">
+      <h2 style="margin:0 0 6px">📊 Dashboard Overview</h2>
+      <p class="muted" style="margin:0">Firebase se live data load ho raha hai.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b id="jobCount">0</b><span>TOTAL JOBS</span></div>
+      <div class="stat"><b id="pendingCount">0</b><span>PENDING JOBS</span></div>
+      <div class="stat"><b id="approvedCount">0</b><span>APPROVED JOBS</span></div>
+      <div class="stat"><b id="candidateCount">0</b><span>JOB SEEKERS</span></div>
+      <div class="stat"><b id="noticeCount">0</b><span>NOTIFICATIONS</span></div>
+    </div>
+
+    <section class="card" style="margin-top:18px">
+      <div class="tabs">
+        <button class="tab active" data-tab="jobsTab">💼 Jobs</button>
+        <button class="tab" data-tab="candidatesTab">👤 Job Seekers</button>
+      </div>
+      <div class="card" style="margin:0 0 16px;background:#f8fbff">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <strong style="color:#12355b;margin-right:4px">🛠️ Admin Tools:</strong>
+          <a class="btn light" href="job-manager.html">💼 Job Manager</a>
+          <a class="btn light" href="candidate-manager.html">👤 Candidate Manager</a>
+          <a class="btn light" href="notification-manager.html">🔔 Notifications</a>
+          <a class="btn light" href="enquiry-manager.html">📩 Enquiries</a>
+          <a class="btn bulk" href="private-job-import.html">📥 Bulk Private Job Import</a>
+        </div>
+      </div>
+
+      <!-- JOBS -->
+      <div id="jobsTab">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+          <div>
+            <h2 style="margin:0">📋 Job Submissions</h2>
+            <p class="muted">Pending aur approved jobs yahin dekhein.</p>
+          </div>
+          <button id="exportJobs" class="green">⬇ Export Jobs to Excel</button>
+        </div>
+
+        <div class="toolbar">
+          <input id="jobSearch" class="search" placeholder="Search title, company, location...">
+          <select id="jobStatus">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="draft">Draft</option>
+          </select>
+          <select id="jobType">
+            <option value="">All Job Types</option>
+            <option value="Private">Private</option>
+            <option value="Government">Government</option>
+          </select>
+        </div>
+
+        <div id="jobError" class="error hidden"></div>
+        <div class="tableWrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Job</th><th>Company</th><th>Location</th><th>Type</th>
+                <th>Experience</th><th>Salary</th><th>Last Date</th><th>Status</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="jobTable"></tbody>
+          </table>
+        </div>
+        <p id="jobEmpty" class="muted" style="display:none">No jobs found.</p>
+      </div>
+
+      <!-- CANDIDATES -->
+      <div id="candidatesTab" class="hidden">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+          <div>
+            <h2 style="margin:0">👤 Job Seekers Database</h2>
+            <p class="muted">Candidate profiles ko filter karke Excel mein export karein.</p>
+          </div>
+          <button id="exportCandidates" class="green">⬇ Export Job Seekers to Excel</button>
+        </div>
+
+        <div class="toolbar">
+          <input id="candidateSearch" class="search" placeholder="Search name, mobile, email, role...">
+          <select id="candidateExperience">
+            <option value="">All Experience</option>
+            <option value="Fresher">Fresher</option>
+            <option value="0-1 Year">0-1 Year</option>
+            <option value="1-2 Years">1-2 Years</option>
+            <option value="2-5 Years">2-5 Years</option>
+            <option value="5+ Years">5+ Years</option>
+          </select>
+          <select id="candidateStatus">
+            <option value="">All Status</option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="shortlisted">Shortlisted</option>
+            <option value="closed">Closed</option>
+          </select>
+        </div>
+
+        <div id="candidateError" class="error hidden"></div>
+        <div class="tableWrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th><th>Contact</th><th>Location</th><th>Preferred Role</th>
+                <th>Job Type</th><th>Experience</th><th>Qualification</th>
+                <th>Skills</th><th>Salary</th><th>Status</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="candidateTable"></tbody>
+          </table>
+        </div>
+        <p id="candidateEmpty" class="muted" style="display:none">No job seekers found.</p>
+      </div>
+    </section>
+  </section>
+</main>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}
+  from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {getFirestore,collection,getDocs,doc,updateDoc,deleteDoc,serverTimestamp}
+  from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
+ authDomain:"rajasthan-job.firebaseapp.com",
+ projectId:"rajasthan-job",
+ storageBucket:"rajasthan-job.firebasestorage.app",
+ messagingSenderId:"894888753938",
+ appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",
+ measurementId:"G-15S2XJQK80"
+};
+
+const app=initializeApp(firebaseConfig,"admin-dashboard-final");
+const auth=getAuth(app),db=getFirestore(app);
+const ADMIN_EMAIL="saif.anwar1618@gmail.com";
+
+let jobs=[], candidates=[];
+const $=id=>document.getElementById(id);
+
+function showLoginError(msg){
+  $("loginStatus").textContent=msg;
+  $("loginStatus").className="message error";
+  $("loginStatus").classList.remove("hidden");
+}
+function esc(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function dateValue(v){
+  if(!v)return "";
+  if(v.seconds)return new Date(v.seconds*1000).toLocaleDateString("en-IN");
+  const d=new Date(v);
+  return isNaN(d)?"":d.toLocaleDateString("en-IN");
+}
+function dateSort(v){
+  if(!v)return 0;
+  if(v.seconds)return v.seconds;
+  const d=new Date(v);
+  return isNaN(d)?0:d.getTime()/1000;
+}
+
+$("loginBtn").onclick=async()=>{
+  try{await signInWithPopup(auth,new GoogleAuthProvider())}
+  catch(e){showLoginError("Login failed: "+e.message)}
+};
+$("logoutBtn").onclick=()=>signOut(auth);
+
+onAuthStateChanged(auth,async user=>{
+  if(!user){
+    $("loginBox").style.display="block";
+    $("dashboard").style.display="none";
+    $("logoutBtn").style.display="none";
+    return;
+  }
+  if((user.email||"").toLowerCase()!==ADMIN_EMAIL.toLowerCase()){
+    showLoginError("This Google account is not authorised for the admin dashboard.");
+    await signOut(auth);
+    return;
+  }
+  $("loginBox").style.display="none";
+  $("dashboard").style.display="block";
+  $("logoutBtn").style.display="inline-block";
+  $("signedIn").textContent="Signed in as: "+user.email;
+  await loadAll();
+});
+
+async function loadAll(){
+  await Promise.all([loadJobs(),loadCandidates(),loadNoticeCount()]);
+}
+
+async function loadJobs(){
+  try{
+    const snap=await getDocs(collection(db,"jobs"));
+    jobs=snap.docs.map(d=>({id:d.id,...d.data()}));
+    $("jobCount").textContent=jobs.length;
+    $("pendingCount").textContent=jobs.filter(x=>x.status==="pending").length;
+    $("approvedCount").textContent=jobs.filter(x=>x.status==="approved").length;
+    $("jobError").classList.add("hidden");
+    renderJobs();
+  }catch(e){
+    console.error(e);
+    $("jobError").textContent="Jobs load nahi hue. Firestore rules/admin login check karein. "+e.message;
+    $("jobError").classList.remove("hidden");
+  }
+}
+
+async function loadCandidates(){
+  try{
+    const snap=await getDocs(collection(db,"candidates"));
+    candidates=snap.docs.map(d=>({id:d.id,...d.data()}));
+    $("candidateCount").textContent=candidates.length;
+    $("candidateError").classList.add("hidden");
+    renderCandidates();
+  }catch(e){
+    console.error(e);
+    $("candidateError").textContent="Job seekers load nahi hue. Firestore rules/admin login check karein. "+e.message;
+    $("candidateError").classList.remove("hidden");
+  }
+}
+
+async function loadNoticeCount(){
+  try{
+    const snap=await getDocs(collection(db,"announcements"));
+    $("noticeCount").textContent=snap.size;
+  }catch(e){
+    $("noticeCount").textContent="—";
+  }
+}
+
+function filteredJobs(){
+  const q=$("jobSearch").value.trim().toLowerCase();
+  const status=$("jobStatus").value;
+  const type=$("jobType").value;
+  return [...jobs].sort((a,b)=>dateSort(b.createdAt)-dateSort(a.createdAt)).filter(j=>{
+    const text=[j.title,j.company,j.location,j.category,j.description,j.experience].join(" ").toLowerCase();
+    return (!q||text.includes(q)) && (!status||String(j.status||"")===status) &&
+           (!type||String(j.type||j.jobType||"").toLowerCase()===type.toLowerCase());
+  });
+}
+
+function renderJobs(){
+  const data=filteredJobs();
+  $("jobEmpty").style.display=data.length?"none":"block";
+  $("jobTable").innerHTML=data.map(j=>{
+    const status=String(j.status||"draft").toLowerCase();
+    const type=j.type||j.jobType||"";
+    const last=j.deadline||j.lastDate||"";
+    return `<tr>
+      <td><b>${esc(j.title)}</b><br><span class="small muted">${esc(j.category||"")}</span></td>
+      <td>${esc(j.company)}</td>
+      <td>${esc(j.location)}</td>
+      <td>${esc(type)}</td>
+      <td>${esc(j.experience)}</td>
+      <td>${esc(j.salary)}</td>
+      <td>${esc(last)}</td>
+      <td><span class="badge ${esc(status)}">${esc(status.toUpperCase())}</span></td>
+      <td><div class="actions">
+        ${status!=="approved"?`<button class="btn green" onclick="approveJob('${j.id}')">Approve</button>`:""}
+        <a class="btn primary" href="job-manager.html">🛠️ Job Manager</a>
+        <button class="btn danger" onclick="deleteJob('${j.id}')">Delete</button>
+      </div></td>
+    </tr>`;
+  }).join("");
+}
+
+function filteredCandidates(){
+  const q=$("candidateSearch").value.trim().toLowerCase();
+  const exp=$("candidateExperience").value.toLowerCase();
+  const status=$("candidateStatus").value.toLowerCase();
+  return [...candidates].sort((a,b)=>dateSort(b.createdAt)-dateSort(a.createdAt)).filter(c=>{
+    const text=[
+      c.name,c.mobile,c.whatsapp,c.email,c.city,c.district,c.role,
+      c.qualification,c.course,c.company,c.skills,c.otherSkills
+    ].join(" ").toLowerCase();
+    return (!q||text.includes(q)) &&
+      (!exp||String(c.experience||"").toLowerCase()===exp) &&
+      (!status||String(c.status||"new").toLowerCase()===status);
+  });
+}
+
+function renderCandidates(){
+  const data=filteredCandidates();
+  $("candidateEmpty").style.display=data.length?"none":"block";
+  $("candidateTable").innerHTML=data.map(c=>{
+    const status=String(c.status||"new").toLowerCase();
+    return `<tr>
+      <td><b>${esc(c.name)}</b><br><span class="small muted">${esc(c.email)}</span></td>
+      <td>${esc(c.mobile)}<br>${esc(c.whatsapp||"")}</td>
+      <td>${esc(c.city)}${c.district?"<br>"+esc(c.district):""}</td>
+      <td>${esc(c.role)}</td>
+      <td>${esc(c.jobType)}</td>
+      <td>${esc(c.experience)}</td>
+      <td>${esc(c.qualification)}${c.course?"<br>"+esc(c.course):""}</td>
+      <td>${esc(c.skills||"")}${c.otherSkills?"<br>"+esc(c.otherSkills):""}</td>
+      <td>${esc(c.salary)}</td>
+      <td><span class="badge ${esc(status)}">${esc(status.toUpperCase())}</span></td>
+      <td>
+        <div class="candidateActions" style="display:flex;flex-direction:column;gap:7px;min-width:105px">
+          <select onchange="changeCandidateStatus('${c.id}',this.value)">
+            ${["new","contacted","shortlisted","closed"].map(s=>`<option value="${s}" ${status===s?"selected":""}>${s}</option>`).join("")}
+          </select>
+          <button class="btn danger" type="button" onclick="deleteCandidate('${c.id}')" style="padding:7px 10px;font-size:12px">Delete</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join("");
+}
+
+window.approveJob=async id=>{
+  try{
+    await updateDoc(doc(db,"jobs",id),{status:"approved",updatedAt:serverTimestamp()});
+    await loadJobs();
+  }catch(e){alert("Job approve nahi hua: "+e.message)}
+};
+
+window.deleteJob=async id=>{
+  if(!confirm("Is job ko permanently delete karna hai?"))return;
+  try{
+    await deleteDoc(doc(db,"jobs",id));
+    await loadJobs();
+  }catch(e){alert("Job delete nahi hui: "+e.message)}
+};
+
+window.changeCandidateStatus=async(id,status)=>{
+  try{
+    await updateDoc(doc(db,"candidates",id),{status,updatedAt:serverTimestamp()});
+    const c=candidates.find(x=>x.id===id);
+    if(c)c.status=status;
+    renderCandidates();
+  }catch(e){alert("Candidate status update nahi hua: "+e.message)}
+};
+
+window.deleteCandidate=async id=>{
+  const candidate=candidates.find(c=>c.id===id);
+  const label=candidate?.name||"this job seeker";
+  if(!confirm(`"${label}" ka profile permanently delete karna hai? Ye action undo nahi hoga.`)) return;
+  try{
+    await deleteDoc(doc(db,"candidates",id));
+    candidates=candidates.filter(c=>c.id!==id);
+    renderCandidates();
+    alert("Job seeker profile delete ho gaya.");
+  }catch(e){
+    alert("Job seeker delete nahi hua: "+e.message);
+  }
+};
+
+["jobSearch","jobStatus","jobType"].forEach(id=>$(id).addEventListener("input",renderJobs));
+["candidateSearch","candidateExperience","candidateStatus"].forEach(id=>$(id).addEventListener("input",renderCandidates));
+
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    $("jobsTab").classList.toggle("hidden",btn.dataset.tab!=="jobsTab");
+    $("candidatesTab").classList.toggle("hidden",btn.dataset.tab!=="candidatesTab");
+  };
+});
+
+function exportExcel(rows,filename,sheetName){
+  if(!rows.length){alert("Export karne ke liye data nahi hai.");return}
+  const ws=XLSX.utils.json_to_sheet(rows);
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,sheetName);
+  XLSX.writeFile(wb,filename);
+}
+
+$("exportJobs").onclick=()=>{
+  const rows=filteredJobs().map(j=>({
+    "Job ID":j.id,
+    "Job Title":j.title||"",
+    "Company":j.company||"",
+    "Location":j.location||"",
+    "Category":j.category||"",
+    "Job Type":j.type||j.jobType||"",
+    "Experience":j.experience||"",
+    "Salary":j.salary||"",
+    "Qualification":j.qualification||"",
+    "Last Date":j.deadline||j.lastDate||"",
+    "Status":j.status||"",
+    "Description":j.description||"",
+    "Apply Link":j.apply||j.applyLink||"",
+    "Contact Email":j.contactEmail||j.email||"",
+    "Contact Phone":j.contactPhone||j.phone||"",
+    "Notes":j.notes||j.note||"",
+    "Created":dateValue(j.createdAt)
+  }));
+  exportExcel(rows,"Rajasthan-Job-Listings.xlsx","Jobs");
+};
+
+$("exportCandidates").onclick=()=>{
+  const rows=filteredCandidates().map(c=>({
+    "Candidate ID":c.id,
+    "Name":c.name||"",
+    "Mobile":c.mobile||"",
+    "WhatsApp":c.whatsapp||"",
+    "Email":c.email||"",
+    "City":c.city||"",
+    "District":c.district||"",
+    "Preferred Role":c.role||"",
+    "Job Type":c.jobType||"",
+    "Preferred Location":c.preferredLocation||"",
+    "Expected Salary":c.salary||"",
+    "Experience":c.experience||"",
+    "Availability":c.availability||"",
+    "Qualification":c.qualification||"",
+    "Course/Branch":c.course||"",
+    "Passing Year":c.passingYear||"",
+    "Previous Company":c.company||"",
+    "Skills":c.skills||"",
+    "Other Skills":c.otherSkills||"",
+    "Status":c.status||"new",
+    "Consent":c.consent===true?"Yes":"No",
+    "Registered":dateValue(c.createdAt)
+  }));
+  exportExcel(rows,"Rajasthan-Job-Seekers.xlsx","Job Seekers");
+};
+</script>
+</body>
+</html>
