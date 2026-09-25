@@ -265,6 +265,27 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
   }
   </script>
 
+
+
+/* Dynamic latest job cards in hero */
+.latestHeroJobs{min-width:0}
+.heroJobsHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.heroJobsHead .heroPanelTitle{margin:0;font-size:17px}
+.heroJobsHead small{display:block;color:var(--muted);font-size:10px;line-height:1.35;margin-top:3px}
+.heroLatestJobsList{display:grid;gap:8px}
+.heroJobCard{border:1px solid #dce6f0;background:#f8fbff;border-radius:12px;padding:10px 11px;min-width:0}
+.heroJobMain{display:flex;align-items:flex-start;justify-content:space-between;gap:9px}
+.heroJobInfo{min-width:0;flex:1}
+.heroJobTitle{font-size:13px;font-weight:900;color:var(--navy);line-height:1.3;display:block;overflow-wrap:anywhere}
+.heroJobCompany{font-size:10px;color:#52657c;margin-top:3px;overflow-wrap:anywhere}
+.heroJobMeta{font-size:10px;color:#52657c;margin-top:5px;line-height:1.4}
+.heroJobActions{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
+.heroJobButton{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:8px;background:var(--blue);color:#fff!important;font-size:11px;font-weight:850;text-decoration:none}
+.heroJobButton.secondary{background:#fff;color:var(--navy)!important;border:1px solid #cbd8e7}
+.heroJobLoading,.heroJobEmpty{padding:17px 10px;text-align:center;background:#f8fbff;border:1px dashed #cbd8e7;border-radius:12px;color:var(--muted);font-size:12px}
+.heroAllJobs{display:block;text-align:center;margin-top:9px;padding:8px;border-radius:9px;background:#eef5ff;color:var(--blue);font-size:12px;font-weight:900}
+@media(max-width:850px){.heroPanelCompact.latestHeroJobs{display:block!important}}
+
 </head>
 <body>
 <!-- LIVE NOTIFICATION POPUP -->
@@ -322,14 +343,15 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
         <span>Jaipur Jobs</span><span>Rajasthan Jobs</span><span>Govt Jobs</span><span>Fresher Jobs</span><span>MIS</span><span>Data Analyst</span>
       </div>
     </div>
-    <div class="heroPanel heroPanelCompact">
-      <div class="heroPanelTitle">Yahan kya milega?</div>
-      <div class="miniGrid">
-        <div class="mini"><b>💼</b>Private Jobs</div>
-        <div class="mini"><b>🏛️</b>Govt Jobs</div>
-        <div class="mini"><b>🎓</b>Fresher Jobs</div>
-        <div class="mini"><b>👤</b>Job Seeker Support</div>
+    <div class="heroPanel heroPanelCompact latestHeroJobs">
+      <div class="heroJobsHead">
+        <div><div class="heroPanelTitle">Latest Job Vacancies</div><small>Latest approved jobs on Rajasthan & Jaipur Job Portal</small></div>
+        <span class="liveBadge lightLive">LIVE</span>
       </div>
+      <div id="heroLatestJobs" class="heroLatestJobsList">
+        <div class="heroJobLoading">Latest jobs loading…</div>
+      </div>
+      <a class="heroAllJobs" href="jobs.html">View All Jobs →</a>
     </div>
   </div>
 </section>
@@ -461,6 +483,66 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
 import { getFirestore, collection, addDoc, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 const app2=initializeApp({apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",authDomain:"rajasthan-job.firebaseapp.com",projectId:"rajasthan-job",storageBucket:"rajasthan-job.firebasestorage.app",messagingSenderId:"894888753938",appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",measurementId:"G-15S2XJQK80"},'public-home');
 const db2=getFirestore(app2);
+
+// Render latest approved jobs in the homepage hero panel.
+// Cards link to the public jobs page; if a job has an external application URL,
+// its Apply button opens that destination in a new tab.
+const heroJobsBox=document.getElementById('heroLatestJobs');
+function heroJobDate(value){
+  try{
+    const d=value?.toDate?value.toDate():new Date(value);
+    if(!value || isNaN(d.getTime())) return '';
+    return new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'short'}).format(d);
+  }catch(e){return '';}
+}
+function heroJobText(value){
+  return String(value||'').replace(/\\s+/g,' ').trim();
+}
+try{
+  onSnapshot(query(collection(db2,'jobs'),where('status','==','approved')),snap=>{
+    const jobs=snap.docs.map(doc=>({id:doc.id,...doc.data()}));
+    jobs.sort((a,b)=>{
+      const da=a.createdAt?.toDate?a.createdAt.toDate().getTime():new Date(a.createdAt||a.postedAt||0).getTime();
+      const db=b.createdAt?.toDate?b.createdAt.toDate().getTime():new Date(b.createdAt||b.postedAt||0).getTime();
+      return db-da;
+    });
+    const latest=jobs.slice(0,3);
+    if(!latest.length){
+      heroJobsBox.innerHTML='<div class="heroJobEmpty">Abhi koi approved job listed nahi hai. Nayi approved vacancies yahan automatically dikhenगी.</div>';
+      return;
+    }
+    heroJobsBox.innerHTML=latest.map(j=>{
+      const title=esc2(j.title||j.jobTitle||'Job Vacancy');
+      const company=esc2(j.company||j.companyName||'Company details on job page');
+      const location=esc2(j.location||'Location not specified');
+      const type=esc2(j.type||j.jobType||j.category||'Job');
+      const exp=esc2(j.experience||'');
+      const salary=esc2(j.salary||'');
+      const date=esc2(heroJobDate(j.createdAt||j.postedAt||j.created_at));
+      const apply=String(j.applyLink||j.apply||j.applicationLink||'').trim();
+      const safeApply=/^https?:\\/\\//i.test(apply)?apply:'';
+      const detailsHref='jobs.html';
+      return `<article class="heroJobCard">
+        <div class="heroJobMain"><div class="heroJobInfo">
+          <a class="heroJobTitle" href="${detailsHref}">${title}</a>
+          <div class="heroJobCompany">${company} · ${location}</div>
+        </div>${date?`<span class="tag">${date}</span>`:''}</div>
+        <div class="heroJobMeta">${type}${exp?' · '+exp:''}${salary?' · '+salary:''}</div>
+        <div class="heroJobActions">
+          <a class="heroJobButton" href="${detailsHref}">View Job →</a>
+          ${safeApply?`<a class="heroJobButton secondary" href="${esc2(safeApply)}" target="_blank" rel="noopener noreferrer">Apply ↗</a>`:''}
+        </div>
+      </article>`;
+    }).join('');
+  },err=>{
+    console.error('Homepage latest jobs:',err);
+    heroJobsBox.innerHTML='<div class="heroJobEmpty">Latest jobs abhi load nahi ho pa rahe. <a href="jobs.html">Yahan click karke jobs dekhein.</a></div>';
+  });
+}catch(e){
+  console.error('Homepage latest jobs init:',e);
+  if(heroJobsBox) heroJobsBox.innerHTML='<div class="heroJobEmpty">Jobs load nahi ho pa rahe. <a href="jobs.html">View all jobs</a></div>';
+}
+
 
 const notifBell=document.getElementById('notifBell');
 const notifPanel=document.getElementById('notifPanel');
