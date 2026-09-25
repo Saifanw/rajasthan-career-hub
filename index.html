@@ -267,10 +267,11 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 
 
 
+<style>
 /* Dynamic latest job cards in hero */
 .latestHeroJobs{min-width:0}
-.heroJobsHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
-.heroJobsHead .heroPanelTitle{margin:0;font-size:17px}
+.heroJobsHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.heroJobsHead .heroPanelTitle{margin:0;font-size:17px}.lightLive{flex:0 0 auto}
 .heroJobsHead small{display:block;color:var(--muted);font-size:10px;line-height:1.35;margin-top:3px}
 .heroLatestJobsList{display:grid;gap:8px}
 .heroJobCard{border:1px solid #dce6f0;background:#f8fbff;border-radius:12px;padding:10px 11px;min-width:0}
@@ -285,7 +286,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 .heroJobLoading,.heroJobEmpty{padding:17px 10px;text-align:center;background:#f8fbff;border:1px dashed #cbd8e7;border-radius:12px;color:var(--muted);font-size:12px}
 .heroAllJobs{display:block;text-align:center;margin-top:9px;padding:8px;border-radius:9px;background:#eef5ff;color:var(--blue);font-size:12px;font-weight:900}
 @media(max-width:850px){.heroPanelCompact.latestHeroJobs{display:block!important}}
-
+</style>
 </head>
 <body>
 <!-- LIVE NOTIFICATION POPUP -->
