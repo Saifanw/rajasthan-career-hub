@@ -521,7 +521,7 @@ try{
       const salary=esc2(j.salary||'');
       const date=esc2(heroJobDate(j.createdAt||j.postedAt||j.created_at));
       const apply=String(j.applyLink||j.apply||j.applicationLink||'').trim();
-      const safeApply=/^https?:\\/\\//i.test(apply)?apply:'';
+      const safeApply=/^https?:\/\//i.test(apply)?apply:'';
       const detailsHref='jobs.html';
       return `<article class="heroJobCard">
         <div class="heroJobMain"><div class="heroJobInfo">
