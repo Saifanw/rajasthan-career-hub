@@ -850,7 +850,7 @@ if(inquiryFormFallback){
 <div class="employerChatOverlay" id="employerChatOverlay" role="dialog" aria-modal="true" aria-labelledby="employerChatTitle">
   <div class="employerChatModal">
     <div class="employerChatHead">
-      <div><h2 id="employerChatTitle">🏢 HR / Company Chat</h2><p>Company ya HR apni details aur message bheje. Rajasthan Job Portal admin aapko reply karega.</p></div>
+      <div><h2 id="employerChatTitle">🏢 HR / Company Chat</h2><p><strong>Hiring in Jaipur or Rajasthan?</strong> Connect with job-ready freshers and experienced candidates through Rajasthan Career Hub. Share your vacancy and hiring needs—we’ll help you connect with suitable profiles.</p></div>
       <button type="button" class="employerChatClose" id="closeEmployerChat" aria-label="Close chat">×</button>
     </div>
     <form id="employerChatForm">
@@ -873,6 +873,7 @@ if(inquiryFormFallback){
 <script type="module">
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, getDoc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 const employerChatConfig={
   apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
@@ -884,6 +885,14 @@ const employerChatConfig={
 };
 const employerChatApp=getApps().find(a=>a.name==="public-home")||initializeApp(employerChatConfig,"employer-chat-public");
 const employerChatDb=getFirestore(employerChatApp);
+
+// Anonymous Firebase Auth lets Firestore rules scope each chat to its owner UID.
+const employerChatAuth=getAuth(employerChatApp);
+async function ensureEmployerChatUser(){
+  if(employerChatAuth.currentUser) return employerChatAuth.currentUser;
+  const credential=await signInAnonymously(employerChatAuth);
+  return credential.user;
+}
 const chatOverlay=document.getElementById("employerChatOverlay");
 const chatForm=document.getElementById("employerChatForm");
 const chatStatus=document.getElementById("employerChatStatus");
@@ -911,21 +920,31 @@ chatForm?.addEventListener("submit",async e=>{
   }
   sendBtn.disabled=true;sendBtn.textContent="Sending…";
   chatStatus.style.display="block";chatStatus.style.color="#1769aa";chatStatus.style.background="#eef6ff";chatStatus.style.borderColor="#cfe4fb";
-  chatStatus.textContent="Message send ho raha hai…";
+  chatStatus.textContent="Secure connection ban raha hai aur message send ho raha hai…";
   try{
-    const storageKey="rj_employer_chat_thread_v1";
+    const user=await ensureEmployerChatUser();
+    const storageKey="rj_employer_chat_thread_v2_"+user.uid;
     let threadId="";
     try{threadId=localStorage.getItem(storageKey)||"";}catch(_){}
     let threadRef=null;
+    let existingThread=false;
+
     if(threadId){
       threadRef=doc(employerChatDb,"employerChats",threadId);
-      const existing=await getDoc(threadRef);
-      if(!existing.exists())threadId="";
+      try{
+        const existing=await getDoc(threadRef);
+        existingThread=existing.exists() && existing.data().ownerUid===user.uid;
+      }catch(readErr){
+        // Old or inaccessible thread: start a new private thread.
+        existingThread=false;
+      }
     }
-    if(!threadId){
+
+    if(!existingThread){
       threadRef=doc(collection(employerChatDb,"employerChats"));
       threadId=threadRef.id;
       await setDoc(threadRef,{
+        ownerUid:user.uid,
         employerName:name,companyName,email,phone,
         latestMessage:message,latestSender:"employer",
         createdAt:serverTimestamp(),updatedAt:serverTimestamp(),
@@ -940,15 +959,15 @@ chatForm?.addEventListener("submit",async e=>{
       });
     }
     await addDoc(collection(employerChatDb,"employerChats",threadId,"messages"),{
-      text:message,sender:"employer",senderName:name,createdAt:serverTimestamp()
+      text:message,sender:"employer",senderName:name,ownerUid:user.uid,createdAt:serverTimestamp()
     });
     chatStatus.style.color="#11623f";chatStatus.style.background="#edf8f2";chatStatus.style.borderColor="#c9ead9";
-    chatStatus.textContent="✅ Message submit ho gaya! Admin aapke diye gaye email/mobile par contact karega ya chat mein reply karega.";
+    chatStatus.textContent="✅ Message submit ho gaya! Aap isi browser se wapas aakar apni conversation continue kar sakte hain. Admin aapke diye gaye email/mobile par bhi contact kar sakta hai.";
     document.getElementById("employerChatMessage").value="";
   }catch(err){
     console.error("Employer chat submit:",err);
     chatStatus.style.color="#a63d3d";chatStatus.style.background="#fff5f5";chatStatus.style.borderColor="#f2cccc";
-    chatStatus.textContent="❌ Message submit nahi hua. Firebase Firestore rules mein employerChats thread aur messages create/update ki permission configure karni hogi.";
+    chatStatus.textContent="❌ Message submit nahi hua. Firebase Console mein Authentication ka Anonymous sign-in enable karein aur secure employerChats Firestore rules publish karein.";
   }finally{sendBtn.disabled=false;sendBtn.textContent="💬 Send Message";}
 });
 </script>
