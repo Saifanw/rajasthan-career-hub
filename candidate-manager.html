@@ -60,17 +60,25 @@ h1{margin:0;color:var(--navy)}.muted{font-size:13px;color:var(--muted)}
 <div id="empty" class="empty" style="display:none">No candidates found.</div>
 </div>
 </section>
+<div id="matcher" class="card" style="display:none;position:fixed;z-index:9999;inset:4% 3%;overflow:auto;box-shadow:0 15px 60px #0005;max-width:900px;margin:auto">
+ <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 id="matcherTitle">Select matching jobs</h2><button class="btn light" id="closeMatcher">Close</button></div>
+ <p class="muted">Approved jobs only. Tick the jobs you want to share with this candidate.</p>
+ <input id="jobSearch" placeholder="Search approved jobs by title, company or location..." style="margin:8px 0 14px">
+ <div id="jobChoices"></div>
+ <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><button id="generateLink" class="btn primary">Create private job link</button><button id="copyLink" class="btn light" style="display:none">Copy link</button></div>
+ <div id="linkResult" style="margin-top:12px;word-break:break-all"></div>
+</div>
 </main>
 
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {getFirestore,collection,getDocs,updateDoc,doc} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {getFirestore,collection,getDocs,updateDoc,doc,query,where,setDoc} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig={apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",authDomain:"rajasthan-job.firebaseapp.com",projectId:"rajasthan-job",storageBucket:"rajasthan-job.firebasestorage.app",messagingSenderId:"894888753938",appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",measurementId:"G-15S2XJQK80"};
 const app=initializeApp(firebaseConfig,"candidate-manager"),auth=getAuth(app),db=getFirestore(app);
-const ADMIN_EMAIL="saif.anwar1618@gmail.com";let all=[];
+const ADMIN_EMAIL="saif.anwar1618@gmail.com";let all=[],approvedJobs=[],activeCandidate=null,selectedJobs=new Set(),generatedUrl="";
 
 const $=id=>document.getElementById(id);
 $("loginBtn").onclick=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){$("loginMsg").textContent=e.message}};
@@ -86,6 +94,8 @@ async function load(){
  const snap=await getDocs(collection(db,"candidates"));
  all=snap.docs.map(d=>({id:d.id,...d.data()}));
  updateStats();populateLocations();render();
+ const js=await getDocs(query(collection(db,"jobs"),where("status","==","approved")));
+ approvedJobs=js.docs.map(d=>({id:d.id,...d.data()}));
 }
 function updateStats(){
  $("total").textContent=all.length;
@@ -121,7 +131,7 @@ function render(){
   <td>${escapeHtml(x.salary)}</td>
   <td><span class="pill ${status==="shortlisted"?"green":status==="contacted"?"orange":status==="closed"?"red":""}">${escapeHtml(status)}</span></td>
   <td>${dt}</td>
-  <td><select class="small" onchange="window.changeStatus('${x.id}',this.value)"><option ${status==="new"?"selected":""}>new</option><option ${status==="contacted"?"selected":""}>contacted</option><option ${status==="shortlisted"?"selected":""}>shortlisted</option><option ${status==="closed"?"selected":""}>closed</option></select></td>
+  <td><button class="btn primary small" onclick="window.openJobMatcher('${x.id}')">Match Jobs</button><br><select class="small" style="margin-top:6px" onchange="window.changeStatus('${x.id}',this.value)"><option ${status==="new"?"selected":""}>new</option><option ${status==="contacted"?"selected":""}>contacted</option><option ${status==="shortlisted"?"selected":""}>shortlisted</option><option ${status==="closed"?"selected":""}>closed</option></select></td>
   </tr>`;
  }).join("");
 }
@@ -130,6 +140,37 @@ window.changeStatus=async(id,status)=>{
 };
 ["search","location","experience","status"].forEach(id=>$(id).addEventListener("input",render));
 $("clear").onclick=()=>{$("search").value="";$("location").value="";$("experience").value="";$("status").value="";render()};
+
+function jobText(j){return [j.title,j.company,j.location,j.category,j.type,j.jobType,j.experience].filter(Boolean).join(" ").toLowerCase()}
+window.openJobMatcher=(id)=>{
+ activeCandidate=all.find(x=>x.id===id);if(!activeCandidate)return;
+ selectedJobs=new Set();generatedUrl="";$("copyLink").style.display="none";$("linkResult").textContent="";
+ $("matcherTitle").textContent="Matching jobs for "+(activeCandidate.name||"candidate");
+ $("jobSearch").value="";renderJobChoices();$("matcher").style.display="block";
+};
+function renderJobChoices(){
+ const q=$("jobSearch").value.trim().toLowerCase();
+ const list=approvedJobs.filter(j=>!q||jobText(j).includes(q));
+ $("jobChoices").innerHTML=list.length?list.map(j=>`<label style="display:block;border:1px solid #dbe4ef;border-radius:10px;padding:12px;margin:8px 0;cursor:pointer"><input type="checkbox" data-job="${escapeHtml(j.id)}" ${selectedJobs.has(j.id)?"checked":""} style="width:auto;margin-right:8px"><b>${escapeHtml(j.title||"Job title not listed")}</b> — ${escapeHtml(j.company||"")}<br><span class="muted">${escapeHtml(j.location||"")} | ${escapeHtml(j.type||j.jobType||"")} | ${escapeHtml(j.experience||"")}</span></label>`).join(""):'<p class="muted">No approved jobs match this search.</p>';
+ $("jobChoices").querySelectorAll('[data-job]').forEach(cb=>cb.addEventListener('change',()=>{if(cb.checked)selectedJobs.add(cb.dataset.job);else selectedJobs.delete(cb.dataset.job)}));
+}
+$("jobSearch").addEventListener("input",renderJobChoices);
+$("closeMatcher").onclick=()=>$("matcher").style.display="none";
+$("generateLink").onclick=async()=>{
+ if(!activeCandidate)return;
+ if(!selectedJobs.size)return alert("Pehle kam se kam ek job select karein.");
+ const chosen=approvedJobs.filter(j=>selectedJobs.has(j.id)).map(j=>({
+  title:j.title||"",company:j.company||"",location:j.location||"",category:j.category||"",type:j.type||j.jobType||"",experience:j.experience||"",salary:j.salary||"",qualification:j.qualification||"",deadline:j.deadline||j.lastDate||"",description:j.description||"",apply:j.apply||j.applyLink||""
+ }));
+ const token=Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,"0")).join("");
+ try{
+  await setDoc(doc(db,"candidateJobPages",token),{jobs:chosen,createdAt:new Date(),createdBy:auth.currentUser.uid});
+  generatedUrl=new URL("candidate-jobs.html",window.location.href).href+"?token="+token;
+  $("linkResult").innerHTML='<b>Private candidate link:</b><br><a target="_blank" rel="noopener" href="'+escapeHtml(generatedUrl)+'">'+escapeHtml(generatedUrl)+'</a><p class="muted">Link ko sirf us candidate ko bhejein. Is link ko paane wala koi bhi vyakti selected jobs dekh sakta hai.</p>';
+  $("copyLink").style.display="inline-block";
+ }catch(e){alert("Link create nahi hua: "+e.message)}
+};
+$("copyLink").onclick=async()=>{try{await navigator.clipboard.writeText(generatedUrl);alert("Link copied!")}catch(e){prompt("Copy this link:",generatedUrl)}};
 
 $("export").onclick=()=>{
  const data=filtered().map(x=>({
