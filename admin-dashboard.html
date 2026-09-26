@@ -91,6 +91,7 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
     <section class="card" style="margin-top:18px">
       <div class="tabs">
         <button class="tab active" data-tab="jobsTab">💼 Jobs</button>
+        <button class="tab" data-tab="analyticsTab">📊 Analytics</button>
         <button class="tab" data-tab="candidatesTab">👤 Job Seekers</button>
         <button class="tab" data-tab="chatTab">💬 HR / Company Chat <span id="chatUnreadBadge" class="badge new">0</span></button>
       </div>
@@ -143,6 +144,39 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
           </table>
         </div>
         <p id="jobEmpty" class="muted" style="display:none">No jobs found.</p>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div id="analyticsTab" class="hidden">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+          <div>
+            <h2 style="margin:0">📊 Recruitment Analytics</h2>
+            <p class="muted">Jobs aur candidate registrations ka live summary.</p>
+          </div>
+          <button class="light" type="button" id="refreshAnalytics">↻ Refresh Analytics</button>
+        </div>
+        <div class="stats" style="margin-top:15px">
+          <div class="stat"><b id="aTotalJobs">0</b><span>TOTAL JOBS</span></div>
+          <div class="stat"><b id="aApprovedJobs">0</b><span>APPROVED JOBS</span></div>
+          <div class="stat"><b id="aPendingJobs">0</b><span>PENDING JOBS</span></div>
+          <div class="stat"><b id="aCandidates">0</b><span>JOB SEEKERS</span></div>
+          <div class="stat"><b id="aNewCandidates">0</b><span>NEW CANDIDATES</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px;margin-top:15px">
+          <div class="card" style="margin:0">
+            <h3 style="margin-top:0">Job Status</h3>
+            <div id="analyticsJobStatus"></div>
+          </div>
+          <div class="card" style="margin:0">
+            <h3 style="margin-top:0">Candidate Experience</h3>
+            <div id="analyticsExperience"></div>
+          </div>
+          <div class="card" style="margin:0">
+            <h3 style="margin-top:0">Candidate Pipeline</h3>
+            <div id="analyticsCandidateStatus"></div>
+          </div>
+        </div>
+        <p class="small muted" style="margin-top:12px">Analytics live Firestore data se banti hai. Data refresh karne ke liye button use karein.</p>
       </div>
 
       <!-- CANDIDATES -->
@@ -297,6 +331,7 @@ onAuthStateChanged(auth,async user=>{
 
 async function loadAll(){
   await Promise.all([loadJobs(),loadCandidates(),loadNoticeCount()]);
+  renderAnalytics();
   startChatThreadsListener();
 }
 
@@ -309,6 +344,7 @@ async function loadJobs(){
     $("approvedCount").textContent=jobs.filter(x=>x.status==="approved").length;
     $("jobError").classList.add("hidden");
     renderJobs();
+    if(typeof renderAnalytics==="function")renderAnalytics();
   }catch(e){
     console.error(e);
     $("jobError").textContent="Jobs load nahi hue. Firestore rules/admin login check karein. "+e.message;
@@ -323,6 +359,7 @@ async function loadCandidates(){
     $("candidateCount").textContent=candidates.length;
     $("candidateError").classList.add("hidden");
     renderCandidates();
+    if(typeof renderAnalytics==="function")renderAnalytics();
   }catch(e){
     console.error(e);
     $("candidateError").textContent="Job seekers load nahi hue. Firestore rules/admin login check karein. "+e.message;
@@ -339,6 +376,52 @@ async function loadNoticeCount(){
   }
 }
 
+
+function renderBarList(containerId, entries, color="#1769aa"){
+  const box=$(containerId);
+  const max=Math.max(1,...entries.map(x=>x.count));
+  box.innerHTML=entries.length?entries.map(x=>`
+    <div style="margin:12px 0">
+      <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:5px">
+        <span>${esc(x.label)}</span><b>${x.count}</b>
+      </div>
+      <div style="height:10px;background:#edf2f7;border-radius:99px;overflow:hidden">
+        <div style="height:100%;width:${Math.max(x.count?3:0,(x.count/max)*100)}%;background:${color};border-radius:99px"></div>
+      </div>
+    </div>`).join(""):'<p class="muted">No data available.</p>';
+}
+
+function renderAnalytics(){
+  $("aTotalJobs").textContent=jobs.length;
+  $("aApprovedJobs").textContent=jobs.filter(j=>j.status==="approved").length;
+  $("aPendingJobs").textContent=jobs.filter(j=>j.status==="pending").length;
+  $("aCandidates").textContent=candidates.length;
+  $("aNewCandidates").textContent=candidates.filter(c=>(c.status||"new")==="new").length;
+
+  const jobStatuses=["approved","pending","draft","other"].map(status=>({
+    label:status==="other"?"Other":status.charAt(0).toUpperCase()+status.slice(1),
+    count:jobs.filter(j=>status==="other"? !["approved","pending","draft"].includes(String(j.status||"").toLowerCase()):String(j.status||"draft").toLowerCase()===status).length
+  })).filter(x=>x.count>0);
+  renderBarList("analyticsJobStatus",jobStatuses);
+
+  const expBuckets=["Fresher","0-1 Year","1-2 Years","2-5 Years","5+ Years","Other"];
+  const expData=expBuckets.map(label=>({
+    label,
+    count:candidates.filter(c=>{
+      const e=String(c.experience||"").trim().toLowerCase();
+      if(label==="Other") return !["fresher","0-1 year","1-2 years","2-5 years","5+ years"].includes(e);
+      return e===label.toLowerCase();
+    }).length
+  })).filter(x=>x.count>0);
+  renderBarList("analyticsExperience",expData,"#15803d");
+
+  const candidateStatuses=["new","contacted","shortlisted","closed","other"];
+  const candidateData=candidateStatuses.map(status=>({
+    label:status==="other"?"Other":status.charAt(0).toUpperCase()+status.slice(1),
+    count:candidates.filter(c=>status==="other"? !["new","contacted","shortlisted","closed"].includes(String(c.status||"new").toLowerCase()):String(c.status||"new").toLowerCase()===status).length
+  })).filter(x=>x.count>0);
+  renderBarList("analyticsCandidateStatus",candidateData,"#c56a00");
+}
 
 // HR / Company Chat — expects employerChats/{threadId} and
 // employerChats/{threadId}/messages/{messageId} documents.
@@ -439,6 +522,10 @@ $("chatReplyForm").addEventListener("submit",async e=>{
   }
 });
 $("refreshChats").addEventListener("click",startChatThreadsListener);
+$("refreshAnalytics").addEventListener("click",async()=>{
+  await Promise.all([loadJobs(),loadCandidates(),loadNoticeCount()]);
+  renderAnalytics();
+});
 
 function filteredJobs(){
   const q=$("jobSearch").value.trim().toLowerCase();
@@ -565,8 +652,10 @@ document.querySelectorAll(".tab").forEach(btn=>{
     document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
     btn.classList.add("active");
     $("jobsTab").classList.toggle("hidden",btn.dataset.tab!=="jobsTab");
+    $("analyticsTab").classList.toggle("hidden",btn.dataset.tab!=="analyticsTab");
     $("candidatesTab").classList.toggle("hidden",btn.dataset.tab!=="candidatesTab");
     $("chatTab").classList.toggle("hidden",btn.dataset.tab!=="chatTab");
+    if(btn.dataset.tab==="analyticsTab")renderAnalytics();
   };
 });
 
