@@ -166,7 +166,14 @@ $("generateLink").onclick=async()=>{
  try{
   await setDoc(doc(db,"candidateJobPages",token),{jobs:chosen,createdAt:new Date(),createdBy:auth.currentUser.uid});
   generatedUrl=new URL("candidate-jobs.html",window.location.href).href+"?token="+token;
-  $("linkResult").innerHTML='<b>Private candidate link:</b><br><a target="_blank" rel="noopener" href="'+escapeHtml(generatedUrl)+'">'+escapeHtml(generatedUrl)+'</a><p class="muted">Link ko sirf us candidate ko bhejein. Is link ko paane wala koi bhi vyakti selected jobs dekh sakta hai.</p>';
+  const candidateName=activeCandidate.name||"there";
+  const message=`Hi ${candidateName},\n\nAapke profile ke hisaab se Rajasthan Career Hub par kuch job opportunities select ki gayi hain. Details aur apply links yahan dekhein:\n${generatedUrl}\n\nPlease eligibility aur details employer se verify karke apply karein.\n\nRegards,\nRajasthan Career Hub`;
+  const phone=String(activeCandidate.whatsapp||activeCandidate.mobile||"").replace(/\D/g,"");
+  const waNumber=phone.length===10?"91"+phone:phone;
+  const waHref=waNumber?`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`:"";
+  const email=String(activeCandidate.email||"").trim();
+  const mailHref=email?`mailto:${email}?subject=${encodeURIComponent("Selected job opportunities — Rajasthan Career Hub")}&body=${encodeURIComponent(message)}`:"";
+  $("linkResult").innerHTML='<b>Private candidate link:</b><br><a target="_blank" rel="noopener" href="'+escapeHtml(generatedUrl)+'">'+escapeHtml(generatedUrl)+'</a><p class="muted">Link ko sirf us candidate ko bhejein. Is link ko paane wala koi bhi vyakti selected jobs dekh sakta hai.</p><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">'+(waHref?'<a class="btn primary" target="_blank" rel="noopener noreferrer" href="'+escapeHtml(waHref)+'">Send on WhatsApp</a>':'<span class="muted">WhatsApp number missing</span>')+(mailHref?'<a class="btn light" href="'+escapeHtml(mailHref)+'">Send Email</a>':'<span class="muted">Email address missing</span>')+'</div><p class="muted">Message pehle se likha hua hoga. WhatsApp ya email app mein khulne ke baad aap message check karke khud Send karein.</p>';
   $("copyLink").style.display="inline-block";
  }catch(e){alert("Link create nahi hua: "+e.message)}
 };
