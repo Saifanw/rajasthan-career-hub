@@ -972,5 +972,108 @@ chatForm?.addEventListener("submit",async e=>{
 });
 </script>
 
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const visitorConfig={
+ apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
+ authDomain:"rajasthan-job.firebaseapp.com",
+ projectId:"rajasthan-job",
+ storageBucket:"rajasthan-job.firebasestorage.app",
+ messagingSenderId:"894888753938",
+ appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",
+ measurementId:"G-15S2XJQK80"
+};
+const visitorApp=initializeApp(visitorConfig,"rj-visitor-tracker");
+const visitorAuth=getAuth(visitorApp);
+const visitorDb=getFirestore(visitorApp);
+
+(async()=>{
+ try{
+   let user=visitorAuth.currentUser;
+   if(!user) user=(await signInAnonymously(visitorAuth)).user;
+   const uid=user.uid;
+   const now=new Date();
+   const sessionRef=doc(visitorDb,"webAnalyticsSessions",uid);
+   const params=new URLSearchParams(location.search);
+   const ref= document.referrer || "";
+   let source=params.get("utm_source")||params.get("source")||"";
+   if(!source){
+     if(!ref) source="Direct";
+     else {
+       try { source=(new URL(ref)).hostname.replace(/^www\./,""); }
+       catch(e){ source="Referral"; }
+     }
+   }
+   const medium=params.get("utm_medium")||"";
+   const campaign=params.get("utm_campaign")||"";
+   const ua=navigator.userAgent||"";
+   const device=/tablet|ipad/i.test(ua)?"Tablet":(/mobi|android|iphone/i.test(ua)?"Mobile":"Desktop");
+   let country="Unknown",city="Unknown",region="Unknown";
+   // Coarse location is based on IP using ipapi.co; the visitor's IP is sent to that provider.
+   try{
+     const ctrl=new AbortController();
+     const timer=setTimeout(()=>ctrl.abort(),2500);
+     const geo=await fetch("https://ipapi.co/json/",{signal:ctrl.signal});
+     clearTimeout(timer);
+     if(geo.ok){
+       const g=await geo.json();
+       country=String(g.country_name||"Unknown").slice(0,80);
+       city=String(g.city||"Unknown").slice(0,80);
+       region=String(g.region||"Unknown").slice(0,80);
+     }
+   }catch(e){}
+   const common={
+     uid, pagePath:location.pathname||"/", pageTitle:(document.title||"").slice(0,180),
+     source:String(source).slice(0,120),medium:String(medium).slice(0,100),
+     campaign:String(campaign).slice(0,120),referrer:ref.slice(0,500),
+     referrerHost:(()=>{try{return new URL(ref).hostname.slice(0,150)}catch(e){return "Direct"}})(),
+     country,city,region,device,
+     language:(navigator.language||"").slice(0,30),
+     timezone:(Intl.DateTimeFormat().resolvedOptions().timeZone||"").slice(0,80),
+     screen:Math.min(screen.width||0,10000)+"x"+Math.min(screen.height||0,10000),
+     createdAt:serverTimestamp(),eventAt:Date.now()
+   };
+   await addDoc(collection(visitorDb,"webAnalyticsEvents"),{...common,eventType:"page_view"});
+   await setDoc(sessionRef,{
+     uid,pagePath:common.pagePath,pageTitle:common.pageTitle,source:common.source,
+     referrerHost:common.referrerHost,country,city,region,device,language:common.language,
+     timezone:common.timezone,lastSeen:serverTimestamp(),lastSeenMs:Date.now(),
+     sessionStartedAt:serverTimestamp()
+   },{merge:true});
+   let lastPath=location.pathname;
+   const heartbeat=async()=>{
+     try{
+       await updateDoc(sessionRef,{
+         pagePath:location.pathname||"/",pageTitle:(document.title||"").slice(0,180),
+         lastSeen:serverTimestamp(),lastSeenMs:Date.now()
+       });
+     }catch(e){}
+   };
+   setInterval(heartbeat,30000);
+   document.addEventListener("visibilitychange",()=>{if(!document.hidden)heartbeat()});
+   window.addEventListener("beforeunload",()=>{});
+   // Count internal navigation/page changes on traditional and SPA links.
+   document.addEventListener("click",async ev=>{
+     const a=ev.target.closest&&ev.target.closest("a[href]");
+     if(!a)return;
+     try{
+       const u=new URL(a.href,location.href);
+       if(u.origin===location.origin && u.pathname!==lastPath){
+         lastPath=u.pathname;
+         await addDoc(collection(visitorDb,"webAnalyticsEvents"),{
+           ...common,pagePath:u.pathname,pageTitle:(a.textContent||document.title).trim().slice(0,180),
+           createdAt:serverTimestamp(),eventAt:Date.now(),eventType:"page_view"
+         });
+       }
+     }catch(e){}
+   });
+ }catch(e){console.warn("Visitor analytics tracker:",e)}
+})();
+</script>
+
 </body>
 </html>
