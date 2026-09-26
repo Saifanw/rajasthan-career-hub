@@ -150,6 +150,25 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 </style>
 
 <style>
+.employerChatNavBtn{border:1px solid #cbdbea;background:#f0f7ff;color:#12355b;border-radius:9px;padding:8px 11px;font:inherit;font-size:12px;font-weight:850;cursor:pointer;white-space:nowrap}
+.employerChatNavBtn:hover{background:#e2f0ff;border-color:#9ec5f2}
+.employerChatOverlay{display:none;position:fixed;inset:0;background:rgba(8,25,45,.55);z-index:10020;align-items:center;justify-content:center;padding:14px}
+.employerChatOverlay.open{display:flex}
+.employerChatModal{width:min(520px,100%);max-height:min(88vh,760px);overflow:auto;background:#fff;border-radius:18px;box-shadow:0 25px 80px rgba(0,0,0,.25);padding:22px;border:1px solid #dce5ef}
+.employerChatHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.employerChatHead h2{font-size:22px;margin:0;color:#102a43}
+.employerChatClose{border:0;border-radius:50%;width:34px;height:34px;background:#edf2f7;font-size:22px;cursor:pointer;color:#102a43}
+.employerChatModal p{color:#64748b;font-size:13px;margin:5px 0 12px}
+.employerChatModal label{display:block;margin:10px 0 5px;font-size:12px;font-weight:850;color:#12355b}
+.employerChatModal input,.employerChatModal textarea{width:100%;padding:11px;border:1px solid #d4dfeb;border-radius:9px;font:inherit;font-size:14px}
+.employerChatModal textarea{min-height:100px;resize:vertical}
+.employerChatSubmit{border:0;border-radius:10px;background:#1769e8;color:white;font-weight:900;padding:12px 16px;cursor:pointer;width:100%;margin-top:12px}
+.employerChatSubmit:disabled{opacity:.6;cursor:wait}
+.employerChatStatus{display:none;padding:10px 12px;border-radius:9px;margin-top:10px;font-size:13px;border:1px solid}
+@media(max-width:800px){.employerChatNavBtn{padding:7px 9px;font-size:11px}.employerChatModal{padding:17px}}
+</style>
+
+<style>
 /* ===== Homepage professional first-screen layout ===== */
 .jobMessageStrip{height:32px!important;min-height:32px!important}
 .jobMessageStrip .dynamictrack{font-size:12px!important;font-weight:800!important}
@@ -301,7 +320,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <nav><div class="wrap navin">
 <a href="#home" class="brand"><div class="logo">RJ</div><div>Rajasthan & Jaipur Job Portal<small>Jobs • Government Jobs • Career Support</small></div></a>
 <div class="menu">
-<a href="jobs.html">Jobs</a><a href="government-jobs.html">Govt Jobs</a><a href="post-a-job.html">Post a Job</a><a href="job-seeker.html">👤 Job Seeker</a><a href="#services">Services</a><a class="btn primary" href="inquiry.html">Inquiry</a><div class="notifWrap">
+<a href="jobs.html">Jobs</a><a href="government-jobs.html">Govt Jobs</a><a href="post-a-job.html">Post a Job</a><a href="job-seeker.html">👤 Job Seeker</a><button type="button" class="employerChatNavBtn" id="openEmployerChat">🏢 HR / Company Chat</button><a href="#services">Services</a><a class="btn primary" href="inquiry.html">Inquiry</a><div class="notifWrap">
   <button id="notifBell" class="notifBell" aria-label="Notifications" title="Notifications">🔔<span id="notifBadge" class="notifBadge">0</span></button>
   <div id="notifPanel" class="notifPanel">
     <div class="notifPanelHead">
@@ -521,7 +540,7 @@ try{
       const salary=esc2(j.salary||'');
       const date=esc2(heroJobDate(j.createdAt||j.postedAt||j.created_at));
       const apply=String(j.applyLink||j.apply||j.applicationLink||'').trim();
-      const safeApply=/^https?:\/\//i.test(apply)?apply:'';
+      const safeApply=/^https?:\\/\\//i.test(apply)?apply:'';
       const detailsHref='jobs.html';
       return `<article class="heroJobCard">
         <div class="heroJobMain"><div class="heroJobInfo">
@@ -824,6 +843,114 @@ if(inquiryFormFallback){
     }
   }, true);
 }
+</script>
+
+
+<!-- HR / COMPANY CHAT MODAL -->
+<div class="employerChatOverlay" id="employerChatOverlay" role="dialog" aria-modal="true" aria-labelledby="employerChatTitle">
+  <div class="employerChatModal">
+    <div class="employerChatHead">
+      <div><h2 id="employerChatTitle">🏢 HR / Company Chat</h2><p>Company ya HR apni details aur message bheje. Rajasthan Job Portal admin aapko reply karega.</p></div>
+      <button type="button" class="employerChatClose" id="closeEmployerChat" aria-label="Close chat">×</button>
+    </div>
+    <form id="employerChatForm">
+      <label for="employerChatName">Your Name *</label>
+      <input id="employerChatName" maxlength="80" required placeholder="HR / recruiter name">
+      <label for="employerChatCompany">Company Name *</label>
+      <input id="employerChatCompany" maxlength="120" required placeholder="Company / organisation">
+      <label for="employerChatEmail">Work Email *</label>
+      <input id="employerChatEmail" type="email" maxlength="160" required placeholder="name@company.com">
+      <label for="employerChatPhone">Mobile Number</label>
+      <input id="employerChatPhone" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" placeholder="10-digit mobile number">
+      <label for="employerChatMessage">Message *</label>
+      <textarea id="employerChatMessage" maxlength="2000" required placeholder="Tell us about your hiring requirement or question…"></textarea>
+      <button type="submit" class="employerChatSubmit" id="employerChatSend">💬 Send Message</button>
+      <div class="employerChatStatus" id="employerChatStatus" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, doc, getDoc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const employerChatConfig={
+  apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
+  authDomain:"rajasthan-job.firebaseapp.com",
+  projectId:"rajasthan-job",
+  storageBucket:"rajasthan-job.firebasestorage.app",
+  messagingSenderId:"894888753938",
+  appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb"
+};
+const employerChatApp=getApps().find(a=>a.name==="public-home")||initializeApp(employerChatConfig,"employer-chat-public");
+const employerChatDb=getFirestore(employerChatApp);
+const chatOverlay=document.getElementById("employerChatOverlay");
+const chatForm=document.getElementById("employerChatForm");
+const chatStatus=document.getElementById("employerChatStatus");
+const chatOpen=document.getElementById("openEmployerChat");
+const chatClose=document.getElementById("closeEmployerChat");
+
+chatOpen?.addEventListener("click",()=>{chatOverlay.classList.add("open");document.body.style.overflow="hidden";});
+function closeEmployerChat(){chatOverlay.classList.remove("open");document.body.style.overflow="";}
+chatClose?.addEventListener("click",closeEmployerChat);
+chatOverlay?.addEventListener("click",e=>{if(e.target===chatOverlay)closeEmployerChat();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeEmployerChat();});
+
+chatForm?.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const name=document.getElementById("employerChatName").value.trim();
+  const companyName=document.getElementById("employerChatCompany").value.trim();
+  const email=document.getElementById("employerChatEmail").value.trim().toLowerCase();
+  const phone=document.getElementById("employerChatPhone").value.trim();
+  const message=document.getElementById("employerChatMessage").value.trim();
+  const sendBtn=document.getElementById("employerChatSend");
+  if(!name||!companyName||!email||!message)return;
+  if(phone && !/^\d{10}$/.test(phone)){
+    chatStatus.style.display="block";chatStatus.style.color="#a63d3d";chatStatus.style.background="#fff5f5";chatStatus.style.borderColor="#f2cccc";
+    chatStatus.textContent="Mobile number 10 digits ka hona chahiye.";return;
+  }
+  sendBtn.disabled=true;sendBtn.textContent="Sending…";
+  chatStatus.style.display="block";chatStatus.style.color="#1769aa";chatStatus.style.background="#eef6ff";chatStatus.style.borderColor="#cfe4fb";
+  chatStatus.textContent="Message send ho raha hai…";
+  try{
+    const storageKey="rj_employer_chat_thread_v1";
+    let threadId="";
+    try{threadId=localStorage.getItem(storageKey)||"";}catch(_){}
+    let threadRef=null;
+    if(threadId){
+      threadRef=doc(employerChatDb,"employerChats",threadId);
+      const existing=await getDoc(threadRef);
+      if(!existing.exists())threadId="";
+    }
+    if(!threadId){
+      threadRef=doc(collection(employerChatDb,"employerChats"));
+      threadId=threadRef.id;
+      await setDoc(threadRef,{
+        employerName:name,companyName,email,phone,
+        latestMessage:message,latestSender:"employer",
+        createdAt:serverTimestamp(),updatedAt:serverTimestamp(),
+        unreadForAdmin:true,unreadForEmployer:false
+      });
+      try{localStorage.setItem(storageKey,threadId);}catch(_){}
+    }else{
+      await updateDoc(threadRef,{
+        employerName:name,companyName,email,phone,
+        latestMessage:message,latestSender:"employer",
+        updatedAt:serverTimestamp(),unreadForAdmin:true
+      });
+    }
+    await addDoc(collection(employerChatDb,"employerChats",threadId,"messages"),{
+      text:message,sender:"employer",senderName:name,createdAt:serverTimestamp()
+    });
+    chatStatus.style.color="#11623f";chatStatus.style.background="#edf8f2";chatStatus.style.borderColor="#c9ead9";
+    chatStatus.textContent="✅ Message submit ho gaya! Admin aapke diye gaye email/mobile par contact karega ya chat mein reply karega.";
+    document.getElementById("employerChatMessage").value="";
+  }catch(err){
+    console.error("Employer chat submit:",err);
+    chatStatus.style.color="#a63d3d";chatStatus.style.background="#fff5f5";chatStatus.style.borderColor="#f2cccc";
+    chatStatus.textContent="❌ Message submit nahi hua. Firebase Firestore rules mein employerChats thread aur messages create/update ki permission configure karni hogi.";
+  }finally{sendBtn.disabled=false;sendBtn.textContent="💬 Send Message";}
+});
 </script>
 
 </body>
