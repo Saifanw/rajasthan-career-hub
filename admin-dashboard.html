@@ -50,6 +50,7 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
 @media(max-width:800px){
  .stats{grid-template-columns:repeat(2,1fr)}
  .header{align-items:flex-start;flex-direction:column}
+ #chatTab > div[style*="grid-template-columns"]{grid-template-columns:1fr!important}
 }
 </style>
 </head>
@@ -91,6 +92,7 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
       <div class="tabs">
         <button class="tab active" data-tab="jobsTab">💼 Jobs</button>
         <button class="tab" data-tab="candidatesTab">👤 Job Seekers</button>
+        <button class="tab" data-tab="chatTab">💬 HR / Company Chat <span id="chatUnreadBadge" class="badge new">0</span></button>
       </div>
       <div class="card" style="margin:0 0 16px;background:#f8fbff">
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -100,7 +102,6 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
           <a class="btn light" href="notification-manager.html">🔔 Notifications</a>
           <a class="btn light" href="enquiry-manager.html">📩 Enquiries</a>
           <a class="btn bulk" href="private-job-import.html">📥 Bulk Private Job Import</a>
-          <a class="btn primary" href="https://script.google.com/macros/s/AKfycbxWFB1JZMYMkdwtZ1yXiPUjVbsmkHwNghLrsAEK2ilLTnxaTGvlMk98LiLBCpUTHEBKkA/exec" target="_blank" rel="noopener noreferrer">📈 Traffic Analytics</a>
         </div>
       </div>
 
@@ -188,6 +189,34 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
         </div>
         <p id="candidateEmpty" class="muted" style="display:none">No job seekers found.</p>
       </div>
+
+      <!-- HR / COMPANY CHAT -->
+      <div id="chatTab" class="hidden">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+          <div>
+            <h2 style="margin:0">💬 HR / Company Chat</h2>
+            <p class="muted">Website se aane wale employer messages yahan dekhein aur reply karein.</p>
+          </div>
+          <button id="refreshChats" class="light">↻ Refresh Chats</button>
+        </div>
+        <div id="chatError" class="error hidden" style="margin-top:12px"></div>
+        <div style="display:grid;grid-template-columns:minmax(260px,0.85fr) minmax(300px,1.4fr);gap:15px;margin-top:15px">
+          <div class="card" style="margin:0;padding:12px">
+            <h3 style="margin:3px 0 10px">Employer conversations</h3>
+            <div id="chatThreadList"><p class="muted">Loading conversations…</p></div>
+          </div>
+          <div class="card" style="margin:0;padding:12px;min-height:360px">
+            <div id="chatCurrentHeader"><h3 style="margin:3px 0">Select a conversation</h3></div>
+            <div id="chatMessages" style="height:300px;overflow:auto;border:1px solid var(--border);border-radius:10px;padding:12px;background:#f8fbff">
+              <p class="muted">Employer messages and your replies will appear here.</p>
+            </div>
+            <form id="chatReplyForm" style="display:flex;gap:8px;margin-top:10px">
+              <input id="chatReplyInput" style="flex:1;min-width:0" placeholder="Type your reply…" autocomplete="off" disabled>
+              <button class="primary" id="chatReplyBtn" type="submit" disabled>Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </section>
   </section>
 </main>
@@ -196,7 +225,8 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut}
   from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {getFirestore,collection,getDocs,doc,updateDoc,deleteDoc,serverTimestamp}
+import {getFirestore,collection,getDocs,doc,updateDoc,deleteDoc,serverTimestamp,
+  addDoc,onSnapshot,query,orderBy}
   from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig={
@@ -214,6 +244,7 @@ const auth=getAuth(app),db=getFirestore(app);
 const ADMIN_EMAIL="saif.anwar1618@gmail.com";
 
 let jobs=[], candidates=[];
+let chatThreads=[], selectedChatId=null, unsubscribeChatThreads=null, unsubscribeChatMessages=null;
 const $=id=>document.getElementById(id);
 
 function showLoginError(msg){
@@ -266,6 +297,7 @@ onAuthStateChanged(auth,async user=>{
 
 async function loadAll(){
   await Promise.all([loadJobs(),loadCandidates(),loadNoticeCount()]);
+  startChatThreadsListener();
 }
 
 async function loadJobs(){
@@ -306,6 +338,107 @@ async function loadNoticeCount(){
     $("noticeCount").textContent="—";
   }
 }
+
+
+// HR / Company Chat — expects employerChats/{threadId} and
+// employerChats/{threadId}/messages/{messageId} documents.
+function startChatThreadsListener(){
+  if(unsubscribeChatThreads) unsubscribeChatThreads();
+  const q=query(collection(db,"employerChats"),orderBy("updatedAt","desc"));
+  unsubscribeChatThreads=onSnapshot(q,snap=>{
+    chatThreads=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const unread=chatThreads.filter(t=>t.unreadForAdmin===true).length;
+    $("chatUnreadBadge").textContent=String(unread);
+    $("chatUnreadBadge").style.display=unread?"inline-block":"none";
+    renderChatThreads();
+  },err=>{
+    console.error("Chat listener:",err);
+    $("chatError").textContent="Chat load nahi hua. Firestore rules mein admin ko employerChats read access dena hoga. "+err.message;
+    $("chatError").classList.remove("hidden");
+    $("chatThreadList").innerHTML='<p class="muted">Chat data load nahi hua.</p>';
+  });
+}
+
+function renderChatThreads(){
+  const box=$("chatThreadList");
+  if(!chatThreads.length){
+    box.innerHTML='<p class="muted">Abhi koi HR/company message nahi aaya.</p>';
+    return;
+  }
+  box.innerHTML=chatThreads.map(t=>{
+    const title=esc(t.companyName||t.employerName||"Employer");
+    const latest=esc(t.latestMessage||"No messages yet");
+    const when=dateValue(t.updatedAt)||"";
+    const unread=t.unreadForAdmin===true;
+    return `<button type="button" class="light" onclick="openEmployerChat('${t.id}')"
+      style="width:100%;text-align:left;margin-bottom:8px;white-space:normal;border:1px solid ${selectedChatId===t.id?'#1769aa':'var(--border)'};background:${selectedChatId===t.id?'#eaf3ff':'#fff'}">
+      <div style="display:flex;justify-content:space-between;gap:8px"><b>${title}</b>${unread?'<span class="badge new">NEW</span>':''}</div>
+      <div class="small muted" style="margin-top:5px">${esc(t.employerName||"")}</div>
+      <div class="small" style="margin-top:5px;font-weight:400">${latest}</div>
+      <div class="small muted" style="margin-top:5px">${esc(when)}</div>
+    </button>`;
+  }).join("");
+}
+
+window.openEmployerChat=async id=>{
+  selectedChatId=id;
+  const t=chatThreads.find(x=>x.id===id);
+  if(!t)return;
+  $("chatCurrentHeader").innerHTML=`<h3 style="margin:3px 0">${esc(t.companyName||t.employerName||"Employer")}</h3>
+    <p class="small muted" style="margin:4px 0 10px">${esc(t.employerName||"")} · ${esc(t.email||"")} · ${esc(t.phone||"")}</p>`;
+  $("chatReplyInput").disabled=false;
+  $("chatReplyBtn").disabled=false;
+  renderChatThreads();
+  try{
+    if(t.unreadForAdmin===true) await updateDoc(doc(db,"employerChats",id),{unreadForAdmin:false});
+  }catch(e){console.warn("Could not clear unread flag:",e)}
+  if(unsubscribeChatMessages) unsubscribeChatMessages();
+  $("chatMessages").innerHTML='<p class="muted">Loading messages…</p>';
+  const mq=query(collection(db,"employerChats",id,"messages"),orderBy("createdAt","asc"));
+  unsubscribeChatMessages=onSnapshot(mq,snap=>{
+    const messages=snap.docs.map(d=>({id:d.id,...d.data()}));
+    $("chatMessages").innerHTML=messages.length?messages.map(m=>{
+      const mine=m.sender==="admin";
+      return `<div style="display:flex;justify-content:${mine?'flex-end':'flex-start'};margin:8px 0">
+        <div style="max-width:85%;padding:9px 12px;border-radius:12px;background:${mine?'#dceeff':'#fff'};border:1px solid var(--border)">
+          <div class="small muted" style="font-weight:700">${mine?'You (Admin)':esc(m.senderName||t.employerName||'Employer')}</div>
+          <div style="white-space:pre-wrap;overflow-wrap:anywhere;margin-top:4px">${esc(m.text||"")}</div>
+          <div class="small muted" style="text-align:right;margin-top:5px">${esc(dateValue(m.createdAt))}</div>
+        </div>
+      </div>`;
+    }).join(""):'<p class="muted">Is conversation mein abhi messages nahi hain.</p>';
+    $("chatMessages").scrollTop=$("chatMessages").scrollHeight;
+  },err=>{
+    console.error(err);
+    $("chatError").textContent="Messages load nahi hue. Firestore rules check karein: "+err.message;
+    $("chatError").classList.remove("hidden");
+  });
+};
+
+$("chatReplyForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const text=$("chatReplyInput").value.trim();
+  if(!selectedChatId||!text)return;
+  const btn=$("chatReplyBtn");
+  btn.disabled=true;
+  try{
+    await addDoc(collection(db,"employerChats",selectedChatId,"messages"),{
+      text, sender:"admin", senderName:"Rajasthan Career Hub Admin",
+      createdAt:serverTimestamp()
+    });
+    await updateDoc(doc(db,"employerChats",selectedChatId),{
+      latestMessage:text, latestSender:"admin", updatedAt:serverTimestamp(),
+      unreadForEmployer:true
+    });
+    $("chatReplyInput").value="";
+  }catch(err){
+    console.error(err);
+    alert("Reply send nahi hua. Firestore rules mein admin ko chat thread aur messages par write access chahiye. "+err.message);
+  }finally{
+    btn.disabled=false;
+  }
+});
+$("refreshChats").addEventListener("click",startChatThreadsListener);
 
 function filteredJobs(){
   const q=$("jobSearch").value.trim().toLowerCase();
@@ -375,9 +508,12 @@ function renderCandidates(){
       <td>${esc(c.salary)}</td>
       <td><span class="badge ${esc(status)}">${esc(status.toUpperCase())}</span></td>
       <td>
-        <select onchange="changeCandidateStatus('${c.id}',this.value)">
-          ${["new","contacted","shortlisted","closed"].map(s=>`<option value="${s}" ${status===s?"selected":""}>${s}</option>`).join("")}
-        </select>
+        <div class="candidateActions" style="display:flex;flex-direction:column;gap:7px;min-width:105px">
+          <select onchange="changeCandidateStatus('${c.id}',this.value)">
+            ${["new","contacted","shortlisted","closed"].map(s=>`<option value="${s}" ${status===s?"selected":""}>${s}</option>`).join("")}
+          </select>
+          <button class="btn danger" type="button" onclick="deleteCandidate('${c.id}')" style="padding:7px 10px;font-size:12px">Delete</button>
+        </div>
       </td>
     </tr>`;
   }).join("");
@@ -407,6 +543,20 @@ window.changeCandidateStatus=async(id,status)=>{
   }catch(e){alert("Candidate status update nahi hua: "+e.message)}
 };
 
+window.deleteCandidate=async id=>{
+  const candidate=candidates.find(c=>c.id===id);
+  const label=candidate?.name||"this job seeker";
+  if(!confirm(`"${label}" ka profile permanently delete karna hai? Ye action undo nahi hoga.`)) return;
+  try{
+    await deleteDoc(doc(db,"candidates",id));
+    candidates=candidates.filter(c=>c.id!==id);
+    renderCandidates();
+    alert("Job seeker profile delete ho gaya.");
+  }catch(e){
+    alert("Job seeker delete nahi hua: "+e.message);
+  }
+};
+
 ["jobSearch","jobStatus","jobType"].forEach(id=>$(id).addEventListener("input",renderJobs));
 ["candidateSearch","candidateExperience","candidateStatus"].forEach(id=>$(id).addEventListener("input",renderCandidates));
 
@@ -416,6 +566,7 @@ document.querySelectorAll(".tab").forEach(btn=>{
     btn.classList.add("active");
     $("jobsTab").classList.toggle("hidden",btn.dataset.tab!=="jobsTab");
     $("candidatesTab").classList.toggle("hidden",btn.dataset.tab!=="candidatesTab");
+    $("chatTab").classList.toggle("hidden",btn.dataset.tab!=="chatTab");
   };
 });
 
