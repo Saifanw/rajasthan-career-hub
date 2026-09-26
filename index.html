@@ -850,7 +850,7 @@ if(inquiryFormFallback){
 <div class="employerChatOverlay" id="employerChatOverlay" role="dialog" aria-modal="true" aria-labelledby="employerChatTitle">
   <div class="employerChatModal">
     <div class="employerChatHead">
-      <div><h2 id="employerChatTitle">🏢 HR / Company Chat</h2><p><strong>Hiring in Jaipur or Rajasthan?</strong> Connect with job-ready freshers and experienced candidates through Rajasthan Career Hub. Share your vacancy and hiring needs—we’ll help you connect with suitable profiles.</p></div>
+      <div><h2 id="employerChatTitle">🏢 HR / Company Chat</h2><p>Company ya HR apni details aur message bheje. Rajasthan Job Portal admin aapko reply karega.</p></div>
       <button type="button" class="employerChatClose" id="closeEmployerChat" aria-label="Close chat">×</button>
     </div>
     <form id="employerChatForm">
@@ -867,13 +867,32 @@ if(inquiryFormFallback){
       <button type="submit" class="employerChatSubmit" id="employerChatSend">💬 Send Message</button>
       <div class="employerChatStatus" id="employerChatStatus" role="status" aria-live="polite"></div>
     </form>
+
+    <section id="employerChatConversation" style="display:none;margin-top:18px;border-top:1px solid #dce5ef;padding-top:16px">
+      <h3 style="margin:0 0 8px;color:#12355b;font-size:17px">Your conversation</h3>
+      <div id="employerChatUnread" style="display:none;margin:0 0 8px;padding:8px 10px;border-radius:8px;background:#fff7df;color:#805400;font-size:13px;font-weight:700">You have a new reply from Rajasthan Career Hub.</div>
+      <div id="employerChatMessages" aria-live="polite" style="height:240px;overflow:auto;border:1px solid #d4dfeb;border-radius:10px;background:#f7fbff;padding:12px;margin-bottom:10px">
+        <p style="color:#64748b;font-size:13px">Your messages and admin replies will appear here.</p>
+      </div>
+      <form id="employerChatReplyForm">
+        <label for="employerChatReplyText">Reply to Rajasthan Career Hub</label>
+        <textarea id="employerChatReplyText" maxlength="2000" placeholder="Type your reply…" required></textarea>
+        <button type="submit" class="employerChatSubmit" id="employerChatReplySend">Send Reply</button>
+        <div class="employerChatStatus" id="employerChatReplyStatus" role="status" aria-live="polite"></div>
+      </form>
+    </section>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getFirestore, collection, addDoc, doc, getDoc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {
+  getFirestore, collection, addDoc, doc, getDoc, setDoc, updateDoc,
+  serverTimestamp, onSnapshot, query, orderBy
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {
+  getAuth, signInAnonymously, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 const employerChatConfig={
   apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
@@ -885,21 +904,152 @@ const employerChatConfig={
 };
 const employerChatApp=getApps().find(a=>a.name==="public-home")||initializeApp(employerChatConfig,"employer-chat-public");
 const employerChatDb=getFirestore(employerChatApp);
-
-// Anonymous Firebase Auth lets Firestore rules scope each chat to its owner UID.
 const employerChatAuth=getAuth(employerChatApp);
-async function ensureEmployerChatUser(){
-  if(employerChatAuth.currentUser) return employerChatAuth.currentUser;
-  const credential=await signInAnonymously(employerChatAuth);
-  return credential.user;
-}
+
 const chatOverlay=document.getElementById("employerChatOverlay");
 const chatForm=document.getElementById("employerChatForm");
 const chatStatus=document.getElementById("employerChatStatus");
 const chatOpen=document.getElementById("openEmployerChat");
 const chatClose=document.getElementById("closeEmployerChat");
+const conversationBox=document.getElementById("employerChatConversation");
+const messagesBox=document.getElementById("employerChatMessages");
+const unreadBox=document.getElementById("employerChatUnread");
+const replyForm=document.getElementById("employerChatReplyForm");
+const replyInput=document.getElementById("employerChatReplyText");
+const replyButton=document.getElementById("employerChatReplySend");
+const replyStatus=document.getElementById("employerChatReplyStatus");
 
-chatOpen?.addEventListener("click",()=>{chatOverlay.classList.add("open");document.body.style.overflow="hidden";});
+const storageKey="rj_employer_chat_thread_v1";
+let chatUser=null;
+let currentThreadId="";
+let stopMessages=null;
+let stopThread=null;
+let authReady=Promise.resolve(null);
+
+function showStatus(el,text,kind="info"){
+  el.style.display="block";
+  const styles={
+    info:["#1769aa","#eef6ff","#cfe4fb"],
+    success:["#11623f","#edf8f2","#c9ead9"],
+    error:["#a63d3d","#fff5f5","#f2cccc"]
+  }[kind];
+  el.style.color=styles[0];el.style.background=styles[1];el.style.borderColor=styles[2];
+  el.textContent=text;
+}
+function escapeHtml(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function dateText(value){
+  try{
+    const d=value?.toDate?value.toDate():value instanceof Date?value:null;
+    return d?d.toLocaleString():"Just now";
+  }catch(_){return "";}
+}
+function stopConversationListeners(){
+  if(stopMessages){stopMessages();stopMessages=null;}
+  if(stopThread){stopThread();stopThread=null;}
+}
+function renderMessages(snapshot){
+  const messages=snapshot.docs.map(d=>({id:d.id,...d.data()}));
+  if(!messages.length){
+    messagesBox.innerHTML='<p style="color:#64748b;font-size:13px">No messages yet.</p>';
+    return;
+  }
+  messagesBox.innerHTML=messages.map(m=>{
+    const admin=m.sender==="admin";
+    return `<div style="display:flex;justify-content:${admin?'flex-start':'flex-end'};margin:8px 0">
+      <div style="max-width:88%;padding:9px 12px;border-radius:12px;background:${admin?'#fff':'#dceeff'};border:1px solid #d4dfeb">
+        <div style="font-size:11px;color:#64748b;font-weight:800">${admin?'Rajasthan Career Hub':'You'}</div>
+        <div style="white-space:pre-wrap;overflow-wrap:anywhere;margin-top:4px;color:#102a43;font-size:14px">${escapeHtml(m.text||"")}</div>
+        <div style="font-size:10px;color:#64748b;text-align:right;margin-top:5px">${escapeHtml(dateText(m.createdAt))}</div>
+      </div>
+    </div>`;
+  }).join("");
+  messagesBox.scrollTop=messagesBox.scrollHeight;
+}
+async function markEmployerRead(){
+  if(!currentThreadId||!chatUser)return;
+  try{
+    const ref=doc(employerChatDb,"employerChats",currentThreadId);
+    const snap=await getDoc(ref);
+    if(snap.exists()&&snap.data().ownerUid===chatUser.uid&&snap.data().unreadForEmployer===true){
+      await updateDoc(ref,{unreadForEmployer:false});
+      unreadBox.style.display="none";
+    }
+  }catch(err){console.warn("Could not mark employer chat read:",err);}
+}
+function listenToThread(threadId){
+  stopConversationListeners();
+  currentThreadId=threadId;
+  conversationBox.style.display="block";
+  const threadRef=doc(employerChatDb,"employerChats",threadId);
+  stopThread=onSnapshot(threadRef,snap=>{
+    if(!snap.exists())return;
+    const data=snap.data();
+    if(data.ownerUid!==chatUser?.uid)return;
+    const hasUnread=data.unreadForEmployer===true;
+    unreadBox.style.display=hasUnread?"block":"none";
+    if(chatOverlay.classList.contains("open"))markEmployerRead();
+  },err=>{
+    console.error("Employer chat thread listener:",err);
+    showStatus(replyStatus,"Chat status load nahi hua. Firestore rules mein owner ko apni conversation read/update access chahiye.","error");
+  });
+  const mq=query(collection(employerChatDb,"employerChats",threadId,"messages"),orderBy("createdAt","asc"));
+  stopMessages=onSnapshot(mq,snap=>{
+    renderMessages(snap);
+    const hasAdminReply=snap.docs.some(d=>d.data().sender==="admin");
+    conversationBox.style.display="block";
+    if(hasAdminReply&&chatOverlay.classList.contains("open"))markEmployerRead();
+  },err=>{
+    console.error("Employer chat messages listener:",err);
+    showStatus(replyStatus,"Messages load nahi hue. Firestore rules mein apni chat ke messages read access check karein.","error");
+  });
+}
+async function loadExistingConversation(){
+  await authReady;
+  if(!chatUser)return;
+  let threadId="";
+  try{threadId=localStorage.getItem(storageKey)||"";}catch(_){}
+  if(!threadId)return;
+  try{
+    const ref=doc(employerChatDb,"employerChats",threadId);
+    const snap=await getDoc(ref);
+    // Never attach a browser to a thread unless its authenticated UID owns it.
+    if(snap.exists()&&snap.data().ownerUid===chatUser.uid){
+      listenToThread(threadId);
+    }else{
+      // Legacy threads created before owner UID binding remain in admin history.
+      // Start a fresh private thread on the next employer message.
+      currentThreadId="";
+      try{localStorage.removeItem(storageKey);}catch(_){}
+    }
+  }catch(err){
+    console.error("Load employer conversation:",err);
+    showStatus(replyStatus,"Conversation load nahi hui. Firebase Authentication aur Firestore Rules check karein.","error");
+  }
+}
+
+authReady=signInAnonymously(employerChatAuth).then(cred=>{
+  chatUser=cred.user;
+  return chatUser;
+}).catch(err=>{
+  console.error("Anonymous auth failed:",err);
+  showStatus(chatStatus,"Firebase Anonymous sign-in fail hua. Firebase Console → Authentication → Sign-in method mein Anonymous enable karein.","error");
+  return null;
+});
+onAuthStateChanged(employerChatAuth,user=>{
+  if(user){
+    chatUser=user;
+    authReady=Promise.resolve(user);
+    loadExistingConversation();
+  }
+});
+
+chatOpen?.addEventListener("click",async()=>{
+  chatOverlay.classList.add("open");document.body.style.overflow="hidden";
+  await loadExistingConversation();
+  if(currentThreadId)markEmployerRead();
+});
 function closeEmployerChat(){chatOverlay.classList.remove("open");document.body.style.overflow="";}
 chatClose?.addEventListener("click",closeEmployerChat);
 chatOverlay?.addEventListener("click",e=>{if(e.target===chatOverlay)closeEmployerChat();});
@@ -907,51 +1057,44 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeEmployerChat();
 
 chatForm?.addEventListener("submit",async e=>{
   e.preventDefault();
+  await authReady;
   const name=document.getElementById("employerChatName").value.trim();
   const companyName=document.getElementById("employerChatCompany").value.trim();
   const email=document.getElementById("employerChatEmail").value.trim().toLowerCase();
   const phone=document.getElementById("employerChatPhone").value.trim();
   const message=document.getElementById("employerChatMessage").value.trim();
   const sendBtn=document.getElementById("employerChatSend");
+  if(!chatUser){showStatus(chatStatus,"Secure sign-in nahi ho paya. Page refresh karein ya admin ko inform karein.","error");return;}
   if(!name||!companyName||!email||!message)return;
-  if(phone && !/^\d{10}$/.test(phone)){
-    chatStatus.style.display="block";chatStatus.style.color="#a63d3d";chatStatus.style.background="#fff5f5";chatStatus.style.borderColor="#f2cccc";
-    chatStatus.textContent="Mobile number 10 digits ka hona chahiye.";return;
-  }
+  if(phone&&!/^\d{10}$/.test(phone)){showStatus(chatStatus,"Mobile number 10 digits ka hona chahiye.","error");return;}
   sendBtn.disabled=true;sendBtn.textContent="Sending…";
-  chatStatus.style.display="block";chatStatus.style.color="#1769aa";chatStatus.style.background="#eef6ff";chatStatus.style.borderColor="#cfe4fb";
-  chatStatus.textContent="Secure connection ban raha hai aur message send ho raha hai…";
+  showStatus(chatStatus,"Message send ho raha hai…");
   try{
-    const user=await ensureEmployerChatUser();
-    const storageKey="rj_employer_chat_thread_v2_"+user.uid;
-    let threadId="";
-    try{threadId=localStorage.getItem(storageKey)||"";}catch(_){}
     let threadRef=null;
-    let existingThread=false;
-
-    if(threadId){
-      threadRef=doc(employerChatDb,"employerChats",threadId);
-      try{
-        const existing=await getDoc(threadRef);
-        existingThread=existing.exists() && existing.data().ownerUid===user.uid;
-      }catch(readErr){
-        // Old or inaccessible thread: start a new private thread.
-        existingThread=false;
+    let threadId=currentThreadId;
+    if(!threadId){
+      try{threadId=localStorage.getItem(storageKey)||"";}catch(_){}
+      if(threadId){
+        const oldRef=doc(employerChatDb,"employerChats",threadId);
+        const oldSnap=await getDoc(oldRef);
+        if(!oldSnap.exists()||oldSnap.data().ownerUid!==chatUser.uid)threadId="";
       }
     }
-
-    if(!existingThread){
+    if(!threadId){
       threadRef=doc(collection(employerChatDb,"employerChats"));
       threadId=threadRef.id;
       await setDoc(threadRef,{
-        ownerUid:user.uid,
+        ownerUid:chatUser.uid,
         employerName:name,companyName,email,phone,
         latestMessage:message,latestSender:"employer",
         createdAt:serverTimestamp(),updatedAt:serverTimestamp(),
         unreadForAdmin:true,unreadForEmployer:false
       });
       try{localStorage.setItem(storageKey,threadId);}catch(_){}
+      currentThreadId=threadId;
+      listenToThread(threadId);
     }else{
+      threadRef=doc(employerChatDb,"employerChats",threadId);
       await updateDoc(threadRef,{
         employerName:name,companyName,email,phone,
         latestMessage:message,latestSender:"employer",
@@ -959,120 +1102,43 @@ chatForm?.addEventListener("submit",async e=>{
       });
     }
     await addDoc(collection(employerChatDb,"employerChats",threadId,"messages"),{
-      text:message,sender:"employer",senderName:name,ownerUid:user.uid,createdAt:serverTimestamp()
+      text:message,sender:"employer",senderName:name,ownerUid:chatUser.uid,createdAt:serverTimestamp()
     });
-    chatStatus.style.color="#11623f";chatStatus.style.background="#edf8f2";chatStatus.style.borderColor="#c9ead9";
-    chatStatus.textContent="✅ Message submit ho gaya! Aap isi browser se wapas aakar apni conversation continue kar sakte hain. Admin aapke diye gaye email/mobile par bhi contact kar sakta hai.";
+    showStatus(chatStatus,"Message send ho gaya. Aap isi window mein Rajasthan Career Hub ke replies dekh sakte hain.","success");
     document.getElementById("employerChatMessage").value="";
+    listenToThread(threadId);
   }catch(err){
     console.error("Employer chat submit:",err);
-    chatStatus.style.color="#a63d3d";chatStatus.style.background="#fff5f5";chatStatus.style.borderColor="#f2cccc";
-    chatStatus.textContent="❌ Message submit nahi hua. Firebase Console mein Authentication ka Anonymous sign-in enable karein aur secure employerChats Firestore rules publish karein.";
+    showStatus(chatStatus,"Message submit nahi hua: "+(err.code||err.message)+". Firestore Rules aur Anonymous Authentication check karein.","error");
   }finally{sendBtn.disabled=false;sendBtn.textContent="💬 Send Message";}
 });
-</script>
 
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
-const visitorConfig={
- apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
- authDomain:"rajasthan-job.firebaseapp.com",
- projectId:"rajasthan-job",
- storageBucket:"rajasthan-job.firebasestorage.app",
- messagingSenderId:"894888753938",
- appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",
- measurementId:"G-15S2XJQK80"
-};
-const visitorApp=initializeApp(visitorConfig,"rj-visitor-tracker");
-const visitorAuth=getAuth(visitorApp);
-const visitorDb=getFirestore(visitorApp);
-
-(async()=>{
- try{
-   let user=visitorAuth.currentUser;
-   if(!user) user=(await signInAnonymously(visitorAuth)).user;
-   const uid=user.uid;
-   const now=new Date();
-   const sessionRef=doc(visitorDb,"webAnalyticsSessions",uid);
-   const params=new URLSearchParams(location.search);
-   const ref= document.referrer || "";
-   let source=params.get("utm_source")||params.get("source")||"";
-   if(!source){
-     if(!ref) source="Direct";
-     else {
-       try { source=(new URL(ref)).hostname.replace(/^www\./,""); }
-       catch(e){ source="Referral"; }
-     }
-   }
-   const medium=params.get("utm_medium")||"";
-   const campaign=params.get("utm_campaign")||"";
-   const ua=navigator.userAgent||"";
-   const device=/tablet|ipad/i.test(ua)?"Tablet":(/mobi|android|iphone/i.test(ua)?"Mobile":"Desktop");
-   let country="Unknown",city="Unknown",region="Unknown";
-   // Coarse location is based on IP using ipapi.co; the visitor's IP is sent to that provider.
-   try{
-     const ctrl=new AbortController();
-     const timer=setTimeout(()=>ctrl.abort(),2500);
-     const geo=await fetch("https://ipapi.co/json/",{signal:ctrl.signal});
-     clearTimeout(timer);
-     if(geo.ok){
-       const g=await geo.json();
-       country=String(g.country_name||"Unknown").slice(0,80);
-       city=String(g.city||"Unknown").slice(0,80);
-       region=String(g.region||"Unknown").slice(0,80);
-     }
-   }catch(e){}
-   const common={
-     uid, pagePath:location.pathname||"/", pageTitle:(document.title||"").slice(0,180),
-     source:String(source).slice(0,120),medium:String(medium).slice(0,100),
-     campaign:String(campaign).slice(0,120),referrer:ref.slice(0,500),
-     referrerHost:(()=>{try{return new URL(ref).hostname.slice(0,150)}catch(e){return "Direct"}})(),
-     country,city,region,device,
-     language:(navigator.language||"").slice(0,30),
-     timezone:(Intl.DateTimeFormat().resolvedOptions().timeZone||"").slice(0,80),
-     screen:Math.min(screen.width||0,10000)+"x"+Math.min(screen.height||0,10000),
-     createdAt:serverTimestamp(),eventAt:Date.now()
-   };
-   await addDoc(collection(visitorDb,"webAnalyticsEvents"),{...common,eventType:"page_view"});
-   await setDoc(sessionRef,{
-     uid,pagePath:common.pagePath,pageTitle:common.pageTitle,source:common.source,
-     referrerHost:common.referrerHost,country,city,region,device,language:common.language,
-     timezone:common.timezone,lastSeen:serverTimestamp(),lastSeenMs:Date.now(),
-     sessionStartedAt:serverTimestamp()
-   },{merge:true});
-   let lastPath=location.pathname;
-   const heartbeat=async()=>{
-     try{
-       await updateDoc(sessionRef,{
-         pagePath:location.pathname||"/",pageTitle:(document.title||"").slice(0,180),
-         lastSeen:serverTimestamp(),lastSeenMs:Date.now()
-       });
-     }catch(e){}
-   };
-   setInterval(heartbeat,30000);
-   document.addEventListener("visibilitychange",()=>{if(!document.hidden)heartbeat()});
-   window.addEventListener("beforeunload",()=>{});
-   // Count internal navigation/page changes on traditional and SPA links.
-   document.addEventListener("click",async ev=>{
-     const a=ev.target.closest&&ev.target.closest("a[href]");
-     if(!a)return;
-     try{
-       const u=new URL(a.href,location.href);
-       if(u.origin===location.origin && u.pathname!==lastPath){
-         lastPath=u.pathname;
-         await addDoc(collection(visitorDb,"webAnalyticsEvents"),{
-           ...common,pagePath:u.pathname,pageTitle:(a.textContent||document.title).trim().slice(0,180),
-           createdAt:serverTimestamp(),eventAt:Date.now(),eventType:"page_view"
-         });
-       }
-     }catch(e){}
-   });
- }catch(e){console.warn("Visitor analytics tracker:",e)}
-})();
+replyForm?.addEventListener("submit",async e=>{
+  e.preventDefault();
+  await authReady;
+  const text=replyInput.value.trim();
+  if(!chatUser||!currentThreadId||!text)return;
+  replyButton.disabled=true;replyButton.textContent="Sending…";
+  try{
+    const threadRef=doc(employerChatDb,"employerChats",currentThreadId);
+    const threadSnap=await getDoc(threadRef);
+    if(!threadSnap.exists()||threadSnap.data().ownerUid!==chatUser.uid){
+      throw new Error("This conversation is not owned by this browser session.");
+    }
+    await addDoc(collection(employerChatDb,"employerChats",currentThreadId,"messages"),{
+      text,sender:"employer",senderName:threadSnap.data().employerName||"Employer",
+      ownerUid:chatUser.uid,createdAt:serverTimestamp()
+    });
+    await updateDoc(threadRef,{
+      latestMessage:text,latestSender:"employer",updatedAt:serverTimestamp(),unreadForAdmin:true
+    });
+    replyInput.value="";
+    showStatus(replyStatus,"Reply sent to Rajasthan Career Hub.","success");
+  }catch(err){
+    console.error("Employer reply:",err);
+    showStatus(replyStatus,"Reply send nahi hua: "+(err.code||err.message),"error");
+  }finally{replyButton.disabled=false;replyButton.textContent="Send Reply";}
+});
 </script>
 
 </body>
