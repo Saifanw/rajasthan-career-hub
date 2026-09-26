@@ -320,7 +320,7 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 <nav><div class="wrap navin">
 <a href="#home" class="brand"><div class="logo">RJ</div><div>Rajasthan & Jaipur Job Portal<small>Jobs • Government Jobs • Career Support</small></div></a>
 <div class="menu">
-<a href="jobs.html">Jobs</a><a href="government-jobs.html">Govt Jobs</a><a href="post-a-job.html">Post a Job</a><a href="job-seeker.html">👤 Job Seeker</a><button type="button" class="employerChatNavBtn" id="openEmployerChat">🏢 HR / Company Chat</button><a href="#services">Services</a><a class="btn primary" href="inquiry.html">Inquiry</a><div class="notifWrap">
+<a href="jobs.html">Jobs</a><a href="government-jobs.html">Govt Jobs</a><a href="post-a-job.html">Post a Job</a><a href="job-seeker.html">👤 Job Seeker</a><button type="button" class="employerChatNavBtn" id="openEmployerChat">🏢 HR / Company Chat</button><a class="btn primary" href="inquiry.html">Inquiry</a><div class="notifWrap">
   <button id="notifBell" class="notifBell" aria-label="Notifications" title="Notifications">🔔<span id="notifBadge" class="notifBadge">0</span></button>
   <div id="notifPanel" class="notifPanel">
     <div class="notifPanelHead">
@@ -526,7 +526,7 @@ try{
       const db=b.createdAt?.toDate?b.createdAt.toDate().getTime():new Date(b.createdAt||b.postedAt||0).getTime();
       return db-da;
     });
-    const latest=jobs.slice(0,3);
+    const latest=jobs.slice(0,2);
     if(!latest.length){
       heroJobsBox.innerHTML='<div class="heroJobEmpty">Abhi koi approved job listed nahi hai. Nayi approved vacancies yahan automatically dikhenगी.</div>';
       return;
@@ -867,32 +867,12 @@ if(inquiryFormFallback){
       <button type="submit" class="employerChatSubmit" id="employerChatSend">💬 Send Message</button>
       <div class="employerChatStatus" id="employerChatStatus" role="status" aria-live="polite"></div>
     </form>
-
-    <section id="employerChatConversation" style="display:none;margin-top:18px;border-top:1px solid #dce5ef;padding-top:16px">
-      <h3 style="margin:0 0 8px;color:#12355b;font-size:17px">Your conversation</h3>
-      <div id="employerChatUnread" style="display:none;margin:0 0 8px;padding:8px 10px;border-radius:8px;background:#fff7df;color:#805400;font-size:13px;font-weight:700">You have a new reply from Rajasthan Career Hub.</div>
-      <div id="employerChatMessages" aria-live="polite" style="height:240px;overflow:auto;border:1px solid #d4dfeb;border-radius:10px;background:#f7fbff;padding:12px;margin-bottom:10px">
-        <p style="color:#64748b;font-size:13px">Your messages and admin replies will appear here.</p>
-      </div>
-      <form id="employerChatReplyForm">
-        <label for="employerChatReplyText">Reply to Rajasthan Career Hub</label>
-        <textarea id="employerChatReplyText" maxlength="2000" placeholder="Type your reply…" required></textarea>
-        <button type="submit" class="employerChatSubmit" id="employerChatReplySend">Send Reply</button>
-        <div class="employerChatStatus" id="employerChatReplyStatus" role="status" aria-live="polite"></div>
-      </form>
-    </section>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {
-  getFirestore, collection, addDoc, doc, getDoc, setDoc, updateDoc,
-  serverTimestamp, onSnapshot, query, orderBy
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-import {
-  getAuth, signInAnonymously, onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, getDoc, setDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const employerChatConfig={
   apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",
@@ -904,152 +884,13 @@ const employerChatConfig={
 };
 const employerChatApp=getApps().find(a=>a.name==="public-home")||initializeApp(employerChatConfig,"employer-chat-public");
 const employerChatDb=getFirestore(employerChatApp);
-const employerChatAuth=getAuth(employerChatApp);
-
 const chatOverlay=document.getElementById("employerChatOverlay");
 const chatForm=document.getElementById("employerChatForm");
 const chatStatus=document.getElementById("employerChatStatus");
 const chatOpen=document.getElementById("openEmployerChat");
 const chatClose=document.getElementById("closeEmployerChat");
-const conversationBox=document.getElementById("employerChatConversation");
-const messagesBox=document.getElementById("employerChatMessages");
-const unreadBox=document.getElementById("employerChatUnread");
-const replyForm=document.getElementById("employerChatReplyForm");
-const replyInput=document.getElementById("employerChatReplyText");
-const replyButton=document.getElementById("employerChatReplySend");
-const replyStatus=document.getElementById("employerChatReplyStatus");
 
-const storageKey="rj_employer_chat_thread_v1";
-let chatUser=null;
-let currentThreadId="";
-let stopMessages=null;
-let stopThread=null;
-let authReady=Promise.resolve(null);
-
-function showStatus(el,text,kind="info"){
-  el.style.display="block";
-  const styles={
-    info:["#1769aa","#eef6ff","#cfe4fb"],
-    success:["#11623f","#edf8f2","#c9ead9"],
-    error:["#a63d3d","#fff5f5","#f2cccc"]
-  }[kind];
-  el.style.color=styles[0];el.style.background=styles[1];el.style.borderColor=styles[2];
-  el.textContent=text;
-}
-function escapeHtml(value){
-  return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-function dateText(value){
-  try{
-    const d=value?.toDate?value.toDate():value instanceof Date?value:null;
-    return d?d.toLocaleString():"Just now";
-  }catch(_){return "";}
-}
-function stopConversationListeners(){
-  if(stopMessages){stopMessages();stopMessages=null;}
-  if(stopThread){stopThread();stopThread=null;}
-}
-function renderMessages(snapshot){
-  const messages=snapshot.docs.map(d=>({id:d.id,...d.data()}));
-  if(!messages.length){
-    messagesBox.innerHTML='<p style="color:#64748b;font-size:13px">No messages yet.</p>';
-    return;
-  }
-  messagesBox.innerHTML=messages.map(m=>{
-    const admin=m.sender==="admin";
-    return `<div style="display:flex;justify-content:${admin?'flex-start':'flex-end'};margin:8px 0">
-      <div style="max-width:88%;padding:9px 12px;border-radius:12px;background:${admin?'#fff':'#dceeff'};border:1px solid #d4dfeb">
-        <div style="font-size:11px;color:#64748b;font-weight:800">${admin?'Rajasthan Career Hub':'You'}</div>
-        <div style="white-space:pre-wrap;overflow-wrap:anywhere;margin-top:4px;color:#102a43;font-size:14px">${escapeHtml(m.text||"")}</div>
-        <div style="font-size:10px;color:#64748b;text-align:right;margin-top:5px">${escapeHtml(dateText(m.createdAt))}</div>
-      </div>
-    </div>`;
-  }).join("");
-  messagesBox.scrollTop=messagesBox.scrollHeight;
-}
-async function markEmployerRead(){
-  if(!currentThreadId||!chatUser)return;
-  try{
-    const ref=doc(employerChatDb,"employerChats",currentThreadId);
-    const snap=await getDoc(ref);
-    if(snap.exists()&&snap.data().ownerUid===chatUser.uid&&snap.data().unreadForEmployer===true){
-      await updateDoc(ref,{unreadForEmployer:false});
-      unreadBox.style.display="none";
-    }
-  }catch(err){console.warn("Could not mark employer chat read:",err);}
-}
-function listenToThread(threadId){
-  stopConversationListeners();
-  currentThreadId=threadId;
-  conversationBox.style.display="block";
-  const threadRef=doc(employerChatDb,"employerChats",threadId);
-  stopThread=onSnapshot(threadRef,snap=>{
-    if(!snap.exists())return;
-    const data=snap.data();
-    if(data.ownerUid!==chatUser?.uid)return;
-    const hasUnread=data.unreadForEmployer===true;
-    unreadBox.style.display=hasUnread?"block":"none";
-    if(chatOverlay.classList.contains("open"))markEmployerRead();
-  },err=>{
-    console.error("Employer chat thread listener:",err);
-    showStatus(replyStatus,"Chat status load nahi hua. Firestore rules mein owner ko apni conversation read/update access chahiye.","error");
-  });
-  const mq=query(collection(employerChatDb,"employerChats",threadId,"messages"),orderBy("createdAt","asc"));
-  stopMessages=onSnapshot(mq,snap=>{
-    renderMessages(snap);
-    const hasAdminReply=snap.docs.some(d=>d.data().sender==="admin");
-    conversationBox.style.display="block";
-    if(hasAdminReply&&chatOverlay.classList.contains("open"))markEmployerRead();
-  },err=>{
-    console.error("Employer chat messages listener:",err);
-    showStatus(replyStatus,"Messages load nahi hue. Firestore rules mein apni chat ke messages read access check karein.","error");
-  });
-}
-async function loadExistingConversation(){
-  await authReady;
-  if(!chatUser)return;
-  let threadId="";
-  try{threadId=localStorage.getItem(storageKey)||"";}catch(_){}
-  if(!threadId)return;
-  try{
-    const ref=doc(employerChatDb,"employerChats",threadId);
-    const snap=await getDoc(ref);
-    // Never attach a browser to a thread unless its authenticated UID owns it.
-    if(snap.exists()&&snap.data().ownerUid===chatUser.uid){
-      listenToThread(threadId);
-    }else{
-      // Legacy threads created before owner UID binding remain in admin history.
-      // Start a fresh private thread on the next employer message.
-      currentThreadId="";
-      try{localStorage.removeItem(storageKey);}catch(_){}
-    }
-  }catch(err){
-    console.error("Load employer conversation:",err);
-    showStatus(replyStatus,"Conversation load nahi hui. Firebase Authentication aur Firestore Rules check karein.","error");
-  }
-}
-
-authReady=signInAnonymously(employerChatAuth).then(cred=>{
-  chatUser=cred.user;
-  return chatUser;
-}).catch(err=>{
-  console.error("Anonymous auth failed:",err);
-  showStatus(chatStatus,"Firebase Anonymous sign-in fail hua. Firebase Console → Authentication → Sign-in method mein Anonymous enable karein.","error");
-  return null;
-});
-onAuthStateChanged(employerChatAuth,user=>{
-  if(user){
-    chatUser=user;
-    authReady=Promise.resolve(user);
-    loadExistingConversation();
-  }
-});
-
-chatOpen?.addEventListener("click",async()=>{
-  chatOverlay.classList.add("open");document.body.style.overflow="hidden";
-  await loadExistingConversation();
-  if(currentThreadId)markEmployerRead();
-});
+chatOpen?.addEventListener("click",()=>{chatOverlay.classList.add("open");document.body.style.overflow="hidden";});
 function closeEmployerChat(){chatOverlay.classList.remove("open");document.body.style.overflow="";}
 chatClose?.addEventListener("click",closeEmployerChat);
 chatOverlay?.addEventListener("click",e=>{if(e.target===chatOverlay)closeEmployerChat();});
@@ -1057,44 +898,41 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeEmployerChat();
 
 chatForm?.addEventListener("submit",async e=>{
   e.preventDefault();
-  await authReady;
   const name=document.getElementById("employerChatName").value.trim();
   const companyName=document.getElementById("employerChatCompany").value.trim();
   const email=document.getElementById("employerChatEmail").value.trim().toLowerCase();
   const phone=document.getElementById("employerChatPhone").value.trim();
   const message=document.getElementById("employerChatMessage").value.trim();
   const sendBtn=document.getElementById("employerChatSend");
-  if(!chatUser){showStatus(chatStatus,"Secure sign-in nahi ho paya. Page refresh karein ya admin ko inform karein.","error");return;}
   if(!name||!companyName||!email||!message)return;
-  if(phone&&!/^\d{10}$/.test(phone)){showStatus(chatStatus,"Mobile number 10 digits ka hona chahiye.","error");return;}
+  if(phone && !/^\d{10}$/.test(phone)){
+    chatStatus.style.display="block";chatStatus.style.color="#a63d3d";chatStatus.style.background="#fff5f5";chatStatus.style.borderColor="#f2cccc";
+    chatStatus.textContent="Mobile number 10 digits ka hona chahiye.";return;
+  }
   sendBtn.disabled=true;sendBtn.textContent="Sending…";
-  showStatus(chatStatus,"Message send ho raha hai…");
+  chatStatus.style.display="block";chatStatus.style.color="#1769aa";chatStatus.style.background="#eef6ff";chatStatus.style.borderColor="#cfe4fb";
+  chatStatus.textContent="Message send ho raha hai…";
   try{
+    const storageKey="rj_employer_chat_thread_v1";
+    let threadId="";
+    try{threadId=localStorage.getItem(storageKey)||"";}catch(_){}
     let threadRef=null;
-    let threadId=currentThreadId;
-    if(!threadId){
-      try{threadId=localStorage.getItem(storageKey)||"";}catch(_){}
-      if(threadId){
-        const oldRef=doc(employerChatDb,"employerChats",threadId);
-        const oldSnap=await getDoc(oldRef);
-        if(!oldSnap.exists()||oldSnap.data().ownerUid!==chatUser.uid)threadId="";
-      }
+    if(threadId){
+      threadRef=doc(employerChatDb,"employerChats",threadId);
+      const existing=await getDoc(threadRef);
+      if(!existing.exists())threadId="";
     }
     if(!threadId){
       threadRef=doc(collection(employerChatDb,"employerChats"));
       threadId=threadRef.id;
       await setDoc(threadRef,{
-        ownerUid:chatUser.uid,
         employerName:name,companyName,email,phone,
         latestMessage:message,latestSender:"employer",
         createdAt:serverTimestamp(),updatedAt:serverTimestamp(),
         unreadForAdmin:true,unreadForEmployer:false
       });
       try{localStorage.setItem(storageKey,threadId);}catch(_){}
-      currentThreadId=threadId;
-      listenToThread(threadId);
     }else{
-      threadRef=doc(employerChatDb,"employerChats",threadId);
       await updateDoc(threadRef,{
         employerName:name,companyName,email,phone,
         latestMessage:message,latestSender:"employer",
@@ -1102,42 +940,16 @@ chatForm?.addEventListener("submit",async e=>{
       });
     }
     await addDoc(collection(employerChatDb,"employerChats",threadId,"messages"),{
-      text:message,sender:"employer",senderName:name,ownerUid:chatUser.uid,createdAt:serverTimestamp()
+      text:message,sender:"employer",senderName:name,createdAt:serverTimestamp()
     });
-    showStatus(chatStatus,"Message send ho gaya. Aap isi window mein Rajasthan Career Hub ke replies dekh sakte hain.","success");
+    chatStatus.style.color="#11623f";chatStatus.style.background="#edf8f2";chatStatus.style.borderColor="#c9ead9";
+    chatStatus.textContent="✅ Message submit ho gaya! Admin aapke diye gaye email/mobile par contact karega ya chat mein reply karega.";
     document.getElementById("employerChatMessage").value="";
-    listenToThread(threadId);
   }catch(err){
     console.error("Employer chat submit:",err);
-    showStatus(chatStatus,"Message submit nahi hua: "+(err.code||err.message)+". Firestore Rules aur Anonymous Authentication check karein.","error");
+    chatStatus.style.color="#a63d3d";chatStatus.style.background="#fff5f5";chatStatus.style.borderColor="#f2cccc";
+    chatStatus.textContent="❌ Message submit nahi hua. Firebase Firestore rules mein employerChats thread aur messages create/update ki permission configure karni hogi.";
   }finally{sendBtn.disabled=false;sendBtn.textContent="💬 Send Message";}
-});
-
-replyForm?.addEventListener("submit",async e=>{
-  e.preventDefault();
-  await authReady;
-  const text=replyInput.value.trim();
-  if(!chatUser||!currentThreadId||!text)return;
-  replyButton.disabled=true;replyButton.textContent="Sending…";
-  try{
-    const threadRef=doc(employerChatDb,"employerChats",currentThreadId);
-    const threadSnap=await getDoc(threadRef);
-    if(!threadSnap.exists()||threadSnap.data().ownerUid!==chatUser.uid){
-      throw new Error("This conversation is not owned by this browser session.");
-    }
-    await addDoc(collection(employerChatDb,"employerChats",currentThreadId,"messages"),{
-      text,sender:"employer",senderName:threadSnap.data().employerName||"Employer",
-      ownerUid:chatUser.uid,createdAt:serverTimestamp()
-    });
-    await updateDoc(threadRef,{
-      latestMessage:text,latestSender:"employer",updatedAt:serverTimestamp(),unreadForAdmin:true
-    });
-    replyInput.value="";
-    showStatus(replyStatus,"Reply sent to Rajasthan Career Hub.","success");
-  }catch(err){
-    console.error("Employer reply:",err);
-    showStatus(replyStatus,"Reply send nahi hua: "+(err.code||err.message),"error");
-  }finally{replyButton.disabled=false;replyButton.textContent="Send Reply";}
 });
 </script>
 
