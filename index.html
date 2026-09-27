@@ -306,6 +306,22 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 .heroAllJobs{display:block;text-align:center;margin-top:9px;padding:8px;border-radius:9px;background:#eef5ff;color:var(--blue);font-size:12px;font-weight:900}
 @media(max-width:850px){.heroPanelCompact.latestHeroJobs{display:block!important}}
 </style>
+
+<style>
+.donate-nav-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 12px;border:1px solid #f4c6ce;border-radius:10px;background:#fff1f2;color:#a51d36;font-size:12px;font-weight:900;cursor:pointer;white-space:nowrap;box-shadow:0 3px 10px rgba(165,29,54,.08)}
+.donate-nav-btn:hover{background:#ffe4e8}
+.donate-modal{display:none;position:fixed;inset:0;background:rgba(8,25,45,.58);z-index:12000;align-items:center;justify-content:center;padding:16px}
+.donate-modal.open{display:flex}
+.donate-modal-card{width:min(350px,100%);background:#fff;border:1px solid #dce5ef;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.25);padding:18px;text-align:center;position:relative}
+.donate-modal-close{position:absolute;right:10px;top:9px;width:30px;height:30px;border:0;border-radius:50%;background:#f1f5f9;color:#102a43;font-size:20px;cursor:pointer}
+.donate-modal-title{font-size:18px;font-weight:900;color:#102a43;margin:5px 28px 6px}
+.donate-modal-copy{font-size:13px;color:#64748b;line-height:1.5;margin:0 0 12px}
+.donate-modal-upi{font-size:13px;font-weight:900;color:#26384c;margin:10px 0}
+.donate-modal-pay{display:inline-flex;background:#1769e8;color:#fff!important;padding:9px 15px;border-radius:9px;font-size:13px;font-weight:900;text-decoration:none}
+.donate-modal-note{display:block;font-size:11px;color:#718096;margin-top:10px}
+@media(max-width:600px){.donate-nav-btn{font-size:11px!important;padding:7px 9px!important}}
+</style>
+
 </head>
 <body>
 <!-- LIVE NOTIFICATION POPUP -->
@@ -315,12 +331,12 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 
 
 
-<div class="top"><div class="wrap topin"><span>📍 Jaipur, Rajasthan</span><span>Jobs • Government Jobs</span></div></div>
+<div class="top"><div class="wrap topin"><span>📍 Jaipur, Rajasthan</span><span>Jobs • Government Jobs • Job Services</span></div></div>
 
 <nav><div class="wrap navin">
 <a href="#home" class="brand"><div class="logo">RJ</div><div>Rajasthan & Jaipur Job Portal<small>Jobs • Government Jobs • Career Support</small></div></a>
 <div class="menu">
-<a href="jobs.html">Jobs</a><a href="government-jobs.html">Govt Jobs</a><a href="post-a-job.html">Post a Job</a><a href="job-seeker.html">👤 Job Seeker</a><button type="button" class="employerChatNavBtn" id="openEmployerChat">🏢 HR / Company Chat</button><a href="#services">Services</a><a class="btn primary" href="inquiry.html">Inquiry</a><div class="notifWrap">
+<a href="jobs.html">Jobs</a><a href="government-jobs.html">Govt Jobs</a><a href="post-a-job.html">Post a Job</a><a href="job-seeker.html">👤 Job Seeker</a><button type="button" class="employerChatNavBtn" id="openEmployerChat">🏢 HR / Company Chat</button><button type="button" class="donate-nav-btn" id="openDonateModal">❤️ Donate</button><a class="btn primary" href="inquiry.html">Inquiry</a><div class="notifWrap">
   <button id="notifBell" class="notifBell" aria-label="Notifications" title="Notifications">🔔<span id="notifBadge" class="notifBadge">0</span></button>
   <div id="notifPanel" class="notifPanel">
     <div class="notifPanelHead">
@@ -508,12 +524,6 @@ const db2=getFirestore(app2);
 // Cards link to the public jobs page; if a job has an external application URL,
 // its Apply button opens that destination in a new tab.
 const heroJobsBox=document.getElementById('heroLatestJobs');
-if(!heroJobsBox) console.error('Homepage latest jobs: #heroLatestJobs container not found.');
-function escapeHeroHtml(value){
-  return String(value ?? '').replace(/[&<>"']/g, function(char){
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char];
-  });
-}
 function heroJobDate(value){
   try{
     const d=value?.toDate?value.toDate():new Date(value);
@@ -522,7 +532,7 @@ function heroJobDate(value){
   }catch(e){return '';}
 }
 function heroJobText(value){
-  return String(value||'').replace(/\s+/g,' ').trim();
+  return String(value||'').replace(/\\s+/g,' ').trim();
 }
 try{
   onSnapshot(query(collection(db2,'jobs'),where('status','==','approved')),snap=>{
@@ -538,15 +548,15 @@ try{
       return;
     }
     heroJobsBox.innerHTML=latest.map(j=>{
-      const title=escapeHeroHtml(j.title||j.jobTitle||'Job Vacancy');
-      const company=escapeHeroHtml(j.company||j.companyName||'Company details on job page');
-      const location=escapeHeroHtml(j.location||'Location not specified');
-      const type=escapeHeroHtml(j.type||j.jobType||j.category||'Job');
-      const exp=escapeHeroHtml(j.experience||'');
-      const salary=escapeHeroHtml(j.salary||'');
-      const date=escapeHeroHtml(heroJobDate(j.createdAt||j.postedAt||j.created_at));
+      const title=esc2(j.title||j.jobTitle||'Job Vacancy');
+      const company=esc2(j.company||j.companyName||'Company details on job page');
+      const location=esc2(j.location||'Location not specified');
+      const type=esc2(j.type||j.jobType||j.category||'Job');
+      const exp=esc2(j.experience||'');
+      const salary=esc2(j.salary||'');
+      const date=esc2(heroJobDate(j.createdAt||j.postedAt||j.created_at));
       const apply=String(j.applyLink||j.apply||j.applicationLink||'').trim();
-      const safeApply=/^https?:\/\//i.test(apply)?apply:'';
+      const safeApply=/^https?:\\/\\//i.test(apply)?apply:'';
       const detailsHref='jobs.html';
       return `<article class="heroJobCard">
         <div class="heroJobMain"><div class="heroJobInfo">
@@ -556,7 +566,7 @@ try{
         <div class="heroJobMeta">${type}${exp?' · '+exp:''}${salary?' · '+salary:''}</div>
         <div class="heroJobActions">
           <a class="heroJobButton" href="${detailsHref}">View Job →</a>
-          ${safeApply?`<a class="heroJobButton secondary" href="${escapeHeroHtml(safeApply)}" target="_blank" rel="noopener noreferrer">Apply ↗</a>`:''}
+          ${safeApply?`<a class="heroJobButton secondary" href="${esc2(safeApply)}" target="_blank" rel="noopener noreferrer">Apply ↗</a>`:''}
         </div>
       </article>`;
     }).join('');
@@ -1078,6 +1088,30 @@ const visitorDb=getFirestore(visitorApp);
      }catch(e){}
    });
  }catch(e){console.warn("Visitor analytics tracker:",e)}
+})();
+</script>
+
+
+<div class="donate-modal" id="donateModal" role="dialog" aria-modal="true" aria-labelledby="donateModalTitle">
+ <div class="donate-modal-card">
+  <button type="button" class="donate-modal-close" id="closeDonateModal" aria-label="बंद करें">×</button>
+  <div class="donate-modal-title" id="donateModalTitle">❤️ वेबसाइट को सहयोग दें</div>
+  <p class="donate-modal-copy">कृपया डोनेशन करें। आपके सहयोग से ही यह वेबसाइट चलती है।</p>
+  <a href="upi://pay?pa=6350566010@ybl&amp;pn=Rajasthan%20Career%20Hub&amp;cu=INR"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZoAAAGaAQAAAAAefbjOAAADBUlEQVR4nO2cQY6kOBBFXwxIuYQb1FHMDeZIozxS3wAfpQ5Qklm2BPqzsA1U9syiO3sgpwgWCGOeMqyMDCK+7TTx00f84+cZcMghhxxyyCGHviZk5WjzFUwtpaMHG6b6wHCKeQ4dDwVJUgJCAuhmYDIjJNBII0nSZ+g48xw6HprWAAAQ+yU3de/LLTNrf8snOfTaUPvQVnwTFhKy+CaMbmkJ384yz6HDoUePsPBuEPuP3KE43ATTWeY5dDhUPaITMNUYwXQTcWhn6D5MAHsl68XH5NAzEPuMkUaE9E+n+kCQpPHFx+TQM1B5OaxtwXcj9k25ovtuJYKcYZ5DJ0E2sFTJwW4iaIZoLTDdpHtfRYnhFPMcOj5GRGtkYQSjSwiWVkFLm2NESEsLNPPh5jl0OJTzCI2AlIoQlZtjpxwtpAQawfOIC0DFI6S5ukCC2pxXCXPrcI/44lCtNboSGYBGNR7M2TeKlN3NHiMuANWffTevdWhTTrnw/NTrMeLrQ8UPQmokVRfYZQ9KjfLEV3CPuBwU32Z0zxNaTVYgbMizoDfp7rPhl4BWhWoGpna20gTinwJY8iNG91El7xcfk0PPQOVLjgMQtJiYequdhqARcVgMaGRHm+fQ4dBaa8zUPOKh8FxTiC3RfPExOfQMtMsss3ZNp12tsc8sk+sRV4B2c59FqaSRxlWe2KrPrQR1j/jK0H7FTFhnOENaWkLqgamHkBYsvPuquitA9a2xSZOQpQge1cuEa5YXgD4pVFrTy9RII1WwKnmEZ5ZXgD7nEcUtaoUxr9EC1yyvBW2vDrO+2S2yswEogQLIzf/HmBx6OkZQak4oO3jW0/bC8BhxFahoUPVuSEB4v9V7dYuXDeeY59AJmSUlFNDNu7UQu2XYuB5xCehxBw/h200GLWLq0bZOOw4tFsZjzXPodEj3fsn7f4n9tttzMftL879Bx5nn0H8OPe7pgu6jFRNZwrQw5vlQiOuU6KuPyaFnoB9qjU2pfNSlOq81rgCZ/zOZQw455JBDDjn0i9Dfjoljug+QRn0AAAAASUVORK5CYII=" alt="UPI QR Code" style="display:block;width:140px;max-width:55%;height:auto;margin:0 auto 8px;border:1px solid #e2e8f0;border-radius:8px"></a>
+  <div class="donate-modal-upi">UPI: 6350566010@ybl</div>
+  <a class="donate-modal-pay" href="upi://pay?pa=6350566010@ybl&amp;pn=Rajasthan%20Career%20Hub&amp;cu=INR">UPI से सहयोग करें</a>
+  <small class="donate-modal-note">दान पूरी तरह वैकल्पिक है।</small>
+ </div>
+</div>
+<script>
+(function(){
+ const modal=document.getElementById('donateModal');
+ const open=document.getElementById('openDonateModal');
+ const close=document.getElementById('closeDonateModal');
+ if(open&&modal)open.addEventListener('click',()=>modal.classList.add('open'));
+ if(close&&modal)close.addEventListener('click',()=>modal.classList.remove('open'));
+ if(modal)modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal)modal.classList.remove('open')});
 })();
 </script>
 
