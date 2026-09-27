@@ -374,6 +374,18 @@ nav .menu .notifPanel{max-width:calc(100vw - 60px)!important;right:0!important;l
 }
 </style>
 
+
+<style id="ticker-and-bell-final-fix">
+.jobMessageStrip{display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:2!important;width:100%!important;height:40px!important;min-height:40px!important;overflow:hidden!important;box-sizing:border-box!important}
+.jobMessageStrip .wrap,.jobMessageStrip .dynamicin{display:block!important;width:100%!important;max-width:100%!important;overflow:hidden!important;box-sizing:border-box!important}
+.jobMessageStrip .dynamictrack{display:flex!important;align-items:center!important;width:max-content!important;white-space:nowrap!important;animation:rcTickerScroll 38s linear infinite!important;line-height:40px!important}
+.jobMessageStrip .dynamictrack>span{display:inline-block!important;flex:0 0 auto!important;padding-right:55px!important}
+@keyframes rcTickerScroll{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
+nav .notifWrap,#notifBell,#notifBadge,#notifPanel{display:none!important;visibility:hidden!important}
+@media(max-width:760px){.jobMessageStrip{height:36px!important;min-height:36px!important}.jobMessageStrip .dynamictrack{line-height:36px!important;font-size:12px!important}}
+@media(prefers-reduced-motion:reduce){.jobMessageStrip .dynamictrack{animation:none!important;transform:none!important}}
+</style>
+
 </head>
 <body>
 <!-- LIVE NOTIFICATION POPUP -->
