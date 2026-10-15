@@ -24,16 +24,17 @@ textarea{min-height:90px;resize:vertical}.full{grid-column:1/-1}
 a{color:var(--blue);font-weight:800}
 @media(max-width:650px){.grid{grid-template-columns:1fr}.skills{grid-template-columns:1fr 1fr}}
 </style>
+<link rel="stylesheet" href="assets/rch-site.css">
 </head>
 <body>
 <header><div class="wrap">
-<h1>👤 Find a Job</h1>
+<h1>Find a Job</h1>
 <p>Apni job profile register karein. Suitable opportunities ke liye Rajasthan Job team aapse contact kar sakti hai.</p>
 </div></header>
 
 <main class="wrap">
 <div class="card">
-<div class="section-title">👤 Personal Information</div>
+<div class="section-title">Personal Information</div>
 <div class="grid">
 <div><label>Full Name *</label><input id="name" maxlength="80" placeholder="Your full name"></div>
 <div><label>Mobile Number *</label><input id="mobile" maxlength="10" inputmode="numeric" placeholder="10-digit mobile"></div>
@@ -43,7 +44,7 @@ a{color:var(--blue);font-weight:800}
 <div><label>District</label><input id="district" maxlength="60" placeholder="Jaipur"></div>
 </div>
 
-<div class="section-title" style="margin-top:25px">💼 Job Preference</div>
+<div class="section-title" style="margin-top:25px">Job Preference</div>
 <div class="grid">
 <div><label>Preferred Job Role *</label><input id="role" maxlength="100" placeholder="MIS Executive, Sales Executive, Data Analyst..."></div>
 <div><label>Job Type *</label><select id="jobType"><option value="">Select</option><option>Private</option><option>Government</option><option>Both</option></select></div>
@@ -53,7 +54,7 @@ a{color:var(--blue);font-weight:800}
 <div><label>Availability *</label><select id="availability"><option value="">Select</option><option>Immediate Joiner</option><option>Within 15 Days</option><option>Within 30 Days</option><option>Not Sure</option></select></div>
 </div>
 
-<div class="section-title" style="margin-top:25px">🎓 Education</div>
+<div class="section-title" style="margin-top:25px">Education</div>
 <div class="grid">
 <div><label>Highest Qualification *</label><input id="qualification" maxlength="100" placeholder="B.Tech / B.Com / 12th / MBA..."></div>
 <div><label>Branch / Course</label><input id="course" maxlength="100" placeholder="Mechanical / Commerce / Computer..."></div>
@@ -61,7 +62,7 @@ a{color:var(--blue);font-weight:800}
 <div><label>Previous Company</label><input id="company" maxlength="120" placeholder="If experienced"></div>
 </div>
 
-<div class="section-title" style="margin-top:25px">🛠️ Skills</div>
+<div class="section-title" style="margin-top:25px">Skills</div>
 <div class="skills">
 <label class="skill"><input type="checkbox" value="MS Excel"> MS Excel</label>
 <label class="skill"><input type="checkbox" value="MIS"> MIS</label>
@@ -84,9 +85,9 @@ a{color:var(--blue);font-weight:800}
 </label>
 </div>
 
-<button id="submit" class="btn">🚀 Register for Jobs</button>
+<button id="submit" class="btn">Register for Jobs</button>
 <div id="msg" class="msg"></div>
-<p style="margin-top:18px"><a href="jobs.html">🔎 View Jobs</a> &nbsp;|&nbsp; <a href="index.html">🏠 Home</a></p>
+<p style="margin-top:18px"><a href="jobs.html">View Jobs</a> &nbsp;|&nbsp; <a href="index.html">Home</a></p>
 </div>
 </main>
 
@@ -129,15 +130,16 @@ $("submit").onclick=async()=>{
      experience,availability,qualification,course,passingYear,company,skills,otherSkills,
      status:"new",consent:true,createdAt:serverTimestamp(),updatedAt:serverTimestamp()
    });
-   message("✅ Registration successful. Rajasthan Job team suitable opportunity ke liye contact kar sakti hai.","ok");
+   message("Registration successful. Rajasthan Job team suitable opportunity ke liye contact kar sakti hai.","ok");
    ["name","mobile","whatsapp","email","city","district","role","preferredLocation","salary","qualification","course","passingYear","company","otherSkills"].forEach(id=>$(id).value="");
    $("jobType").value="";$("experience").value="";$("availability").value="";$("consent").checked=false;
    document.querySelectorAll('.skill input').forEach(x=>x.checked=false);
  }catch(e){
-   console.error(e);message("❌ Registration failed: "+e.message,"err");
- }finally{btn.disabled=false;btn.textContent="🚀 Register for Jobs"}
+   console.error(e);message("Registration failed: "+e.message,"err");
+ }finally{btn.disabled=false;btn.textContent="Register for Jobs"}
 };
 </script>
 <script type="module" src="assets/rch-analytics-tracker.js"></script>
+<script src="assets/rch-chrome.js"></script>
 </body>
 </html>

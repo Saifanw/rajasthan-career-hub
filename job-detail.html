@@ -41,7 +41,8 @@ h2{font-size:18px;color:var(--navy);margin:0 0 8px}
 @media(max-width:700px){.sticky.on{display:flex}.actions .apply{display:none}.card{padding:18px}}
 a:focus-visible,button:focus-visible{outline:3px solid #7db4ff;outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.sk{animation:none}}
-</style></head>
+</style><link rel="stylesheet" href="assets/rch-site.css">
+</head>
 <body>
 <div class="bar"><div class="wrap"><a href="index.html"><b>Rajasthan Job</b></a><a href="jobs.html">← Sab jobs dekhein</a></div></div>
 <div class="head"><div class="wrap" id="head"><div class="sk" style="height:34px;width:70%;margin-top:10px"></div><div class="sk" style="height:18px;width:40%;margin-top:12px;opacity:.4"></div></div></div>
@@ -74,7 +75,7 @@ async function load(){
     const apply=/^https?:\/\//i.test(raw)?raw:'';
     const url=location.href,msg=encodeURIComponent((j.title||'Job')+' — '+(j.company||'')+' ('+(j.location||'Rajasthan')+')\n'+url);
     const wa='https://wa.me/?text='+msg;
-    $('head').innerHTML=`<div class="co">${esc(j.company||'')}${isNew?'<span class="tag">NEW</span>':''}</div><h1>${esc(j.title||'Job Vacancy')}</h1><div class="co">📍 ${esc(j.location||'Rajasthan')}</div>`;
+    $('head').innerHTML=`<div class="co">${esc(j.company||'')}${isNew?'<span class="tag">NEW</span>':''}</div><h1>${esc(j.title||'Job Vacancy')}</h1><div class="co">${esc(j.location||'Rajasthan')}</div>`;
     const f=(l,v,c='')=>v?`<div class="fact ${c}"><small>${l}</small><b>${esc(v)}</b></div>`:'';
     $('content').innerHTML=`<div class="facts">${f('Salary',j.salary||'Not specified','sal')}${f('Experience',j.experience||'Any experience')}${f('Job type',j.type||'Full Time')}${f('Qualification',j.qualification||'Not specified')}${f('Deadline',j.deadline)}</div>
 <div class="actions">${apply?`<a class="btn apply" href="${esc(apply)}" target="_blank" rel="noopener noreferrer">Apply Now</a>`:''}<a class="btn ghost wa" href="${wa}" target="_blank" rel="noopener noreferrer">WhatsApp par share</a><button class="btn ghost" id="cp" type="button">Link copy</button></div>
@@ -102,4 +103,5 @@ async function similar(j){
 }
 load();
 </script><script type="module" src="assets/rch-analytics-tracker.js"></script>
+<script src="assets/rch-chrome.js"></script>
 </body></html>

@@ -15,9 +15,10 @@ main{padding:38px 0 65px}.hero{text-align:center;margin-bottom:24px}.eyebrow{dis
 footer{background:#0b1d2d;color:#b9c7d5;text-align:center;padding:20px;font-size:12px}
 @media(max-width:800px){.menu{gap:10px}.menu a:not(.btn){display:none}.grid{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.hero h1{font-size:31px}.topin span:last-child{display:none}}
 </style>
+<link rel="stylesheet" href="assets/rch-site.css">
 </head>
 <body>
-<div class="top"><div class="wrap topin"><span>📍 Jaipur, Rajasthan</span><span>Jobs • Government Jobs • Notes • Job Support</span></div></div>
+<div class="top"><div class="wrap topin"><span>Jaipur, Rajasthan</span><span>Jobs • Government Jobs • Notes • Job Support</span></div></div>
 <nav><div class="wrap navin">
 <a class="brand" href="index.html"><div class="logo">RJ</div><div>Rajasthan Job<small>Jobs • Learning • Job Support</small></div></a>
 <div class="menu"><a href="jobs.html">Jobs</a><a href="index.html#govt">Govt Jobs</a><a href="index.html#notes">Notes</a><a href="post-a-job.html">Post a Job</a><a class="btn primary" href="inquiry.html">Inquiry</a></div>
@@ -26,19 +27,19 @@ footer{background:#0b1d2d;color:#b9c7d5;text-align:center;padding:20px;font-size
 <main><div class="wrap">
 <section class="hero"><span class="eyebrow">RAJASTHAN JOB • INQUIRY</span><h1>Apni <em>Requirement</em> Bhejein</h1><p>Job, government recruitment, exam notes, interview preparation, skills ya employer job posting ke liye humein message bhejiye.</p></section>
 <div class="grid">
-<section class="card"><h2>📩 Inquiry Form</h2><p class="muted">Aapki inquiry directly Rajasthan Job ke inquiry system mein save hogi.</p>
+<section class="card"><h2>Inquiry Form</h2><p class="muted">Aapki inquiry directly Rajasthan Job ke inquiry system mein save hogi.</p>
 <form id="inquiryForm"><div class="fields">
 <div class="field"><label>Name *</label><input id="name" required maxlength="80" placeholder="Your Name"></div>
 <div class="field"><label>Mobile *</label><input id="mobile" type="tel" inputmode="numeric" required maxlength="10" placeholder="10-digit mobile number"></div>
 <div class="field full"><label>What do you need? *</label><select id="service" required><option value="">Select requirement</option><option>Jaipur / Rajasthan Job</option><option>Government Job</option><option>Premium Notes</option><option>Interview Preparation</option><option>Excel / MIS</option><option>Power BI / SQL / Python</option><option>Employer Job Posting</option><option>Resume Support</option><option>Other</option></select></div>
 <div class="field full"><label>Your Requirement *</label><textarea id="message" required maxlength="1000" placeholder="Example: Mujhe Jaipur mein fresher MIS job chahiye... "></textarea></div>
-</div><button class="btn primary submit" id="submitBtn" type="submit">📩 Submit Inquiry</button><div id="msg" class="msg"></div></form></section>
+</div><button class="btn primary submit" id="submitBtn" type="submit">Submit Inquiry</button><div id="msg" class="msg"></div></form></section>
 <aside class="card side"><h3>How can we help?</h3>
-<div class="item"><b>💼 Job Search</b><span>Jaipur & Rajasthan private job opportunities ke baare mein inquiry karein.</span></div>
-<div class="item"><b>🏛️ Government Jobs</b><span>Recruitment updates aur official application information ke liye pooch sakte hain.</span></div>
-<div class="item"><b>📚 Notes & Preparation</b><span>Exam notes, practice sets aur interview preparation related requirement bhejein.</span></div>
-<div class="item"><b>🏢 Employer Services</b><span>Company vacancy ko Rajasthan Job par submit karne ke liye Post a Job use karein.</span></div>
-<div class="contactBox"><h3>Need quick help?</h3><p>Direct call ya WhatsApp ke liye contact karein.</p><a class="btn light" href="tel:+916350566010">📞 +91 63505 66010</a></div>
+<div class="item"><b>Job Search</b><span>Jaipur & Rajasthan private job opportunities ke baare mein inquiry karein.</span></div>
+<div class="item"><b>Government Jobs</b><span>Recruitment updates aur official application information ke liye pooch sakte hain.</span></div>
+<div class="item"><b>Notes & Preparation</b><span>Exam notes, practice sets aur interview preparation related requirement bhejein.</span></div>
+<div class="item"><b>Employer Services</b><span>Company vacancy ko Rajasthan Job par submit karne ke liye Post a Job use karein.</span></div>
+<div class="contactBox"><h3>Need quick help?</h3><p>Direct call ya WhatsApp ke liye contact karein.</p><a class="btn light" href="tel:+916350566010">+91 63505 66010</a></div>
 </aside></div>
 <div class="back"><a href="index.html">← Back to Rajasthan Job Home</a></div>
 </div></main>
@@ -52,8 +53,9 @@ const $=id=>document.getElementById(id);
 $("inquiryForm").addEventListener("submit",async e=>{e.preventDefault();const name=$("name").value.trim(),mobile=$("mobile").value.trim(),service=$("service").value,message=$("message").value.trim(),btn=$("submitBtn"),msg=$("msg");msg.style.display="none";
 if(!/^\d{10}$/.test(mobile)){msg.className="msg error";msg.textContent="Please enter a valid 10-digit mobile number.";msg.style.display="block";return;}
 btn.disabled=true;btn.textContent="Submitting...";
-try{await addDoc(collection(db,"inquiries"),{name,mobile,service,message,status:"new",createdAt:serverTimestamp()});$("inquiryForm").reset();msg.className="msg success";msg.textContent="✅ Inquiry submitted successfully. Rajasthan Job team will contact you.";msg.style.display="block";}catch(err){console.error(err);msg.className="msg error";msg.textContent="❌ Inquiry submit nahi ho paayi. Please try again.";msg.style.display="block";}finally{btn.disabled=false;btn.textContent="📩 Submit Inquiry";}
+try{await addDoc(collection(db,"inquiries"),{name,mobile,service,message,status:"new",createdAt:serverTimestamp()});$("inquiryForm").reset();msg.className="msg success";msg.textContent="Inquiry submitted successfully. Rajasthan Job team will contact you.";msg.style.display="block";}catch(err){console.error(err);msg.className="msg error";msg.textContent="Inquiry submit nahi ho paayi. Please try again.";msg.style.display="block";}finally{btn.disabled=false;btn.textContent="Submit Inquiry";}
 });
 </script>
 <script type="module" src="assets/rch-analytics-tracker.js"></script>
+<script src="assets/rch-chrome.js"></script>
 </body></html>
