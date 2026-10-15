@@ -1,0 +1,75 @@
+/* Rajasthan Job — shared theme for public inner pages.
+   Loaded AFTER each page's own <style>, so it unifies tokens, type, buttons and chrome. */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap');
+:root{
+  --navy:#0a2342;--ink:#0b1b33;--blue:#1450d6;--blue-d:#0e3fae;--blue2:#0e3fae;--sky:#e9f0fd;
+  --orange:#e58a1f;--saffron:#e58a1f;--green:#0f7a54;--green-bg:#e8f5ef;--red:#c93b3b;
+  --bg:#f5f7fa;--card:#fff;--line:#dde4ee;--border:#dde4ee;--muted:#5a6a80;--faint:#8493a8;
+  --rc-font:'IBM Plex Sans','Noto Sans Devanagari','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+  --disp:var(--rc-font);--body:var(--rc-font);
+}
+body{font-family:var(--rc-font)!important;background:var(--bg);color:#16253b;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.hero h1{font-family:var(--rc-font)!important;letter-spacing:-.02em}
+button,input,select,textarea{font-family:var(--rc-font)}
+
+/* Hide the old per-page chrome instantly (JS then removes it and mounts the shared one) */
+body>.top,body>nav:not(.rcNav),body>.dynamic,body>.bar,body>footer:not(.rcFoot),
+header.header nav.nav,body>header:has(.brand):not(:has(h1)){display:none!important}
+
+/* Page title banners */
+body>header,header.hero,header.header{background:var(--navy)!important;color:#fff;border-bottom:3px solid var(--saffron);box-shadow:none}
+body>header h1,header.hero h1,header.header h1{color:#fff}
+body>header p,header.header p{color:#bccbe0}
+
+/* Surfaces, buttons, forms */
+.card{border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(10,35,66,.05)}
+.btn{font-family:var(--rc-font);font-weight:600;border-radius:8px}
+.btn.primary,button.btn.primary{background:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--blue-d)}
+input,select,textarea{border-radius:8px}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--blue)!important;box-shadow:0 0 0 3px rgba(20,80,214,.15)}
+:focus-visible{outline:3px solid #7aa7ff;outline-offset:2px}
+
+/* ================= Shared chrome (all classes prefixed rc) ================= */
+.rcTop{background:var(--navy);color:#c9d6e8;font-size:12.5px}
+.rcWrap{width:min(1180px,92%);margin-inline:auto}
+.rcTop .rcWrap{display:flex;justify-content:space-between;align-items:center;min-height:36px;gap:16px}
+.rcTop a,.rcTop span{display:inline-flex;align-items:center;gap:7px;color:inherit;text-decoration:none}
+.rcTop a:hover{color:#fff}
+.rcIco{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.rcNav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);font-family:var(--rc-font)}
+.rcNavIn{display:flex;align-items:center;justify-content:space-between;gap:24px;height:68px;position:relative}
+.rcBrand{display:flex;align-items:center;gap:12px;color:var(--navy);text-decoration:none}
+.rcLogo{width:40px;height:40px;border-radius:10px;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;position:relative}
+.rcLogo:after{content:"";position:absolute;left:8px;right:8px;bottom:6px;height:3px;border-radius:2px;background:var(--saffron)}
+.rcBrand b{display:block;font-size:16px;font-weight:700;line-height:1.15}
+.rcBrand small{display:block;font-size:11.5px;color:var(--muted);font-weight:500}
+.rcMenu{display:flex;align-items:center;gap:4px}
+.rcMenu a{padding:9px 13px;border-radius:8px;font-size:14px;font-weight:500;color:#2b3b52;text-decoration:none}
+.rcMenu a:hover{background:#eef2f8;color:var(--navy)}
+.rcMenu a.on{background:#e9f0fd;color:var(--blue);font-weight:600}
+.rcActions{display:flex;align-items:center;gap:10px}
+.rcBtn{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;padding:11px 18px;font:600 14px/1 var(--rc-font);text-decoration:none;border:1px solid transparent}
+.rcBtn.primary{background:var(--blue);color:#fff}.rcBtn.primary:hover{background:var(--blue-d)}
+.rcBtn.ghost{border-color:var(--line);color:var(--navy);background:#fff}.rcBtn.ghost:hover{border-color:var(--navy)}
+.rcToggle{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--navy);cursor:pointer;place-items:center}
+.rcToggle svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.rcFoot{background:#07182d;color:#b7c6da;padding:56px 0 24px;margin-top:48px;font-family:var(--rc-font);font-size:14px}
+.rcFootGrid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+.rcFoot h4{color:#fff;font-size:14px;font-weight:600;margin:0 0 14px}
+.rcFoot p{margin:12px 0 0;max-width:320px}
+.rcFoot a{display:block;margin:0 0 9px;color:#b7c6da;text-decoration:none}
+.rcFoot a:hover{color:#fff}
+.rcFoot .rcBrand{color:#fff;display:flex;margin:0}.rcFoot .rcBrand small{color:#8fa3bf}
+.rcCopy{border-top:1px solid rgba(255,255,255,.1);margin-top:36px;padding-top:20px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:#8fa3bf}
+@media(max-width:980px){.rcFootGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:860px){
+  .rcToggle{display:grid}
+  .rcMenu{position:absolute;left:-4%;right:-4%;top:68px;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:10px 4%;display:none;box-shadow:0 10px 30px -12px rgba(10,35,66,.28)}
+  .rcMenu.open{display:flex}.rcMenu a{padding:13px 10px}
+  .rcActions .rcBtn.ghost{display:none}
+}
+@media(max-width:640px){.rcTop .rcHideSm{display:none}.rcBrand small{display:none}.rcFootGrid{grid-template-columns:1fr}}
+.hero .company{color:#d3deef!important}
+.rcBtn,.rcBrand b{white-space:nowrap}
+@media(max-width:480px){.rcBtn{padding:10px 12px;font-size:13px}.rcBrand b{font-size:15px}.rcNavIn{gap:10px}.rcBrand{gap:9px}}
