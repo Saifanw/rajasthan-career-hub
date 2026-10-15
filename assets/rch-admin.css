@@ -1,0 +1,98 @@
+/* Rajasthan Job — shared admin theme (loaded after each page's own styles) */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --navy:#0a2342;--blue:#1450d6;--green:#0f7a54;--red:#c93b3b;--orange:#c9740f;
+  --saffron:#e58a1f;--bg:#f5f7fa;--line:#dde4ee;--border:#dde4ee;--muted:#5a6a80;--light:#f3f6fa;--text:#16253b;
+  --adm-font:'IBM Plex Sans','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+}
+body{font-family:var(--adm-font)!important;background:var(--bg);color:#16253b;line-height:1.55;-webkit-font-smoothing:antialiased}
+input,select,textarea,button{font-family:var(--adm-font)}
+h1,h2,h3{letter-spacing:-.015em}
+
+/* ---- Admin navigation (injected by rch-admin-nav.js) ---- */
+.admNav{position:sticky;top:0;z-index:500;background:#fff;border-bottom:1px solid var(--line)}
+.admNavIn{display:flex;align-items:center;gap:18px;max-width:1280px;margin:auto;padding:0 20px;height:56px}
+.admBrand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--navy);text-decoration:none;white-space:nowrap;font-size:15px}
+.admLogo{width:30px;height:30px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;position:relative}
+.admLogo:after{content:"";position:absolute;left:6px;right:6px;bottom:4px;height:2px;border-radius:2px;background:var(--saffron)}
+.admBrand em{font-style:normal;font-weight:500;color:var(--muted);font-size:13px;padding-left:10px;border-left:1px solid var(--line)}
+.admLinks{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1}
+.admLinks::-webkit-scrollbar{display:none}
+.admLinks a{padding:8px 12px;border-radius:8px;font-size:13.5px;font-weight:500;color:#3a4b63;text-decoration:none;white-space:nowrap}
+.admLinks a:hover{background:#eef2f8;color:var(--navy)}
+.admLinks a.on{background:#e9f0fd;color:var(--blue);font-weight:600}
+.admSite{font-size:13px;font-weight:600;color:var(--blue);text-decoration:none;white-space:nowrap}
+.admSite:hover{text-decoration:underline}
+
+/* ---- Page header ---- */
+header,header.top{background:var(--navy)!important;color:#fff!important;border-bottom:3px solid var(--saffron)!important;box-shadow:none!important}
+header.top{padding:18px 24px}
+header h1{font-size:20px!important;font-weight:600;color:#fff}
+header small,header p{color:#b9c8de!important;opacity:1!important}
+header.top h1{color:#fff}
+header .btn,header button{font-size:13px}
+
+/* ---- Surfaces ---- */
+.card,.panel,.row,.item,.stat,.kpi,.login{border-color:var(--line)}
+.card,.panel{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(10,35,66,.05)}
+.stat,.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(10,35,66,.04)}
+.stat b,.kpi b{color:var(--navy);font-weight:600;letter-spacing:-.02em}
+.stat span{color:var(--muted);font-weight:500}
+.row,.item{border-radius:12px;background:#fff}
+.login{border-radius:12px}
+h2{color:var(--navy);font-weight:600}
+
+/* ---- Buttons ---- */
+.btn,button.btn,.tab,.logout,.bulk,.danger,.light,.white,.green,.primary{font-family:var(--adm-font);font-weight:600;border-radius:8px;transition:background .15s,border-color .15s,color .15s}
+.primary{background:var(--blue);color:#fff;border:1px solid var(--blue)}
+.primary:hover{background:#0e3fae;border-color:#0e3fae}
+.green{background:var(--green);color:#fff}
+.light,.logout,.white{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.light:hover,.logout:hover,.white:hover{border-color:var(--navy)}
+header .light,header .logout,header .white{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35)}
+header .light:hover,header .logout:hover,header .white:hover{background:rgba(255,255,255,.1);border-color:#fff}
+.danger{background:#fdf0f0;color:var(--red);border:1px solid #f3cccc}
+.danger:hover{background:var(--red);color:#fff}
+.bulk{background:#fff6e8;color:#945000;border:1px solid #f0d6a8}
+.tab{background:#fff;color:#3a4b63;border:1px solid var(--line)}
+.tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+button:disabled{opacity:.55;cursor:not-allowed}
+
+/* ---- Forms ---- */
+input,select,textarea{border:1px solid #cdd7e4;border-radius:8px;background:#fff;color:#16253b;font-size:14px}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 3px rgba(20,80,214,.15)}
+label,.field label{color:#26374e;font-weight:600}
+
+/* ---- Tables ---- */
+table{border-collapse:separate;border-spacing:0}
+th{background:#f3f6fa;color:#3a4b63;font-weight:600;font-size:12.5px;border-bottom:1px solid var(--line)}
+td{border-bottom:1px solid #edf1f6}
+tbody tr:hover td{background:#fafcff}
+.tableWrap{border:1px solid var(--line);border-radius:10px}
+
+/* ---- Status ---- */
+.badge,.status,.pill{font-weight:600;letter-spacing:0}
+.success{background:#e9f6f0;color:#0b6244;border:1px solid #c5e6d6}
+.error{background:#fdf0f0;color:#a52c2c;border:1px solid #f3cccc}
+.notice{background:#eef4ff;border:1px solid #cfdffb;color:#1f3f73}
+
+/* ---- Analytics page: keep its layout, align brand tokens ---- */
+header.top{display:flex}
+:root{--blue2:#0e3fae}
+
+@media(max-width:700px){
+  .admBrand em{display:none}
+  .admNavIn{padding:0 12px;gap:10px}
+  .admSite{display:none}
+}
+
+/* Analytics header: controls sit on the navy bar, so give them on-dark styling */
+header.top button:not(.primary),header.top select,header.top input{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.3)}
+header.top button:not(.primary):hover{background:rgba(255,255,255,.16);border-color:#fff}
+header.top .live{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25)}
+header.top a{color:#b9d0ff}
+header.top select option{color:#16253b}
+header.top .chk{color:#c9d6e8}
+header.top summary{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:9px;padding:8px 12px;font-weight:600;cursor:pointer}
+header.top details.menu>*:not(summary){color:#16253b}
+header.top details.menu button{background:#fff;color:#16253b;border:0}
