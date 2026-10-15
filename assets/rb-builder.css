@@ -115,3 +115,14 @@
 .rbMenu{position:absolute;right:0;top:42px;z-index:60;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px -12px rgba(10,35,66,.3);padding:8px;display:grid;gap:6px;min-width:210px}
 .rbMenu .rbB{justify-content:flex-start;width:100%}
 @media(max-width:900px){.rbMenu #exp,.rbMenu .rbFile{display:inline-flex!important}.rbSteps{position:static}.rbNav{position:static}.rbTool{gap:8px}.rbTitle{display:none}}
+
+/* ===== Corporate template + themes ===== */
+.t-corp h1{color:var(--ac);font-size:2.1em;letter-spacing:-.02em;padding-bottom:6px;border-bottom:3px solid var(--ac);margin-bottom:2px}
+.t-corp .hl{font-weight:600;color:#222;margin-top:6px}.t-corp .ct{color:#555}
+.t-corp h2{color:var(--ac);border-bottom:1px solid #cfd6e0;letter-spacing:.1em;font-size:.95em}
+.th-corp{background:linear-gradient(#0a2342,#0a2342) 10px 10px/46% 6px no-repeat,linear-gradient(#0a2342,#0a2342) 10px 20px/calc(100% - 20px) 2px no-repeat,repeating-linear-gradient(#dde4ee 0 3px,transparent 3px 8px) 10px 30px/calc(100% - 20px) 48px no-repeat,#fff}
+.rbSel{width:100%;height:44px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:15px;padding:0 10px;margin-bottom:16px}
+.rbThemes{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:10px}
+.rbTh{display:flex;align-items:center;gap:10px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px;cursor:pointer;font-family:var(--rc-font)}
+.rbTh:hover{border-color:var(--navy)}.rbTh i{flex:none;width:28px;height:28px;border-radius:8px}
+.rbTh b{display:block;font-size:13px;color:var(--navy)}.rbTh small{font-size:11.5px;color:var(--muted);line-height:1.3}

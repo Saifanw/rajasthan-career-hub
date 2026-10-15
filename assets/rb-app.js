@@ -52,11 +52,25 @@ function fieldHTML(sid,idx,[k,label,type],val){const id=`f-${sid}-${idx}-${k}`,p
 const photoCtl=()=>`<label for="photo">Photo (optional, passport size)<input type="file" id="photo" accept="image/*"></label>${D.items.personal.photo?'<div class="rbRow"><button type="button" class="rbB" id="rmPhoto">Remove photo</button></div>':''}<p class="hint">Photo shows on Government Form, Navy, Serif, Mono, Data and Sidebar templates. ATS templates hide it.</p>`;
 const STEPS=[{t:'Design'},{t:'Contact',s:['personal']},{t:'Summary',s:['summary']},{t:'Experience',s:['experience']},{t:'Education',s:['education']},{t:'Skills',s:['skills']},{t:'Extras',s:['projects','certs','links','achievements','languages','custom']},{t:'Finish'}];
 let STEP=0;const stepOf=id=>Math.max(1,STEPS.findIndex(x=>x.s&&x.s.includes(id)));
-const SUG=['Excel','SQL','Power BI','Python','Tally','GST','MS Office','Communication','Typing','Canva','Customer Service','Data Entry'];
+let SUG=['Excel','SQL','Power BI','Python','Tally','GST','MS Office','Communication','Typing','Canva','Customer Service','Data Entry'];
 const EX={fresher:'Motivated [your degree] graduate with practical skills in [skill 1], [skill 2] and [skill 3]. Seeking an entry-level [role] position where I can learn fast and contribute to [type of work].',exp:'[Role] with [X] years of experience in [area]. Skilled in [skill 1], [skill 2] and [skill 3]. Known for [a real strength]. Looking for a [target role] position at a growing company.'};
-const TPLS=[['classic','ATS Classic','Single column. Safest for job portals.',1],['compact','ATS Compact','Fits freshers on one page.',1],['navy','Modern Navy','Clean headings, navy accent.'],['serif','Executive Serif','Formal, for senior roles.'],['mono','Minimal','Light and modern.'],['data','Data / Tech','Skills first. Good for analysts.'],['govt','Government Form','Photo and personal details.'],['side','Sidebar','Two columns. Design only, not ATS.']];
+const TPLS=[['classic','ATS Classic','Single column. Safest for job portals.',1],['compact','ATS Compact','Fits freshers on one page.',1],['corp','Corporate','Clean MNC-style layout.',1],['navy','Modern Navy','Clean headings, navy accent.'],['serif','Executive Serif','Formal, for senior roles.'],['mono','Minimal','Light and modern.'],['data','Data / Tech','Skills first. Good for analysts.'],['govt','Government Form','Photo and personal details.'],['side','Sidebar','Two columns. Design only, not ATS.']];
 const SW=[['#0a2342','Navy'],['#1450d6','Blue'],['#007091','Teal'],['#0f7a54','Green'],['#7a3e9d','Purple'],['#c93b3b','Red'],['#e58a1f','Saffron'],['#333333','Charcoal']];
-function renderDesign(){$('#gallery').innerHTML=TPLS.map(([id,n,d,a])=>`<button type="button" class="rbTpl" data-tpl="${id}" aria-pressed="${D.meta.template===id}"><i class="th th-${id}"></i><b>${n}</b><small>${d}</small>${a?'<em>ATS-safe</em>':''}</button>`).join('');
+const THEMES=[['Corporate Blue','corp','#0a2342','plex','10.5','1','MNC style. Works for any job.'],['Teal Professional','classic','#007091','plex','10.5','1','Clean CV look, ATS-safe.'],['Consulting','serif','#333333','georgia','10.5','1','Formal, black and white.'],['Banking and Finance','corp','#0f7a54','georgia','10.5','1','Calm, trusted green.'],['Tech Modern','data','#1450d6','plex','10.5','1','Skills first, sharp blue.'],['Fresher One Page','compact','#1450d6','plex','10','0.7','Fits everything on 1 page.'],['Government Form','govt','#0a2342','arial','10.5','1','Photo and personal details.'],['Bold Accent','navy','#e58a1f','plex','10.5','1','Saffron highlights.']];
+const PROF=[['Data and Analytics',4,'Excel,SQL,Power BI,Python,Tableau,Pandas,DAX,Data Cleaning,Dashboards,Reporting,Statistics,Google Sheets','[Data analyst] skilled in [Excel, SQL and Power BI]. I build clear dashboards and reports that help teams decide faster. Looking for a [role] position in [industry].'],
+['IT and Software',0,'JavaScript,HTML,CSS,React,Node.js,Python,Git,SQL,REST APIs,Testing,Linux,Docker','[Software developer] with [X] years of experience building [type of apps] using [tech 1] and [tech 2]. I write clean, tested code and work well in a team. Looking for a [role] position.'],
+['Finance and Accounts',3,'Tally,GST,Excel,Accounting,Bookkeeping,Taxation,MIS Reporting,Reconciliation,Payroll,Budgeting,SAP,Invoicing','[Accounts professional] with [X] years of experience in [bookkeeping, GST and reporting]. Accurate, deadline-focused and comfortable with [Tally / SAP]. Looking for a [role] position.'],
+['Sales and Marketing',7,'Lead Generation,Negotiation,CRM,Cold Calling,Social Media,SEO,Canva,Client Relations,Market Research,Excel,Presentations,Meta Ads','[Sales executive] with [X] years of experience in [industry]. Strong in [lead generation and client follow-up]. Looking for a [role] position where I can grow revenue.'],
+['HR and Admin',1,'Recruitment,Onboarding,Payroll,MS Office,Communication,Documentation,Attendance,Employee Records,Interviewing,Excel,HRMS,Coordination','[HR / admin executive] with [X] years of experience in [recruitment and records]. Organised and people-friendly. Looking for a [role] position.'],
+['Engineering and Technical',5,'AutoCAD,SolidWorks,MS Excel,Drafting,Quality Control,Maintenance,Safety,Documentation,Project Planning,5S,MS Project,Troubleshooting','[Engineer] with [X] years of experience in [area]. Skilled in [AutoCAD / SolidWorks] and [quality or maintenance work]. Looking for a [role] position.'],
+['Fresher or Student',5,'MS Office,Communication,Typing,Teamwork,Time Management,Excel,Canva,Internet Research,Problem Solving,Hindi,English','Motivated [your degree] graduate with practical skills in [skill 1], [skill 2] and [skill 3]. Seeking an entry-level [role] position where I can learn fast and contribute.'],
+['Government Exam',6,'Typing,MS Office,Computer Basics,Hindi,English,General Knowledge,Reasoning,Quantitative Aptitude,Documentation,RSCIT,Data Entry,Communication','[Graduate] with computer skills in [MS Office and typing]. Preparing for [exam name]. Disciplined, punctual and committed to public service.'],
+['Management',2,'Team Leadership,Operations,Planning,Budgeting,Reporting,Stakeholder Management,Process Improvement,KPIs,Hiring,Strategy,MS Office,Negotiation','[Manager] with [X] years of experience leading [team size] people in [area]. Delivered [real result]. Looking for a [senior role] position.']];
+const toObj=t=>({n:t[0],tpl:t[1],accent:t[2],font:t[3],size:t[4],gap:t[5],d:t[6]});
+const myTh=()=>{try{return JSON.parse(localStorage.getItem('rb_themes')||'[]')}catch(e){return[]}};
+const allThemes=()=>[...THEMES.map((t,i)=>({...toObj(t),k:'t'+i})),...myTh().map((t,i)=>({...t,d:'My saved theme',k:'m'+i}))];
+function applyTheme(t){D.meta.template=t.tpl;Object.assign(D.theme,{accent:t.accent,font:t.font,size:t.size,gap:t.gap});syncTools();renderForm();draw()}
+function renderDesign(){$('#themes').innerHTML=allThemes().map(t=>`<button type="button" class="rbTh" data-th="${t.k}"><i style="background:${esc(t.accent)}"></i><span><b>${esc(t.n)}</b><small>${esc(t.d)}</small></span></button>`).join('');$('#gallery').innerHTML=TPLS.map(([id,n,d,a])=>`<button type="button" class="rbTpl" data-tpl="${id}" aria-pressed="${D.meta.template===id}"><i class="th th-${id}"></i><b>${n}</b><small>${d}</small>${a?'<em>ATS-safe</em>':''}</button>`).join('');
  $('#sw').innerHTML=SW.map(([c,n])=>`<button type="button" class="rbSw" data-sw="${c}" style="background:${c}" aria-label="${n}" aria-pressed="${D.theme.accent.toLowerCase()===c}"></button>`).join('')}
 function secBody(id){const S=SCHEMA[id],it=D.items[id];let b=`<p class="hint">${esc(S.hint)}</p>`;
  if(id==='summary')b+=`<div class="rbRow"><button type="button" class="rbB" data-ex="fresher">Fresher example</button><button type="button" class="rbB" data-ex="exp">Experienced example</button></div><p class="hint">Examples have [brackets]. Replace them with your own true details.</p>`;
@@ -76,7 +90,7 @@ function resumeHTML(){const I=D.items,P=I.personal,name=P.name||'';
  const contact=[P.city,P.phone,P.email,P.linkedin&&show(P.linkedin),P.github&&show(P.github),P.portfolio&&show(P.portfolio)].filter(Boolean);
  const link=(v)=>okUrl(v)?`<a href="${esc(href(v))}">${esc(show(v))}</a>`:esc(show(v));
  const ct=[P.city,P.phone,P.email].filter(Boolean).map(esc).concat([P.linkedin,P.github,P.portfolio].filter(Boolean).map(link)).join(' | ');
- const tpl=D.meta.template;let h=`<h1>${esc(name)||'Your Name'}</h1>${P.headline?`<div class="hl">${esc(P.headline)}</div>`:''}<div class="ct">${ct}</div>`;if(tpl==='govt'){const pd=[['Date of birth',P.dob],['Gender',P.gender],["Father's name",P.father]].filter(x=>x[1]);if(pd.length)h+=`<div class="pd">${pd.map(x=>`<span><b>${x[0]}:</b> ${esc(x[1])}</span>`).join('')}</div>`}if(P.photo&&!['classic','compact'].includes(tpl))h=`<img class="pho" alt="Candidate photo" src="${esc(P.photo)}">`+h;
+ const tpl=D.meta.template;let h=`<h1>${esc(name)||'Your Name'}</h1>${P.headline?`<div class="hl">${esc(P.headline)}</div>`:''}<div class="ct">${ct}</div>`;if(tpl==='govt'){const pd=[['Date of birth',P.dob],['Gender',P.gender],["Father's name",P.father]].filter(x=>x[1]);if(pd.length)h+=`<div class="pd">${pd.map(x=>`<span><b>${x[0]}:</b> ${esc(x[1])}</span>`).join('')}</div>`}if(P.photo&&!['classic','compact','corp'].includes(tpl))h=`<img class="pho" alt="Candidate photo" src="${esc(P.photo)}">`+h;
  const parts={};let secs=D.sections.slice();if(tpl==='data')secs.sort((a,b)=>(b.id==='skills')-(a.id==='skills'));secs.forEach(({id,show:on})=>{if(!on||id==='personal')return;const it=I[id];let b='';
   if(id==='summary'&&it.text)b=`<p>${esc(it.text)}</p>`;
   if(id==='skills')b=it.filter(s=>s.list).map(s=>`<p>${s.label?`<b>${esc(s.label)}:</b> `:''}${esc(s.list)}</p>`).join('');
@@ -92,7 +106,7 @@ function resumeHTML(){const I=D.items,P=I.personal,name=P.name||'';
  const SIDE=['skills','education','certs','languages'],ids=secs.map(s=>s.id).filter(i=>parts[i]);
  if(tpl==='side')h=`<div class="hd">${h}</div><div class="two"><div class="mn">${ids.filter(i=>!SIDE.includes(i)).map(i=>parts[i]).join('')}</div><aside class="sd">${ids.filter(i=>SIDE.includes(i)).map(i=>parts[i]).join('')}</aside></div>`;else h+=ids.map(i=>parts[i]).join('');
  if(!contact.length&&!name)h+=`<p>Start filling the form on the left. Your resume appears here.</p>`;
- return h+`<div class="ft">Made with Rajasthan Job Resume Builder</div>`}
+ return h}
 const FONTS={plex:"'IBM Plex Sans',Arial,sans-serif",arial:'Arial,Helvetica,sans-serif',georgia:"Georgia,'Times New Roman',serif"};
 function renderPaper(){const p=$('#paper'),T=D.theme;p.className='paper t-'+D.meta.template;
  p.style.setProperty('--ac',T.accent);p.style.setProperty('--fs',T.size+'pt');p.style.setProperty('--g',T.gap);
@@ -111,7 +125,7 @@ function check(){const I=D.items,P=I.personal,out=[];const add=(pts,msg,s)=>out.
  if(!P.phone)add(8,'Add your phone number.','personal');else if(!okPhone(P.phone))add(6,'Phone should be 10 digits.','personal');
  if(!P.email)add(8,'Add your email.','personal');else if(!okMail(P.email))add(6,'Email looks invalid.','personal');
  else if(/(cool|sexy|king|boss|hot|baby|dude|lover)/i.test(P.email.split('@')[0])||/\d{5,}/.test(P.email))add(4,'Email looks informal. Use a name-based email like firstname.lastname@gmail.com.','personal');
- if(P.photo&&['classic','compact'].includes(D.meta.template))add(3,'Photo is hidden on ATS templates. Pick Government Form or Modern Navy if you need a photo.','personal');
+ if(P.photo&&['classic','compact','corp'].includes(D.meta.template))add(3,'Photo is hidden on ATS templates. Pick Government Form or Modern Navy if you need a photo.','personal');
  if(!P.city)add(3,'Add your city.','personal');
  [['linkedin'],['github'],['portfolio']].forEach(([k])=>{if(P[k]&&!okUrl(P[k]))add(3,`Fix the ${k} link.`,'personal')});
  const n=(I.summary.text||'').trim().split(/\s+/).filter(Boolean).length;
@@ -169,9 +183,14 @@ window.RB={get:()=>D,set:d=>{const m=migrate(d);if(m){load(m);push()}},fname,
 const go=n=>{STEP=Math.max(0,Math.min(STEPS.length-1,n));renderForm();$('.rbForm').scrollTo(0,0);if(innerWidth<=900)scrollTo(0,0)};
 document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const q=t.dataset;
  if(q.step!==undefined)go(+q.step);if(q.go)go(STEP+ +q.go);if('pdf' in q)dl();
+ if(q.th){const t=allThemes().find(x=>x.k===q.th);if(t)applyTheme(t)}
+ if('sv' in q){const n=(prompt('Name your theme','My theme')||'').trim();if(n){const L=myTh();L.push({n:n.slice(0,30),tpl:D.meta.template,...D.theme});try{localStorage.setItem('rb_themes',JSON.stringify(L.slice(-6)))}catch(e){}renderDesign()}}
+ if('cl' in q){try{localStorage.removeItem('rb_themes')}catch(e){}renderDesign()}
  if(q.ex){D.items.summary.text=EX[q.ex];renderForm();draw()}
  if(q.sg)window.RB.addSkill(q.sg);
  if(q.tpl||q.sw){const el=q.tpl?$('#tpl'):$('#acc');el.value=q.tpl||q.sw;el.dispatchEvent(new Event('input'))}});
 document.addEventListener('change',e=>{if(e.target.dataset.cur!==undefined){const x=D.items.experience[+e.target.dataset.cur];x.end=e.target.checked?'Present':'';const f=$('#f-experience-'+e.target.dataset.cur+'-end');if(f)f.value=x.end;draw()}});
+$('#prof').innerHTML='<option value="">Choose your field</option>'+PROF.map((p,i)=>`<option value="${i}">${p[0]}</option>`).join('');
+$('#prof').addEventListener('change',e=>{const p=PROF[+e.target.value];if(!p)return;applyTheme(toObj(THEMES[p[1]]));SUG=p[2].split(',');EX.exp=p[3];renderForm()});
 addEventListener('resize',fit);
 syncTools();renderForm();renderPaper();btns();

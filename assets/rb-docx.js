@@ -19,6 +19,5 @@ $('#dlx').onclick=async()=>{
  p.querySelectorAll('section').forEach(s=>{
   K.push(new Paragraph({heading:HeadingLevel.HEADING_2,spacing:{before:200,after:80},border:{bottom:{style:BorderStyle.SINGLE,size:6,color:ac}},children:[run(T(s.querySelector('h2')).toUpperCase(),{bold:true,color:ac,size:22})]}));
   [...s.children].slice(1).forEach(walk)});
- K.push(new Paragraph({alignment:AlignmentType.CENTER,spacing:{before:300},children:[run('Made with Rajasthan Job Resume Builder',{size:16,color:'777777'})]}));
  const doc=new Document({sections:[{properties:{page:{size:{width:11906,height:16838},margin:{top:800,bottom:800,left:900,right:900}}},children:K}]});
  const blob=await Packer.toBlob(doc),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=window.RB.fname()+'.docx';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
