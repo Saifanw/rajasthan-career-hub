@@ -14,11 +14,12 @@ const SCHEMA={
 Object.assign(SCHEMA,{
  achievements:{t:'Achievements',add:'Add achievement',hint:'Real awards, ranks, results. One line each.',f:[['text','Achievement']]},
  languages:{t:'Languages',add:'Add language',hint:'e.g. Hindi (Native), English (Fluent).',f:[['name','Language'],['level','Level']]},
+ links:{t:'Websites and profiles',add:'Add link',hint:'Portfolio, GitHub, LinkedIn or any website you want recruiters to open.',f:[['label','Name (e.g. GitHub)'],['url','Link']]},
  custom:{t:'Custom section',one:1,hint:'Any extra section, e.g. Internships or Hobbies. Add a title and lines.',f:[['title','Section title'],['text','Lines, one per line','ta']]}});
-const ORDER=['personal','summary','skills','experience','projects','education','certs','achievements','languages','custom'];
-const HEAD={summary:'Summary',skills:'Skills',experience:'Experience',projects:'Projects',education:'Education',certs:'Certifications',achievements:'Achievements',languages:'Languages'};
+const ORDER=['personal','summary','skills','experience','projects','education','certs','links','achievements','languages','custom'];
+const HEAD={summary:'Summary',skills:'Skills',experience:'Experience',projects:'Projects',education:'Education',certs:'Certifications',achievements:'Achievements',languages:'Languages',links:'Websites and Profiles'};
 const blank=()=>({v:V,meta:{template:'classic'},theme:{accent:'#1450d6',font:'plex',size:'10.5',gap:'1'},sections:ORDER.map(id=>({id,show:true})),
- items:{personal:{},summary:{text:''},skills:[],experience:[],projects:[],education:[],certs:[],achievements:[],languages:[],custom:{title:'',text:''}}});
+ items:{personal:{},summary:{text:''},skills:[],experience:[],projects:[],education:[],certs:[],achievements:[],languages:[],links:[],custom:{title:'',text:''}}});
 const sample=()=>{const d=blank();d.items={
  personal:{name:'Sample Candidate',headline:'Junior Data Analyst',city:'Jaipur, Rajasthan',phone:'9000000000',email:'sample.candidate@example.com',linkedin:'https://linkedin.com/in/sample-candidate',github:'',portfolio:''},
  summary:{text:'Data-minded B.Com graduate with hands-on Excel and SQL practice. Looking for a junior analyst role where I can turn raw sales data into clear weekly reports.'},
@@ -49,12 +50,25 @@ function fieldHTML(sid,idx,[k,label,type],val){const id=`f-${sid}-${idx}-${k}`,p
  const inp=type==='ta'?`<textarea id="${id}" data-p="${p}">${esc(val)}</textarea>`:`<input id="${id}" data-p="${p}" value="${esc(val)}" ${bad?'aria-invalid="true"':''} ${k==='phone'?'inputmode="numeric" maxlength="14" autocomplete="tel"':k==='email'?'inputmode="email" autocomplete="email"':''}>`;
  return `<label for="${id}">${esc(label)}${inp}<small class="hint" data-err="${p}" style="color:var(--red)">${esc(bad)}</small></label>`}
 const photoCtl=()=>`<label for="photo">Photo (optional, passport size)<input type="file" id="photo" accept="image/*"></label>${D.items.personal.photo?'<div class="rbRow"><button type="button" class="rbB" id="rmPhoto">Remove photo</button></div>':''}<p class="hint">Photo shows on Government Form, Navy, Serif, Mono, Data and Sidebar templates. ATS templates hide it.</p>`;
-function renderForm(){const open=new Set([...document.querySelectorAll('#form details[open]')].map(e=>e.dataset.s));
- $('#form').innerHTML=D.sections.map(({id})=>{const S=SCHEMA[id],it=D.items[id];let body=`<p class="hint">${esc(S.hint)}</p>`;
-  if(S.one){let F=S.f;if(id==='personal'&&D.meta.template==='govt')F=F.concat([['dob','Date of birth'],['gender','Gender'],['father',"Father's name"]]);body+=F.map(f=>fieldHTML(id,0,f,it[f[0]]||'')).join('');if(id==='personal')body+=photoCtl()}
-  else{body+=it.length?it.map((o,i)=>`<div class="rbItem">${S.f.map(f=>fieldHTML(id,i,f,o[f[0]]||'')).join('')}<div class="rbRow"><button type="button" class="rbB" data-a="up" data-s="${id}" data-i="${i}" ${i?'':'disabled'}>Move up</button><button type="button" class="rbB" data-a="dn" data-s="${id}" data-i="${i}" ${i<it.length-1?'':'disabled'}>Move down</button><button type="button" class="rbB" data-a="rm" data-s="${id}" data-i="${i}">Remove</button></div></div>`).join(''):`<p class="rbEmpty">Nothing here yet. Tap "${esc(S.add)}" to start.</p>`;
-   body+=`<div class="rbRow"><button type="button" class="rbB pri" data-a="add" data-s="${id}">${esc(S.add)}</button></div>`}
-  return `<details class="rbSec" data-s="${id}" ${open.has(id)||(!open.size&&id==='personal')?'open':''}><summary>${esc(S.t)}</summary><div class="rbBody">${body}</div></details>`}).join('');
+const STEPS=[{t:'Design'},{t:'Contact',s:['personal']},{t:'Summary',s:['summary']},{t:'Experience',s:['experience']},{t:'Education',s:['education']},{t:'Skills',s:['skills']},{t:'Extras',s:['projects','certs','links','achievements','languages','custom']},{t:'Finish'}];
+let STEP=0;const stepOf=id=>Math.max(1,STEPS.findIndex(x=>x.s&&x.s.includes(id)));
+const SUG=['Excel','SQL','Power BI','Python','Tally','GST','MS Office','Communication','Typing','Canva','Customer Service','Data Entry'];
+const EX={fresher:'Motivated [your degree] graduate with practical skills in [skill 1], [skill 2] and [skill 3]. Seeking an entry-level [role] position where I can learn fast and contribute to [type of work].',exp:'[Role] with [X] years of experience in [area]. Skilled in [skill 1], [skill 2] and [skill 3]. Known for [a real strength]. Looking for a [target role] position at a growing company.'};
+const TPLS=[['classic','ATS Classic','Single column. Safest for job portals.',1],['compact','ATS Compact','Fits freshers on one page.',1],['navy','Modern Navy','Clean headings, navy accent.'],['serif','Executive Serif','Formal, for senior roles.'],['mono','Minimal','Light and modern.'],['data','Data / Tech','Skills first. Good for analysts.'],['govt','Government Form','Photo and personal details.'],['side','Sidebar','Two columns. Design only, not ATS.']];
+const SW=[['#0a2342','Navy'],['#1450d6','Blue'],['#007091','Teal'],['#0f7a54','Green'],['#7a3e9d','Purple'],['#c93b3b','Red'],['#e58a1f','Saffron'],['#333333','Charcoal']];
+function renderDesign(){$('#gallery').innerHTML=TPLS.map(([id,n,d,a])=>`<button type="button" class="rbTpl" data-tpl="${id}" aria-pressed="${D.meta.template===id}"><i class="th th-${id}"></i><b>${n}</b><small>${d}</small>${a?'<em>ATS-safe</em>':''}</button>`).join('');
+ $('#sw').innerHTML=SW.map(([c,n])=>`<button type="button" class="rbSw" data-sw="${c}" style="background:${c}" aria-label="${n}" aria-pressed="${D.theme.accent.toLowerCase()===c}"></button>`).join('')}
+function secBody(id){const S=SCHEMA[id],it=D.items[id];let b=`<p class="hint">${esc(S.hint)}</p>`;
+ if(id==='summary')b+=`<div class="rbRow"><button type="button" class="rbB" data-ex="fresher">Fresher example</button><button type="button" class="rbB" data-ex="exp">Experienced example</button></div><p class="hint">Examples have [brackets]. Replace them with your own true details.</p>`;
+ if(S.one){let F=S.f;if(id==='personal'&&D.meta.template==='govt')F=F.concat([['dob','Date of birth'],['gender','Gender'],['father',"Father's name"]]);b+=F.map(f=>fieldHTML(id,0,f,it[f[0]]||'')).join('');if(id==='personal')b+=photoCtl()}
+ else{b+=it.length?it.map((o,i)=>`<div class="rbItem">${S.f.map(f=>fieldHTML(id,i,f,o[f[0]]||'')).join('')}${id==='experience'?`<label class="rbChk"><input type="checkbox" data-cur="${i}" ${/present/i.test(o.end||'')?'checked':''}> I currently work here</label>`:''}<div class="rbRow"><button type="button" class="rbB" data-a="up" data-s="${id}" data-i="${i}" ${i?'':'disabled'}>Move up</button><button type="button" class="rbB" data-a="dn" data-s="${id}" data-i="${i}" ${i<it.length-1?'':'disabled'}>Move down</button><button type="button" class="rbB" data-a="rm" data-s="${id}" data-i="${i}">Remove</button></div></div>`).join(''):`<p class="rbEmpty">Nothing here yet. Tap "${esc(S.add)}" to start.</p>`;
+  b+=`<div class="rbRow"><button type="button" class="rbB pri" data-a="add" data-s="${id}">${esc(S.add)}</button></div>`;
+  if(id==='skills')b+=`<p class="hint">Tap to add a skill you really have:</p><div class="rbRow">${SUG.map(x=>`<button type="button" class="rbB" data-sg="${esc(x)}">+ ${esc(x)}</button>`).join('')}</div>`}
+ return b}
+function renderForm(){const open=new Set([...document.querySelectorAll('#form details[open]')].map(e=>e.dataset.s)),st=STEPS[STEP];$('.rbForm').dataset.step=STEP;
+ $('#stepbar').innerHTML=`<div class="rbProg"><i style="width:${(STEP+1)/STEPS.length*100}%"></i></div><div class="rbPills">${STEPS.map((x,i)=>`<button type="button" data-step="${i}" ${i===STEP?'aria-current="step"':''} class="${i<STEP?'done':''}"><b>${i+1}</b><span>${x.t}</span></button>`).join('')}</div>`;
+ $('#form').innerHTML=st.s?D.sections.filter(x=>st.s.includes(x.id)).map(({id})=>st.s.length>1?`<details class="rbSec" data-s="${id}" ${open.has(id)?'open':''}><summary>${esc(SCHEMA[id].t)}</summary><div class="rbBody">${secBody(id)}</div></details>`:`<div class="rbSec" data-s="${id}"><h3 class="rbH">${esc(SCHEMA[id].t)}</h3><div class="rbBody">${secBody(id)}</div></div>`).join(''):'';
+ $('#stepnav').innerHTML=`<button type="button" class="rbB" data-go="-1" ${STEP?'':'disabled'}>Back</button><span class="rbSp"></span>`+(STEP<STEPS.length-1?`<button type="button" class="rbB pri" data-go="1">Next: ${esc(STEPS[STEP+1].t)}</button>`:`<button type="button" class="rbB pri" data-pdf>Download PDF</button>`);
  $('#order').innerHTML=D.sections.map(({id,show},i)=>`<div class="rbRow"><label style="flex:1;display:flex;gap:8px;align-items:center"><input type="checkbox" data-sh="${id}" ${show?'checked':''} style="width:auto"> ${esc(SCHEMA[id].t)}</label><button type="button" class="rbB" data-o="${i}" data-d="-1" ${i>1?'':'disabled'} aria-label="Move ${esc(SCHEMA[id].t)} up">Up</button><button type="button" class="rbB" data-o="${i}" data-d="1" ${i&&i<D.sections.length-1?'':'disabled'} aria-label="Move ${esc(SCHEMA[id].t)} down">Down</button></div>`).join('')}
 
 /* ---------- resume HTML (real text, no tables, no images) ---------- */
@@ -70,6 +84,7 @@ function resumeHTML(){const I=D.items,P=I.personal,name=P.name||'';
   if(id==='projects')b=it.map(p=>`<div class="en"><div class="r1"><span><b>${esc(p.name)}</b>${p.link?' | '+link(p.link):''}</span></div>${p.tech?`<div><i>Tech: ${esc(p.tech)}</i></div>`:''}${p.desc?`<ul>${lines(p.desc).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}</div>`).join('');
   if(id==='education')b=it.map(e=>`<div class="en"><div class="r1"><span><b>${esc(e.degree)}</b>${e.school?', '+esc(e.school):''}${e.score?' | '+esc(e.score):''}</span><span class="dt">${esc(e.year)}</span></div></div>`).join('');
   if(id==='certs')b=it.filter(c=>c.name).map(c=>`<p>${esc(c.name)}${c.issuer?' - '+esc(c.issuer):''}</p>`).join('');
+  if(id==='links'&&it.some(x=>x.url))b=it.filter(x=>x.url).map(x=>`<p>${x.label?esc(x.label)+': ':''}${link(x.url)}</p>`).join('');
   if(id==='achievements'&&it.some(x=>x.text))b=`<ul>${it.filter(x=>x.text).map(x=>`<li>${esc(x.text)}</li>`).join('')}</ul>`;
   if(id==='languages'&&it.some(x=>x.name))b=`<p>${it.filter(x=>x.name).map(x=>esc(x.name)+(x.level?' ('+esc(x.level)+')':'')).join(', ')}</p>`;
   if(id==='custom'&&lines(it.text).length)b=`<ul>${lines(it.text).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
@@ -126,15 +141,15 @@ function push(){clearTimeout(tH);tH=setTimeout(()=>{const s=JSON.stringify(D);if
 function btns(){$('#undo').disabled=hi<1;$('#redo').disabled=hi>=hist.length-1}
 let tR=0;const draw=()=>{clearTimeout(tR);tR=setTimeout(()=>{renderPaper();save();push()},100)};
 function load(d,keepOpen){D=d;syncTools();renderForm();renderPaper();save()}
-function syncTools(){$('#tpl').value=D.meta.template;$('#acc').value=D.theme.accent;$('#ff').value=D.theme.font;$('#fs').value=D.theme.size;$('#gap').value=D.theme.gap}
+function syncTools(){setTimeout(renderDesign,0);$('#tpl').value=D.meta.template;$('#acc').value=D.theme.accent;$('#ff').value=D.theme.font;$('#fs').value=D.theme.size;$('#gap').value=D.theme.gap}
 const setP=(p,v)=>{const[s,i,k]=p.split('.');if(SCHEMA[s].one)D.items[s][k]=v;else D.items[s][+i][k]=v};
 document.addEventListener('input',e=>{const t=e.target;if(t.dataset.p){setP(t.dataset.p,t.value);const k=t.dataset.p.split('.')[2],er=document.querySelector(`[data-err="${t.dataset.p}"]`);
   if(er&&FIELDERR[k]&&t.dataset.p.startsWith('personal')){const m=FIELDERR[k](t.value);er.textContent=m;t.toggleAttribute('aria-invalid',!!m)}draw()}});
-[['tpl',v=>D.meta.template=v],['acc',v=>D.theme.accent=v],['ff',v=>D.theme.font=v],['fs',v=>D.theme.size=v],['gap',v=>D.theme.gap=v]].forEach(([id,f])=>$('#'+id).addEventListener('input',e=>{f(e.target.value);if(id==='tpl')renderForm();draw()}));
+[['tpl',v=>D.meta.template=v],['acc',v=>D.theme.accent=v],['ff',v=>D.theme.font=v],['fs',v=>D.theme.size=v],['gap',v=>D.theme.gap=v]].forEach(([id,f])=>$('#'+id).addEventListener('input',e=>{f(e.target.value);if(id==='tpl')renderForm();renderDesign();draw()}));
 document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const{a,s,i,o,d,fix,v}=t.dataset;
- if(a){const L=D.items[s],n=+i;if(a==='add')L.push({});if(a==='rm')L.splice(n,1);if(a==='up'||a==='dn'){const m=n+(a==='up'?-1:1);[L[n],L[m]]=[L[m],L[n]]}renderForm();if(a==='add'){const ds=$(`details[data-s="${s}"]`);ds.open=true;ds.querySelector('.rbItem:last-of-type input,.rbItem:last-of-type textarea')?.focus()}draw()}
+ if(a){const L=D.items[s],n=+i;if(a==='add')L.push({});if(a==='rm')L.splice(n,1);if(a==='up'||a==='dn'){const m=n+(a==='up'?-1:1);[L[n],L[m]]=[L[m],L[n]]}renderForm();if(a==='add'){const ds=$(`[data-s="${s}"]`);ds.open=true;ds.querySelector('.rbItem:last-of-type input,.rbItem:last-of-type textarea')?.focus()}draw()}
  if(o!==undefined){const n=+o,m=n+ +d;[D.sections[n],D.sections[m]]=[D.sections[m],D.sections[n]];renderForm();draw()}
- if(fix){document.querySelectorAll('#form details').forEach(x=>x.open=x.dataset.s===fix);const ds=$(`details[data-s="${fix}"]`);ds.scrollIntoView({block:'start'});setViewForm();ds.querySelector('input,textarea')?.focus()}
+ if(fix){STEP=stepOf(fix);renderForm();setViewForm();const ds=$(`[data-s="${fix}"]`);if(ds){ds.open=true;ds.scrollIntoView({block:'start'});ds.querySelector('input,textarea')?.focus()}}
  if(v){$('.rb').dataset.view=v;document.querySelectorAll('.rbSeg button').forEach(b=>b.setAttribute('aria-selected',b.dataset.v===v));scrollTo(0,0);fit()}});
 const setViewForm=()=>{if(innerWidth<=900)document.querySelector('.rbSeg [data-v=edit]').click()};
 document.addEventListener('change',e=>{if(e.target.dataset.sh){D.sections.find(x=>x.id===e.target.dataset.sh).show=e.target.checked;draw()}});
@@ -150,6 +165,13 @@ $('#dl').onclick=$('#dl2').onclick=dl;
 document.addEventListener('change',e=>{if(e.target.id!=='photo')return;const f=e.target.files[0];if(!f)return;if(f.size>6e6)return alert('Photo is too large. Choose an image under 6 MB.');const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=240;c.height=300;const x=c.getContext('2d'),r=Math.max(240/im.width,300/im.height),w=im.width*r,h=im.height*r;x.drawImage(im,(240-w)/2,(300-h)/2,w,h);D.items.personal.photo=c.toDataURL('image/jpeg',.85);URL.revokeObjectURL(im.src);renderForm();draw()};im.onerror=()=>alert('This image could not be read. Try a JPG or PNG.');im.src=URL.createObjectURL(f)});
 document.addEventListener('click',e=>{if(e.target.id==='rmPhoto'){delete D.items.personal.photo;renderForm();draw()}});
 window.RB={get:()=>D,set:d=>{const m=migrate(d);if(m){load(m);push()}},fname,
- addSkill:t=>{let g=D.items.skills.find(s=>s.label==='Other skills');if(!g){g={label:'Other skills',list:''};D.items.skills.push(g)}const cur=g.list.split(',').map(x=>x.trim()).filter(Boolean);if(!cur.some(x=>x.toLowerCase()===t.toLowerCase()))cur.push(t);g.list=cur.join(', ');renderForm();draw()}};
+ addSkill:t=>{let g=D.items.skills.find(s=>s.label==='Skills');if(!g){g={label:'Skills',list:''};D.items.skills.push(g)}const cur=g.list.split(',').map(x=>x.trim()).filter(Boolean);if(!cur.some(x=>x.toLowerCase()===t.toLowerCase()))cur.push(t);g.list=cur.join(', ');renderForm();draw()}};
+const go=n=>{STEP=Math.max(0,Math.min(STEPS.length-1,n));renderForm();$('.rbForm').scrollTo(0,0);if(innerWidth<=900)scrollTo(0,0)};
+document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const q=t.dataset;
+ if(q.step!==undefined)go(+q.step);if(q.go)go(STEP+ +q.go);if('pdf' in q)dl();
+ if(q.ex){D.items.summary.text=EX[q.ex];renderForm();draw()}
+ if(q.sg)window.RB.addSkill(q.sg);
+ if(q.tpl||q.sw){const el=q.tpl?$('#tpl'):$('#acc');el.value=q.tpl||q.sw;el.dispatchEvent(new Event('input'))}});
+document.addEventListener('change',e=>{if(e.target.dataset.cur!==undefined){const x=D.items.experience[+e.target.dataset.cur];x.end=e.target.checked?'Present':'';const f=$('#f-experience-'+e.target.dataset.cur+'-end');if(f)f.value=x.end;draw()}});
 addEventListener('resize',fit);
 syncTools();renderForm();renderPaper();btns();
