@@ -11,10 +11,14 @@ const SCHEMA={
  education:{t:'Education',add:'Add education',hint:'Latest first.',f:[['degree','Degree / course'],['school','College / board'],['year','Year (e.g. 2022-2025)'],['score','Score (CGPA / %)']]},
  certs:{t:'Certifications',add:'Add certification',hint:'Only certificates you hold.',f:[['name','Certification'],['issuer','Issuer, year']]}
 };
-const ORDER=['personal','summary','skills','experience','projects','education','certs'];
-const HEAD={summary:'Summary',skills:'Skills',experience:'Experience',projects:'Projects',education:'Education',certs:'Certifications'};
+Object.assign(SCHEMA,{
+ achievements:{t:'Achievements',add:'Add achievement',hint:'Real awards, ranks, results. One line each.',f:[['text','Achievement']]},
+ languages:{t:'Languages',add:'Add language',hint:'e.g. Hindi (Native), English (Fluent).',f:[['name','Language'],['level','Level']]},
+ custom:{t:'Custom section',one:1,hint:'Any extra section, e.g. Internships or Hobbies. Add a title and lines.',f:[['title','Section title'],['text','Lines, one per line','ta']]}});
+const ORDER=['personal','summary','skills','experience','projects','education','certs','achievements','languages','custom'];
+const HEAD={summary:'Summary',skills:'Skills',experience:'Experience',projects:'Projects',education:'Education',certs:'Certifications',achievements:'Achievements',languages:'Languages'};
 const blank=()=>({v:V,meta:{template:'classic'},theme:{accent:'#1450d6',font:'plex',size:'10.5',gap:'1'},sections:ORDER.map(id=>({id,show:true})),
- items:{personal:{},summary:{text:''},skills:[],experience:[],projects:[],education:[],certs:[]}});
+ items:{personal:{},summary:{text:''},skills:[],experience:[],projects:[],education:[],certs:[],achievements:[],languages:[],custom:{title:'',text:''}}});
 const sample=()=>{const d=blank();d.items={
  personal:{name:'Sample Candidate',headline:'Junior Data Analyst',city:'Jaipur, Rajasthan',phone:'9000000000',email:'sample.candidate@example.com',linkedin:'https://linkedin.com/in/sample-candidate',github:'',portfolio:''},
  summary:{text:'Data-minded B.Com graduate with hands-on Excel and SQL practice. Looking for a junior analyst role where I can turn raw sales data into clear weekly reports.'},
@@ -44,9 +48,10 @@ function fieldHTML(sid,idx,[k,label,type],val){const id=`f-${sid}-${idx}-${k}`,p
  const bad=(FIELDERR[k]&&sid==='personal')?FIELDERR[k](val):'';
  const inp=type==='ta'?`<textarea id="${id}" data-p="${p}">${esc(val)}</textarea>`:`<input id="${id}" data-p="${p}" value="${esc(val)}" ${bad?'aria-invalid="true"':''} ${k==='phone'?'inputmode="numeric" maxlength="14" autocomplete="tel"':k==='email'?'inputmode="email" autocomplete="email"':''}>`;
  return `<label for="${id}">${esc(label)}${inp}<small class="hint" data-err="${p}" style="color:var(--red)">${esc(bad)}</small></label>`}
+const photoCtl=()=>`<label for="photo">Photo (optional, passport size)<input type="file" id="photo" accept="image/*"></label>${D.items.personal.photo?'<div class="rbRow"><button type="button" class="rbB" id="rmPhoto">Remove photo</button></div>':''}<p class="hint">Photo shows on Government Form, Navy, Serif, Mono, Data and Sidebar templates. ATS templates hide it.</p>`;
 function renderForm(){const open=new Set([...document.querySelectorAll('#form details[open]')].map(e=>e.dataset.s));
  $('#form').innerHTML=D.sections.map(({id})=>{const S=SCHEMA[id],it=D.items[id];let body=`<p class="hint">${esc(S.hint)}</p>`;
-  if(S.one)body+=S.f.map(f=>fieldHTML(id,0,f,it[f[0]]||'')).join('');
+  if(S.one){let F=S.f;if(id==='personal'&&D.meta.template==='govt')F=F.concat([['dob','Date of birth'],['gender','Gender'],['father',"Father's name"]]);body+=F.map(f=>fieldHTML(id,0,f,it[f[0]]||'')).join('');if(id==='personal')body+=photoCtl()}
   else{body+=it.length?it.map((o,i)=>`<div class="rbItem">${S.f.map(f=>fieldHTML(id,i,f,o[f[0]]||'')).join('')}<div class="rbRow"><button type="button" class="rbB" data-a="up" data-s="${id}" data-i="${i}" ${i?'':'disabled'}>Move up</button><button type="button" class="rbB" data-a="dn" data-s="${id}" data-i="${i}" ${i<it.length-1?'':'disabled'}>Move down</button><button type="button" class="rbB" data-a="rm" data-s="${id}" data-i="${i}">Remove</button></div></div>`).join(''):`<p class="rbEmpty">Nothing here yet. Tap "${esc(S.add)}" to start.</p>`;
    body+=`<div class="rbRow"><button type="button" class="rbB pri" data-a="add" data-s="${id}">${esc(S.add)}</button></div>`}
   return `<details class="rbSec" data-s="${id}" ${open.has(id)||(!open.size&&id==='personal')?'open':''}><summary>${esc(S.t)}</summary><div class="rbBody">${body}</div></details>`}).join('');
@@ -57,15 +62,20 @@ function resumeHTML(){const I=D.items,P=I.personal,name=P.name||'';
  const contact=[P.city,P.phone,P.email,P.linkedin&&show(P.linkedin),P.github&&show(P.github),P.portfolio&&show(P.portfolio)].filter(Boolean);
  const link=(v)=>okUrl(v)?`<a href="${esc(href(v))}">${esc(show(v))}</a>`:esc(show(v));
  const ct=[P.city,P.phone,P.email].filter(Boolean).map(esc).concat([P.linkedin,P.github,P.portfolio].filter(Boolean).map(link)).join(' | ');
- let h=`<h1>${esc(name)||'Your Name'}</h1>${P.headline?`<div class="hl">${esc(P.headline)}</div>`:''}<div class="ct">${ct}</div>`;
- D.sections.forEach(({id,show:on})=>{if(!on||id==='personal')return;const it=I[id];let b='';
+ const tpl=D.meta.template;let h=`<h1>${esc(name)||'Your Name'}</h1>${P.headline?`<div class="hl">${esc(P.headline)}</div>`:''}<div class="ct">${ct}</div>`;if(tpl==='govt'){const pd=[['Date of birth',P.dob],['Gender',P.gender],["Father's name",P.father]].filter(x=>x[1]);if(pd.length)h+=`<div class="pd">${pd.map(x=>`<span><b>${x[0]}:</b> ${esc(x[1])}</span>`).join('')}</div>`}if(P.photo&&!['classic','compact'].includes(tpl))h=`<img class="pho" alt="Candidate photo" src="${esc(P.photo)}">`+h;
+ const parts={};let secs=D.sections.slice();if(tpl==='data')secs.sort((a,b)=>(b.id==='skills')-(a.id==='skills'));secs.forEach(({id,show:on})=>{if(!on||id==='personal')return;const it=I[id];let b='';
   if(id==='summary'&&it.text)b=`<p>${esc(it.text)}</p>`;
   if(id==='skills')b=it.filter(s=>s.list).map(s=>`<p>${s.label?`<b>${esc(s.label)}:</b> `:''}${esc(s.list)}</p>`).join('');
   if(id==='experience')b=it.map(e=>`<div class="en"><div class="r1"><span><b>${esc(e.role)}</b>${e.company?', '+esc(e.company):''}${e.city?', '+esc(e.city):''}</span><span class="dt">${esc(dates(e.start,e.end))}</span></div>${lines(e.bullets).length?`<ul>${lines(e.bullets).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}</div>`).join('');
   if(id==='projects')b=it.map(p=>`<div class="en"><div class="r1"><span><b>${esc(p.name)}</b>${p.link?' | '+link(p.link):''}</span></div>${p.tech?`<div><i>Tech: ${esc(p.tech)}</i></div>`:''}${p.desc?`<ul>${lines(p.desc).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}</div>`).join('');
   if(id==='education')b=it.map(e=>`<div class="en"><div class="r1"><span><b>${esc(e.degree)}</b>${e.school?', '+esc(e.school):''}${e.score?' | '+esc(e.score):''}</span><span class="dt">${esc(e.year)}</span></div></div>`).join('');
   if(id==='certs')b=it.filter(c=>c.name).map(c=>`<p>${esc(c.name)}${c.issuer?' - '+esc(c.issuer):''}</p>`).join('');
-  if(b)h+=`<section><h2>${HEAD[id]}</h2>${b}</section>`});
+  if(id==='achievements'&&it.some(x=>x.text))b=`<ul>${it.filter(x=>x.text).map(x=>`<li>${esc(x.text)}</li>`).join('')}</ul>`;
+  if(id==='languages'&&it.some(x=>x.name))b=`<p>${it.filter(x=>x.name).map(x=>esc(x.name)+(x.level?' ('+esc(x.level)+')':'')).join(', ')}</p>`;
+  if(id==='custom'&&lines(it.text).length)b=`<ul>${lines(it.text).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+  if(b)parts[id]=`<section><h2>${esc(id==='custom'?(it.title||'Additional'):HEAD[id])}</h2>${b}</section>`});
+ const SIDE=['skills','education','certs','languages'],ids=secs.map(s=>s.id).filter(i=>parts[i]);
+ if(tpl==='side')h=`<div class="hd">${h}</div><div class="two"><div class="mn">${ids.filter(i=>!SIDE.includes(i)).map(i=>parts[i]).join('')}</div><aside class="sd">${ids.filter(i=>SIDE.includes(i)).map(i=>parts[i]).join('')}</aside></div>`;else h+=ids.map(i=>parts[i]).join('');
  if(!contact.length&&!name)h+=`<p>Start filling the form on the left. Your resume appears here.</p>`;
  return h+`<div class="ft">Made with Rajasthan Job Resume Builder</div>`}
 const FONTS={plex:"'IBM Plex Sans',Arial,sans-serif",arial:'Arial,Helvetica,sans-serif',georgia:"Georgia,'Times New Roman',serif"};
@@ -86,6 +96,7 @@ function check(){const I=D.items,P=I.personal,out=[];const add=(pts,msg,s)=>out.
  if(!P.phone)add(8,'Add your phone number.','personal');else if(!okPhone(P.phone))add(6,'Phone should be 10 digits.','personal');
  if(!P.email)add(8,'Add your email.','personal');else if(!okMail(P.email))add(6,'Email looks invalid.','personal');
  else if(/(cool|sexy|king|boss|hot|baby|dude|lover)/i.test(P.email.split('@')[0])||/\d{5,}/.test(P.email))add(4,'Email looks informal. Use a name-based email like firstname.lastname@gmail.com.','personal');
+ if(P.photo&&['classic','compact'].includes(D.meta.template))add(3,'Photo is hidden on ATS templates. Pick Government Form or Modern Navy if you need a photo.','personal');
  if(!P.city)add(3,'Add your city.','personal');
  [['linkedin'],['github'],['portfolio']].forEach(([k])=>{if(P[k]&&!okUrl(P[k]))add(3,`Fix the ${k} link.`,'personal')});
  const n=(I.summary.text||'').trim().split(/\s+/).filter(Boolean).length;
@@ -119,7 +130,7 @@ function syncTools(){$('#tpl').value=D.meta.template;$('#acc').value=D.theme.acc
 const setP=(p,v)=>{const[s,i,k]=p.split('.');if(SCHEMA[s].one)D.items[s][k]=v;else D.items[s][+i][k]=v};
 document.addEventListener('input',e=>{const t=e.target;if(t.dataset.p){setP(t.dataset.p,t.value);const k=t.dataset.p.split('.')[2],er=document.querySelector(`[data-err="${t.dataset.p}"]`);
   if(er&&FIELDERR[k]&&t.dataset.p.startsWith('personal')){const m=FIELDERR[k](t.value);er.textContent=m;t.toggleAttribute('aria-invalid',!!m)}draw()}});
-[['tpl',v=>D.meta.template=v],['acc',v=>D.theme.accent=v],['ff',v=>D.theme.font=v],['fs',v=>D.theme.size=v],['gap',v=>D.theme.gap=v]].forEach(([id,f])=>$('#'+id).addEventListener('input',e=>{f(e.target.value);draw()}));
+[['tpl',v=>D.meta.template=v],['acc',v=>D.theme.accent=v],['ff',v=>D.theme.font=v],['fs',v=>D.theme.size=v],['gap',v=>D.theme.gap=v]].forEach(([id,f])=>$('#'+id).addEventListener('input',e=>{f(e.target.value);if(id==='tpl')renderForm();draw()}));
 document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const{a,s,i,o,d,fix,v}=t.dataset;
  if(a){const L=D.items[s],n=+i;if(a==='add')L.push({});if(a==='rm')L.splice(n,1);if(a==='up'||a==='dn'){const m=n+(a==='up'?-1:1);[L[n],L[m]]=[L[m],L[n]]}renderForm();if(a==='add'){const ds=$(`details[data-s="${s}"]`);ds.open=true;ds.querySelector('.rbItem:last-of-type input,.rbItem:last-of-type textarea')?.focus()}draw()}
  if(o!==undefined){const n=+o,m=n+ +d;[D.sections[n],D.sections[m]]=[D.sections[m],D.sections[n]];renderForm();draw()}
@@ -136,5 +147,9 @@ function fname(){const P=D.items.personal,[f='',...l]=(P.name||'My').trim().spli
  return [c(f)||'My',c(l.join(''))||'Name',c((P.headline||'').split(/[|,\-]/)[0].replace(/\s+/g,''))||'Role','Resume'].join('_')}
 function dl(){const old=document.title;document.title=fname();renderPaper();const w=()=>{document.title=old;removeEventListener('afterprint',w)};addEventListener('afterprint',w);print()}
 $('#dl').onclick=$('#dl2').onclick=dl;
+document.addEventListener('change',e=>{if(e.target.id!=='photo')return;const f=e.target.files[0];if(!f)return;if(f.size>6e6)return alert('Photo is too large. Choose an image under 6 MB.');const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=240;c.height=300;const x=c.getContext('2d'),r=Math.max(240/im.width,300/im.height),w=im.width*r,h=im.height*r;x.drawImage(im,(240-w)/2,(300-h)/2,w,h);D.items.personal.photo=c.toDataURL('image/jpeg',.85);URL.revokeObjectURL(im.src);renderForm();draw()};im.onerror=()=>alert('This image could not be read. Try a JPG or PNG.');im.src=URL.createObjectURL(f)});
+document.addEventListener('click',e=>{if(e.target.id==='rmPhoto'){delete D.items.personal.photo;renderForm();draw()}});
+window.RB={get:()=>D,set:d=>{const m=migrate(d);if(m){load(m);push()}},fname,
+ addSkill:t=>{let g=D.items.skills.find(s=>s.label==='Other skills');if(!g){g={label:'Other skills',list:''};D.items.skills.push(g)}const cur=g.list.split(',').map(x=>x.trim()).filter(Boolean);if(!cur.some(x=>x.toLowerCase()===t.toLowerCase()))cur.push(t);g.list=cur.join(', ');renderForm();draw()}};
 addEventListener('resize',fit);
 syncTools();renderForm();renderPaper();btns();

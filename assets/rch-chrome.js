@@ -8,7 +8,7 @@
   var ico=function(d){return '<svg class="rcIco" viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>'};
   var pin=ico('<path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>');
   var phone=ico('<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>');
-  var links=[['Jobs','jobs.html'],['Government jobs','government-jobs.html'],['Job seekers','job-seeker.html'],['Services','index.html#services'],['Contact','inquiry.html']];
+  var links=[['Jobs','jobs.html'],['Government jobs','government-jobs.html'],['Job seekers','job-seeker.html'],['Resume builder','resume-builder.html'],['Services','index.html#services'],['Contact','inquiry.html']];
   var menu=links.map(function(l){return '<a href="'+l[1]+'"'+(l[1]===page?' class="on" aria-current="page"':'')+'>'+l[0]+'</a>'}).join('');
 
   var top=document.createElement('div');top.className='rcTop';
@@ -23,7 +23,7 @@
   var foot=document.createElement('footer');foot.className='rcFoot';
   foot.innerHTML='<div class="rcWrap"><div class="rcFootGrid">'+
     '<div><a class="rcBrand" href="index.html"><div class="rcLogo">RJ</div><div><b>Rajasthan Job</b><small>Jobs and career support</small></div></a><p>Jobs, government recruitment information, resume and interview support for Jaipur and Rajasthan.</p></div>'+
-    '<div><h4>Explore</h4><a href="jobs.html">Private jobs</a><a href="government-jobs.html">Government jobs</a><a href="job-seeker.html">Job seekers</a><a href="notes.html">Notes</a></div>'+
+    '<div><h4>Explore</h4><a href="jobs.html">Private jobs</a><a href="government-jobs.html">Government jobs</a><a href="job-seeker.html">Job seekers</a><a href="notes.html">Notes</a><a href="resume-builder.html">Resume builder</a></div>'+
     '<div><h4>Services</h4><a href="inquiry.html">Job inquiry</a><a href="inquiry.html">Resume support</a><a href="inquiry.html">Interview preparation</a><a href="index.html#services">All services</a></div>'+
     '<div><h4>For employers</h4><a href="post-a-job.html">Post a job</a><a href="inquiry.html">Talk to our team</a><a href="admin-dashboard.html">Admin login</a></div></div>'+
     '<div class="rcCopy"><span>© 2026 Rajasthan Job. All rights reserved.</span><span>Please verify recruitment details from the official source before applying.</span></div></div>';
