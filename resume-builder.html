@@ -21,8 +21,11 @@
     <section class="rbForm" aria-label="Resume form" data-step="0">
       <nav id="stepbar" class="rbSteps" aria-label="Steps"></nav>
       <div class="rbDes">
-        <h3 class="rbH">Choose a design</h3><p class="hint">Pick one. You can change it any time and your details stay. Job portal ke liye "ATS-safe" design chuno.</p>
-        <div id="gallery" class="rbGal"></div>
+        <h3 class="rbH">Your profession</h3><p class="hint">Pick your field. We set a matching look and suggest skills and a summary for it. Apna field chuno.</p>
+        <select id="prof" class="rbSel" aria-label="Your profession"></select>
+        <h3 class="rbH">Ready-made themes</h3><div id="themes" class="rbThemes"></div>
+        <div class="rbRow" style="margin-bottom:16px"><button type="button" class="rbB" data-sv>Save my current look</button><button type="button" class="rbB" data-cl>Delete my themes</button></div>
+        <h3 class="rbH">Layout</h3><div id="gallery" class="rbGal"></div>
         <h3 class="rbH">Colour</h3><div id="sw" class="rbSwrap"></div>
         <details class="rbSec"><summary>Fine-tune: font, size, spacing</summary><div class="rbBody">
           <label>Custom colour<input type="color" id="acc" value="#1450d6"></label>
@@ -30,7 +33,7 @@
           <label>Text size<select id="fs"><option value="10">Small (10 pt)</option><option value="10.5" selected>Normal (10.5 pt)</option><option value="11">Large (11 pt)</option></select></label>
           <label>Spacing<select id="gap"><option value="0.7">Tight</option><option value="1" selected>Normal</option><option value="1.3">Roomy</option></select></label>
         </div></details>
-        <select id="tpl" hidden><option value="classic">ATS Classic</option><option value="compact">ATS Compact</option><option value="navy">Modern Navy</option><option value="serif">Executive Serif</option><option value="mono">Minimal</option><option value="data">Data / Tech</option><option value="govt">Government Form</option><option value="side">Sidebar</option></select>
+        <select id="tpl" hidden><option value="classic">ATS Classic</option><option value="compact">ATS Compact</option><option value="corp">Corporate</option><option value="navy">Modern Navy</option><option value="serif">Executive Serif</option><option value="mono">Minimal</option><option value="data">Data / Tech</option><option value="govt">Government Form</option><option value="side">Sidebar</option></select>
       </div>
       <div id="form"></div>
       <div class="rbFin">
