@@ -1,0 +1,108 @@
+// ======================================================================
+// Rajasthan Career Hub - Analytics v2 rules
+// Firebase Console -> Firestore Database -> Rules
+// Paste the helper functions + the two "match" blocks INSIDE your existing
+//   match /databases/{database}/documents { ... }
+// (keep all your current rules for jobs, inquiries, candidates, etc.)
+// ======================================================================
+
+    function rchAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "saif.anwar1618@gmail.com";
+    }
+    function rchAnon() {
+      return request.auth != null
+        && request.auth.token.firebase.sign_in_provider == "anonymous";
+    }
+    function okStr(d, f, n) {
+      return d.get(f, "") is string && d.get(f, "").size() <= n;
+    }
+    function okNum(d, f, lo, hi) {
+      return d.get(f, 0) is number && d.get(f, 0) >= lo && d.get(f, 0) <= hi;
+    }
+
+    // Page views + engagement (one document per page view)
+    match /websiteAnalytics/{eventId} {
+      allow create: if rchAnon()
+        && request.resource.data.keys().hasOnly([
+          "visitorId", "sessionId", "page", "title", "jobId", "referrer", "source", "channel",
+          "medium", "campaign", "device", "os", "browser", "screen", "viewport",
+          "language", "tz", "net", "landing", "pageIndex", "entry", "visitCount", "isNew",
+          "country", "countryCode", "region", "city", "durationSec", "maxScroll", "interactions",
+          "createdAt", "uid"
+        ])
+        && okStr(request.resource.data, "visitorId", 80)
+        && okStr(request.resource.data, "sessionId", 80)
+        && okStr(request.resource.data, "page", 160)
+        && okStr(request.resource.data, "title", 160)
+        && okStr(request.resource.data, "jobId", 80)
+        && okStr(request.resource.data, "referrer", 120)
+        && okStr(request.resource.data, "source", 60)
+        && okStr(request.resource.data, "channel", 40)
+        && okStr(request.resource.data, "medium", 40)
+        && okStr(request.resource.data, "campaign", 80)
+        && okStr(request.resource.data, "device", 20)
+        && okStr(request.resource.data, "os", 20)
+        && okStr(request.resource.data, "browser", 30)
+        && okStr(request.resource.data, "screen", 20)
+        && okStr(request.resource.data, "viewport", 20)
+        && okStr(request.resource.data, "language", 20)
+        && okStr(request.resource.data, "tz", 60)
+        && okStr(request.resource.data, "net", 10)
+        && okStr(request.resource.data, "entry", 160)
+        && okStr(request.resource.data, "country", 60)
+        && okStr(request.resource.data, "countryCode", 4)
+        && okStr(request.resource.data, "region", 60)
+        && okStr(request.resource.data, "city", 60)
+        && okNum(request.resource.data, "pageIndex", 0, 10000)
+        && okNum(request.resource.data, "visitCount", 0, 100000)
+        && okNum(request.resource.data, "durationSec", 0, 0)
+        && okNum(request.resource.data, "maxScroll", 0, 0)
+        && okNum(request.resource.data, "interactions", 0, 0)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+
+      // a visitor may only top up engagement fields on the document they created
+      allow update: if rchAnon()
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          "title", "durationSec", "maxScroll", "interactions", "country", "countryCode", "region", "city", "updatedAt"
+        ])
+        && okStr(request.resource.data, "title", 160)
+        && okNum(request.resource.data, "durationSec", 0, 14400)
+        && okNum(request.resource.data, "maxScroll", 0, 100)
+        && okNum(request.resource.data, "interactions", 0, 100000)
+        && okStr(request.resource.data, "country", 60)
+        && okStr(request.resource.data, "countryCode", 4)
+        && okStr(request.resource.data, "region", 60)
+        && okStr(request.resource.data, "city", 60);
+
+      allow read, update, delete: if rchAdmin();
+    }
+
+    // Actions (apply / whatsapp / call / search / forms ...)
+    match /websiteEvents/{eventId} {
+      allow create: if rchAnon()
+        && request.resource.data.keys().hasOnly([
+          "type", "label", "target", "page", "jobId", "visitorId", "sessionId", "uid", "createdAt"
+        ])
+        && request.resource.data.type in [
+          "job_open", "apply_click", "whatsapp_click", "call_click", "telegram_click", "email_click",
+          "share_click", "copy_link", "search", "filter_change", "notes_click", "cta_click",
+          "download_click", "outbound_click", "form_start", "form_submit", "custom"
+        ]
+        && okStr(request.resource.data, "label", 80)
+        && okStr(request.resource.data, "target", 80)
+        && okStr(request.resource.data, "page", 160)
+        && okStr(request.resource.data, "jobId", 80)
+        && okStr(request.resource.data, "visitorId", 80)
+        && okStr(request.resource.data, "sessionId", 80)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if rchAdmin();
+    }
+
+    // Dashboard also reads these (admin only). Add ONLY if you don't already allow it:
+    //   match /inquiries/{id}  { allow read: if rchAdmin(); }
+    //   match /candidates/{id} { allow read: if rchAdmin(); }
+    //   match /jobs/{id}       { allow read: if true; }   // already public for approved jobs

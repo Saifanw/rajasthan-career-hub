@@ -55,4 +55,5 @@ btn.disabled=true;btn.textContent="Submitting...";
 try{await addDoc(collection(db,"inquiries"),{name,mobile,service,message,status:"new",createdAt:serverTimestamp()});$("inquiryForm").reset();msg.className="msg success";msg.textContent="✅ Inquiry submitted successfully. Rajasthan Job team will contact you.";msg.style.display="block";}catch(err){console.error(err);msg.className="msg error";msg.textContent="❌ Inquiry submit nahi ho paayi. Please try again.";msg.style.display="block";}finally{btn.disabled=false;btn.textContent="📩 Submit Inquiry";}
 });
 </script>
+<script type="module" src="assets/rch-analytics-tracker.js"></script>
 </body></html>

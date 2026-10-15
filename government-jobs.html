@@ -74,4 +74,5 @@ document.querySelectorAll("#bodyTabs .tab").forEach(btn=>btn.addEventListener("c
 document.querySelectorAll("#stageTabs .tab").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("#stageTabs .tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");selectedStage=btn.dataset.stage||"";render()}));
 load();
 </script>
+<script type="module" src="assets/rch-analytics-tracker.js"></script>
 </body></html>

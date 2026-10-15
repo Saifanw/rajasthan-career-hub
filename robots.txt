@@ -10,5 +10,6 @@ Disallow: /notification-manager.html
 Disallow: /private-job-import.html
 Disallow: /notes-manager.html
 Disallow: /upload-notes.html
+Disallow: /visitor-analytics.html
 
 Sitemap: https://saifanw.github.io/rajasthan-career-hub/sitemap.xml
