@@ -1,0 +1,19 @@
+// Resume Builder rules. Paste INSIDE your existing: match /databases/{database}/documents { ... }
+// Keep all your current rules. Only the owner (signed in with Google, not anonymous) can touch their resumes.
+
+    function rbOwner(uid) {
+      return request.auth != null && request.auth.uid == uid
+        && request.auth.token.firebase.sign_in_provider != "anonymous";
+    }
+    match /users/{uid}/resumes/{rid} {
+      allow read, delete: if rbOwner(uid);
+      allow create, update: if rbOwner(uid)
+        && request.resource.data.keys().hasOnly(["title", "data", "updatedAt"])
+        && request.resource.data.title is string && request.resource.data.title.size() <= 120
+        && request.resource.data.data is string && request.resource.data.data.size() <= 400000;
+    }
+    // Phase 3: users read their own entitlement; only the Cloud Function (Admin SDK) writes it.
+    match /entitlements/{uid} {
+      allow read: if rbOwner(uid);
+      allow write: if false;
+    }

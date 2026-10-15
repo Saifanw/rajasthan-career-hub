@@ -11,7 +11,7 @@
 <body>
 <main class="rb" data-rch-private data-view="edit">
   <div class="rbTool" role="toolbar" aria-label="Resume settings">
-    <label>Template<select id="tpl"><option value="classic">ATS Classic</option><option value="compact">ATS Compact</option><option value="navy">Modern Navy</option><option value="serif">Executive Serif</option></select></label>
+    <label>Template<select id="tpl"><option value="classic">ATS Classic</option><option value="compact">ATS Compact</option><option value="navy">Modern Navy</option><option value="serif">Executive Serif</option><option value="mono">Minimal Mono-accent</option><option value="data">Data / Tech Analyst</option><option value="govt">Government Form</option><option value="side">Two-Column Sidebar (design only)</option></select></label>
     <label>Colour<input type="color" id="acc" value="#1450d6"></label>
     <label>Font<select id="ff"><option value="plex">IBM Plex Sans</option><option value="arial">Arial</option><option value="georgia">Georgia</option></select></label>
     <label>Size<select id="fs"><option value="10">10 pt</option><option value="10.5" selected>10.5 pt</option><option value="11">11 pt</option></select></label>
@@ -21,12 +21,14 @@
     <button class="rbB" id="clear" type="button">Clear sample</button>
     <button class="rbB" id="exp" type="button">Export JSON</button>
     <label class="rbB rbFile">Import JSON<input type="file" id="imp" accept="application/json" hidden></label>
-    <button class="rbB pri" id="dl" type="button">Download PDF</button>
+    <button class="rbB" id="dlx" type="button">Download DOCX</button><button class="rbB pri" id="dl" type="button">Download PDF</button>
   </div>
   <div class="rbSeg" role="tablist" aria-label="View"><button type="button" role="tab" data-v="edit" aria-selected="true">Edit</button><button type="button" role="tab" data-v="preview" aria-selected="false">Preview</button></div>
   <div class="rbGrid">
     <section class="rbForm" aria-label="Resume form">
       <div id="health" class="rbHealth"></div>
+      <details class="rbSec"><summary>Job description match</summary><div class="rbBody"><p class="hint">Paste a job description. We show which keywords your resume already has. Add only skills you truly have. Jo skill aapke paas nahi hai, wo mat likhein.</p><label for="jd">Job description<textarea id="jd" placeholder="Paste the job post here"></textarea></label><div id="jdOut" aria-live="polite"></div></div></details>
+      <details class="rbSec"><summary>Account and saved resumes (optional)</summary><div class="rbBody" id="acct"><p class="hint">Loading...</p></div></details>
       <div id="form"></div>
       <details class="rbSec"><summary>Sections: show, hide, reorder</summary><div id="order" class="rbBody"></div></details>
       <p class="rbNote">Privacy: your resume stays in this browser (autosaved on this device). Nothing is uploaded. Add only what is true. Hum kisi selection ki guarantee nahi dete; ek saaf resume aapke chance behtar karta hai.</p>
@@ -36,6 +38,9 @@
   <div class="rbMobile"><button class="rbB pri" id="dl2" type="button">Download PDF</button></div>
 </main>
 <script type="module" src="assets/rb-app.js"></script>
+<script type="module" src="assets/rb-jd.js"></script>
+<script type="module" src="assets/rb-docx.js"></script>
+<script type="module" src="assets/rb-account.js"></script>
 <script type="module" src="assets/rch-analytics-tracker.js"></script>
 </body>
 </html>
