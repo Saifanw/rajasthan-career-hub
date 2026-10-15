@@ -1,0 +1,70 @@
+/* Resume builder UI + 4 resume templates. Tokens come from rch-site.css */
+.rb{width:min(1480px,98%);margin:14px auto 0}
+.rbTool{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:flex-end;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;position:sticky;top:68px;z-index:50}
+.rbTool label{font-size:11.5px;font-weight:600;color:var(--muted);display:grid;gap:3px}
+.rbTool select,.rbTool input[type=color]{height:36px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:13px;padding:0 6px}
+.rbTool input[type=color]{width:46px;padding:2px}.rbSp{flex:1}
+.rbB{height:36px;padding:0 13px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--navy);font:600 13px var(--rc-font);cursor:pointer;display:inline-flex;align-items:center}
+.rbB:hover{border-color:var(--navy)}.rbB:disabled{opacity:.45;cursor:default}.rbB.pri{background:var(--blue);border-color:var(--blue);color:#fff}.rbB.pri:hover{background:var(--blue-d)}
+.rbFile:focus-within{outline:3px solid #7aa7ff}
+.rbGrid{display:grid;grid-template-columns:40% 60%;gap:14px;margin-top:14px;align-items:start}
+.rbForm,.rbPrev{height:calc(100vh - 190px);min-height:480px;overflow:auto}
+.rbPrev{background:#e6ebf3;border-radius:12px;padding:16px;position:relative}
+.rbHealth,.rbSec{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+.rbSec>summary{padding:13px 14px;font-weight:600;color:var(--navy);cursor:pointer}
+.rbBody{padding:4px 14px 14px;display:grid;gap:10px}
+.rbBody .hint{font-size:12.5px;color:var(--muted);margin:0}
+.rbBody label{font-size:12.5px;font-weight:600;display:grid;gap:4px}
+.rbBody input,.rbBody textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
+.rbBody textarea{min-height:84px;resize:vertical}
+.rbBody input[aria-invalid=true]{border-color:var(--red)}
+.rbItem{border:1px dashed var(--line);border-radius:10px;padding:10px;display:grid;gap:10px}
+.rbRow{display:flex;gap:8px;flex-wrap:wrap}.rbRow .rbB{height:32px;font-size:12.5px}
+.rbEmpty{color:var(--muted);font-size:13px;margin:0}
+.rbHealth{padding:14px}.rbScore{display:flex;align-items:center;gap:12px}
+.rbScore b{font-size:30px;color:var(--navy)}.rbMeter{flex:1;height:8px;background:#e8edf4;border-radius:6px;overflow:hidden}.rbMeter i{display:block;height:100%;background:var(--green)}
+.rbHealth ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.rbHealth li button{width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 10px;font:500 13px var(--rc-font);color:#2b3b52;cursor:pointer}
+.rbHealth li button:hover{border-color:var(--saffron)}.rbHealth li b{color:var(--saffron)}
+.rbNote{font-size:12.5px;color:var(--muted);line-height:1.5}
+.rbSeg,.rbMobile{display:none}
+.rbWrap{margin:0 auto}.rbScale{transform-origin:top left;width:210mm}
+.rbPg{position:sticky;top:0;float:right;z-index:3;background:var(--navy);color:#fff;font-size:12px;padding:4px 10px;border-radius:20px}
+@media(max-width:900px){
+ .rbGrid{grid-template-columns:1fr}.rbForm,.rbPrev{height:auto;overflow:visible;min-height:0}
+ .rbTool{position:static}.rbTool label:not(.rbB){flex:1 1 40%}.rbTool select{width:100%}
+ .rbSeg{display:grid;grid-template-columns:1fr 1fr;margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+ .rbSeg button{height:42px;border:0;background:#fff;font:600 14px var(--rc-font);color:var(--muted);cursor:pointer}.rbSeg [aria-selected=true]{background:var(--navy);color:#fff}
+ .rb[data-view=edit] .rbPrev,.rb[data-view=preview] .rbForm{display:none}
+ .rbTool .pri,.rbTool #exp,.rbFile{display:none}
+ .rbMobile{display:block;position:fixed;left:0;right:0;bottom:0;z-index:150;background:#fff;border-top:1px solid var(--line);padding:10px 4%}.rbMobile .rbB{width:100%;height:46px;justify-content:center}
+ .rbPrev{padding:8px}.rcFoot{padding-bottom:90px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ===== Resume paper (shared by all templates) ===== */
+.paper{--ac:#1450d6;--fs:10.5pt;--g:1;--ff:'IBM Plex Sans',Arial,sans-serif;width:210mm;min-height:297mm;box-sizing:border-box;background:#fff;color:#111;padding:14mm 16mm;font:var(--fs)/1.42 var(--ff);position:relative;box-shadow:0 2px 12px rgba(10,35,66,.18)}
+.paper h1{font-size:2em;margin:0;line-height:1.15;letter-spacing:-.01em;color:#111}
+.paper h2{font-size:1em;text-transform:uppercase;letter-spacing:.08em;margin:calc(14px*var(--g)) 0 calc(6px*var(--g));padding-bottom:3px;border-bottom:1.5px solid var(--ac);color:var(--ac)}
+.paper .hl{font-size:1.1em;margin-top:2px}.paper .ct{margin-top:4px;color:#333;font-size:.95em}
+.paper .en{margin-bottom:calc(8px*var(--g));break-inside:avoid;page-break-inside:avoid}
+.paper .r1{display:flex;justify-content:space-between;gap:12px}.paper .r1 b{font-weight:700}.paper .dt{white-space:nowrap;color:#444}
+.paper ul{margin:3px 0 0;padding-left:1.15em}.paper li{margin-bottom:2px;break-inside:avoid;page-break-inside:avoid}
+.paper p{margin:0}.paper h2{break-after:avoid;page-break-after:avoid}
+.paper .ft{margin-top:18px;font-size:8pt;color:#777;text-align:center}
+.paper a{color:inherit;text-decoration:none}
+.paper.empty{color:#667}
+.t-compact{--fs:10pt;padding:12mm 14mm}.t-compact h1{font-size:1.7em}
+.t-compact h2{margin-top:calc(9px*var(--g));border-bottom-width:1px}
+.t-navy h1{color:#0a2342}.t-navy h2{color:#0a2342;border-bottom:0;border-left:4px solid var(--ac);padding:2px 0 2px 8px;background:#f1f5fb}
+.t-navy{border-top:8px solid #0a2342}
+.t-serif{--ff:Georgia,'Times New Roman',serif}.t-serif h1{text-align:center;font-weight:700}.t-serif .hl,.t-serif .ct{text-align:center}
+.t-serif h2{color:#111;border-bottom:1px solid #111;letter-spacing:.12em}
+@page{size:A4;margin:14mm 16mm}
+@media print{
+ body>*:not(main){display:none!important}body{background:#fff!important}
+ .rb{width:auto;margin:0}.rb>*:not(.rbGrid),.rbForm,.rbPg{display:none!important}
+ .rbGrid{display:block;margin:0}.rbPrev{display:block!important;height:auto;overflow:visible;background:none;padding:0}
+ .rbWrap{width:auto!important;height:auto!important}.rbScale{transform:none!important;width:auto}
+ .paper{box-shadow:none;padding:0;min-height:0;width:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}

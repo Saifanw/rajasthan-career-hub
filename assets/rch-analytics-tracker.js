@@ -116,6 +116,8 @@ import { getFirestore, collection, doc, setDoc, addDoc, updateDoc, serverTimesta
     return u;
   })();
 
+  /* Anything inside [data-rch-private] (e.g. the resume builder) is never tracked: no clicks, inputs, focus or submits. */
+  const priv = e => !!(e.target && e.target.closest && e.target.closest("[data-rch-private]"));
   const state = { duration: 0, scroll: 0, clicks: 0 };
   let created = null, pending = {}, timer = null, sentSig = "";
 
@@ -224,7 +226,7 @@ import { getFirestore, collection, doc, setDoc, addDoc, updateDoc, serverTimesta
   const jobTitleNow = () => cut((document.title || "").replace(/\s*\|\s*Rajasthan Job.*$/i, ""), 80);
   const txt = el => (el.getAttribute("data-track") || el.getAttribute("aria-label") || el.textContent || "").replace(/\s+/g, " ").trim();
 
-  document.addEventListener("click", e => {
+  document.addEventListener("click", e => { if (priv(e)) return;
     state.clicks++;
     const el = e.target?.closest?.("a,button,[data-track]");
     if (!el) return;
@@ -267,22 +269,22 @@ import { getFirestore, collection, doc, setDoc, addDoc, updateDoc, serverTimesta
     seenSearch.add(q); track("search", q, where);
   }
   let sTimer = 0;
-  document.addEventListener("input", e => {
+  document.addEventListener("input", e => { if (priv(e)) return;
     const t = e.target;
     if (t && t.id === "search" && t.tagName === "INPUT") { clearTimeout(sTimer); sTimer = setTimeout(() => logSearch(t.value, "jobs list"), 1500); }
   }, true);
-  document.addEventListener("change", e => {
+  document.addEventListener("change", e => { if (priv(e)) return;
     const t = e.target;
     if (t && t.tagName === "SELECT" && t.value && /^(location|category|experience|type|sort)$/.test(t.id || "")) track("filter_change", t.id + ": " + t.value, "");
   }, true);
 
   /* ---- forms ---- */
-  document.addEventListener("focusin", e => {
+  document.addEventListener("focusin", e => { if (priv(e)) return;
     const f = e.target?.closest?.("form"); if (!f || !/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
     if (f.classList.contains("rjSearch") || f.getAttribute("role") === "search") return;
     const id = f.id || "form"; if (once.has("s" + id)) return; once.add("s" + id); track("form_start", id, "");
   }, true);
-  document.addEventListener("submit", e => {
+  document.addEventListener("submit", e => { if (priv(e)) return;
     const f = e.target;
     if (f && (f.classList?.contains("rjSearch") || f.getAttribute?.("role") === "search")) {
       const inp = f.querySelector("input[type=search],input[name=q],input[name=search],input[name=keyword],input[type=text],input:not([type])");
