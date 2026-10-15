@@ -105,12 +105,13 @@ a{color:#1769e8;font-weight:700}
   color:#58718a;
 }
 </style>
+<link rel="stylesheet" href="assets/rch-admin.css">
 </head>
 <body>
 
 <header>
   <div class="wrap">
-    <h1>📚 Upload Notes & Study Material</h1>
+    <h1>Upload Notes & Study Material</h1>
     <p>Anyone can submit material. Admin approval ke baad public hoga.</p>
   </div>
 </header>
@@ -156,7 +157,7 @@ a{color:#1769e8;font-weight:700}
 
     <p class="note">Only upload material you have the right to share.</p>
 
-    <button class="btn primary" id="submit">📤 Submit for Review</button>
+    <button class="btn primary" id="submit">Submit for Review</button>
 
     <div class="progressBox" id="progressBox">
       <div class="progressTop">
@@ -171,9 +172,9 @@ a{color:#1769e8;font-weight:700}
     <div id="msg" class="msg"></div>
 
     <p style="margin-top:20px">
-      <a href="notes.html">📚 View Notes</a>
+      <a href="notes.html">View Notes</a>
       &nbsp; | &nbsp;
-      <a href="index.html">🏠 Home</a>
+      <a href="index.html">Home</a>
     </p>
   </div>
 </main>
@@ -276,7 +277,7 @@ $("submit").addEventListener("click", async () => {
 
   const btn = $("submit");
   btn.disabled = true;
-  btn.textContent = "⏳ Uploading...";
+  btn.textContent = "Uploading...";
 
   try{
 
@@ -342,7 +343,7 @@ $("submit").addEventListener("click", async () => {
     setProgress(100, "Submitted successfully.");
 
     msg(
-      "✅ Material submitted successfully. Admin approval ke baad Notes page par show hoga.",
+      "Material submitted successfully. Admin approval ke baad Notes page par show hoga.",
       "ok"
     );
 
@@ -362,19 +363,19 @@ $("submit").addEventListener("click", async () => {
 
     if(error?.code === "storage/unauthorized"){
       errorMessage =
-        "❌ Firebase Storage permission denied. Storage Rules check karein.";
+        "Firebase Storage permission denied. Storage Rules check karein.";
     }
     else if(error?.code === "storage/canceled"){
-      errorMessage = "❌ Upload was canceled.";
+      errorMessage = "Upload was canceled.";
     }
     else if(error?.code === "storage/quota-exceeded"){
-      errorMessage = "❌ Firebase Storage quota exceeded.";
+      errorMessage = "Firebase Storage quota exceeded.";
     }
     else if(error?.code === "storage/unknown"){
-      errorMessage = "❌ Firebase Storage error. Please try again.";
+      errorMessage = "Firebase Storage error. Please try again.";
     }
     else if(error?.message){
-      errorMessage = "❌ " + error.message;
+      errorMessage = "" + error.message;
     }
 
     msg(errorMessage, "err");
@@ -383,12 +384,13 @@ $("submit").addEventListener("click", async () => {
   }finally{
 
     btn.disabled = false;
-    btn.textContent = "📤 Submit for Review";
+    btn.textContent = "Submit for Review";
 
   }
 
 });
 </script>
 
+<script src="assets/rch-admin-nav.js"></script>
 </body>
 </html>

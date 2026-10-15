@@ -42,7 +42,8 @@ table{width:100%;border-collapse:collapse;font-size:12.5px}th,td{text-align:left
 .more{margin-top:10px;text-align:center}
 @media(min-width:901px){.filters{position:sticky}}
 @media(max-width:900px){.g2,.liveg{grid-template-columns:1fr}.filters{padding:8px 12px}header.top,main,nav.jump{padding-left:12px;padding-right:12px}.kpi .v{font-size:24px}.frow select{max-width:46%;flex:1 1 40%}.frow input[type=search]{flex:1 1 100%}}
-</style></head><body>
+</style><link rel="stylesheet" href="assets/rch-admin.css">
+</head><body>
 <header class="top"><div><h1>Website Analytics</h1><small>Rajasthan Career Hub · private admin dashboard</small></div>
 <div class="acts"><span class="live" id="livePill" title="Visitors active in the last 5 minutes"><span class="dot off" id="liveDot"></span><span id="liveTxt">Live —</span></span><a href="admin-dashboard.html">← Admin Dashboard</a><label class="chk"><input type="checkbox" id="auto"> Auto-refresh</label><button id="refresh" class="primary">Refresh</button>
 <details class="menu"><summary>Export CSV ▾</summary><div class="pop"><button data-exp="sessions">Sessions</button><button data-exp="visitors">Visitors</button><button data-exp="pageviews">Page views</button><button data-exp="actions">Actions (clicks &amp; forms)</button></div></details><button id="logout" class="hidden">Sign out</button></div></header>
@@ -356,4 +357,5 @@ setPreset(30);
 onAuthStateChanged(auth,u=>{if(!u||u.isAnonymous){$("login").classList.remove("hidden");$("app").classList.add("hidden");$("logout").classList.add("hidden");return}
  if(!ADMIN.includes((u.email||"").toLowerCase())){$("error").textContent="This Google account is not authorized for analytics.";signOut(auth);return}
  try{localStorage.setItem("rch_no_track","1")}catch(_){}$("login").classList.add("hidden");$("app").classList.remove("hidden");$("logout").classList.remove("hidden");load();clearInterval(liveT);liveT=setInterval(()=>document.visibilityState==="visible"&&W&&loadLive(),15000)});
-</script></body></html>
+</script><script src="assets/rch-admin-nav.js"></script>
+</body></html>

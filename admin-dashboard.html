@@ -53,6 +53,7 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
  #chatTab > div[style*="grid-template-columns"]{grid-template-columns:1fr!important}
 }
 </style>
+<link rel="stylesheet" href="assets/rch-admin.css">
 </head>
 <body>
 
@@ -68,15 +69,15 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
 
 <main class="wrap">
   <section id="loginBox" class="card login">
-    <h2>🔐 Admin Login</h2>
+    <h2>Admin Login</h2>
     <p class="muted">Google se login karke jobs aur job seekers manage karein.</p>
-    <button id="loginBtn" class="primary">🔑 Login with Google</button>
+    <button id="loginBtn" class="primary">Login with Google</button>
     <div id="loginStatus" class="message hidden"></div>
   </section>
 
   <section id="dashboard" style="display:none">
     <div class="card">
-      <h2 style="margin:0 0 6px">📊 Dashboard Overview</h2>
+      <h2 style="margin:0 0 6px">Dashboard Overview</h2>
       <p class="muted" style="margin:0">Firebase se live data load ho raha hai.</p>
     </div>
 
@@ -90,19 +91,19 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
 
     <section class="card" style="margin-top:18px">
       <div class="tabs">
-        <button class="tab active" data-tab="jobsTab">💼 Jobs</button>
-        <button class="tab" data-tab="candidatesTab">👤 Job Seekers</button>
-        <button class="tab" data-tab="chatTab">💬 HR / Company Chat <span id="chatUnreadBadge" class="badge new">0</span></button>
-        <button class="tab" data-tab="analyticsTab">📊 Website Analytics</button>
+        <button class="tab active" data-tab="jobsTab">Jobs</button>
+        <button class="tab" data-tab="candidatesTab">Job Seekers</button>
+        <button class="tab" data-tab="chatTab">HR / Company Chat <span id="chatUnreadBadge" class="badge new">0</span></button>
+        <button class="tab" data-tab="analyticsTab">Website Analytics</button>
       </div>
       <div class="card" style="margin:0 0 16px;background:#f8fbff">
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-          <strong style="color:#12355b;margin-right:4px">🛠️ Admin Tools:</strong>
-          <a class="btn light" href="job-manager.html">💼 Job Manager</a>
-          <a class="btn light" href="candidate-manager.html">👤 Candidate Manager</a>
-          <a class="btn light" href="notification-manager.html">🔔 Notifications</a>
-          <a class="btn light" href="enquiry-manager.html">📩 Enquiries</a>
-          <a class="btn bulk" href="private-job-import.html">📥 Bulk Private Job Import</a>
+          <strong style="color:#12355b;margin-right:4px">Admin Tools:</strong>
+          <a class="btn light" href="job-manager.html">Job Manager</a>
+          <a class="btn light" href="candidate-manager.html">Candidate Manager</a>
+          <a class="btn light" href="notification-manager.html">Notifications</a>
+          <a class="btn light" href="enquiry-manager.html">Enquiries</a>
+          <a class="btn bulk" href="private-job-import.html">Bulk Private Job Import</a>
         </div>
       </div>
 
@@ -110,7 +111,7 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
       <div id="jobsTab">
         <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
           <div>
-            <h2 style="margin:0">📋 Job Submissions</h2>
+            <h2 style="margin:0">Job Submissions</h2>
             <p class="muted">Pending aur approved jobs yahin dekhein.</p>
           </div>
           <button id="exportJobs" class="green">⬇ Export Jobs to Excel</button>
@@ -150,7 +151,7 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
       <div id="candidatesTab" class="hidden">
         <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
           <div>
-            <h2 style="margin:0">👤 Job Seekers Database</h2>
+            <h2 style="margin:0">Job Seekers Database</h2>
             <p class="muted">Candidate profiles ko filter karke Excel mein export karein.</p>
           </div>
           <button id="exportCandidates" class="green">⬇ Export Job Seekers to Excel</button>
@@ -195,7 +196,7 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
       <div id="analyticsTab" class="hidden">
         <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
           <div>
-            <h2 style="margin:0">📊 Website Visitor Analytics</h2>
+            <h2 style="margin:0">Website Visitor Analytics</h2>
             <p class="muted" style="margin:5px 0 0">Visitors, active sessions, sources, locations, devices aur page reports yahin dekhein.</p>
           </div>
           <a class="btn light" href="visitor-analytics.html" target="_blank" rel="noopener">Open Analytics in New Tab ↗</a>
@@ -217,7 +218,7 @@ th{background:#f2f6fa;color:var(--navy);position:sticky;top:0}
       <div id="chatTab" class="hidden">
         <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
           <div>
-            <h2 style="margin:0">💬 HR / Company Chat</h2>
+            <h2 style="margin:0">HR / Company Chat</h2>
             <p class="muted">Website se aane wale employer messages yahan dekhein aur reply karein.</p>
           </div>
           <button id="refreshChats" class="light">↻ Refresh Chats</button>
@@ -492,7 +493,7 @@ function renderJobs(){
       <td><span class="badge ${esc(status)}">${esc(status.toUpperCase())}</span></td>
       <td><div class="actions">
         ${status!=="approved"?`<button class="btn green" onclick="approveJob('${j.id}')">Approve</button>`:""}
-        <a class="btn primary" href="job-manager.html">🛠️ Job Manager</a>
+        <a class="btn primary" href="job-manager.html">Job Manager</a>
         <button class="btn danger" onclick="deleteJob('${j.id}')">Delete</button>
       </div></td>
     </tr>`;
@@ -660,5 +661,6 @@ $("exportCandidates").onclick=()=>{
   exportExcel(rows,"Rajasthan-Job-Seekers.xlsx","Job Seekers");
 };
 </script>
+<script src="assets/rch-admin-nav.js"></script>
 </body>
 </html>
