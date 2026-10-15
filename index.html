@@ -13,230 +13,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="keywords" content="Jaipur jobs, Rajasthan jobs, government jobs Rajasthan, RPSC, RSSB, CET, job services, Rajasthan GK, MIS jobs, data analyst jobs">
-<style>
-:root{
- --navy:#102a43;--blue:#1769e8;--blue2:#0b57d0;--sky:#edf5ff;--orange:#f39a2f;
- --green:#16865b;--red:#d84b4b;--ink:#182536;--muted:#64748b;--bg:#f6f8fc;
- --card:#fff;--line:#e1e8f0;--shadow:0 12px 35px rgba(16,42,67,.08);--radius:18px
-}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
-a{text-decoration:none;color:inherit}.wrap{width:min(1180px,92%);margin:auto}
-.top{background:var(--navy);color:#fff;font-size:13px}.topin{min-height:32px;display:flex;align-items:center;justify-content:space-between;gap:15px}
-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.navin{height:60px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:11px;font-weight:900;color:var(--navy)}
-.logo{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--blue),var(--orange));font-weight:950;box-shadow:0 8px 18px #1769e82b}
-.brand small{display:block;font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.2px}
-.menu{display:flex;align-items:center;gap:18px;font-size:13px;font-weight:800}.menu a:hover{color:var(--blue)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:10px;padding:11px 17px;font-weight:850;cursor:pointer;font-size:14px}
-.primary{background:var(--blue);color:#fff}.green{background:var(--green);color:#fff}.light{background:#fff;color:var(--navy);border:1px solid #cbd8e7}.orange{background:var(--orange);color:#fff}
-.dynamic{background:#fff;border-bottom:1px solid var(--line);overflow:hidden}.dynamicin{height:34px;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
-.dynamictrack{display:flex;gap:34px;animation:move 27s linear infinite;font-size:13px;font-weight:850}.dynamictrack span:before{content:"•";color:var(--orange);margin-right:12px}
-@keyframes move{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.quickActions{background:#fff;padding:13px 0 12px;border-bottom:1px solid var(--line);box-shadow:0 6px 18px rgba(16,42,67,.05)}.quickTitle{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:10px}.quickTitle h2{margin:1px 0 0;color:var(--navy);font-size:21px}.quickTitle p{margin:0;color:var(--muted);font-size:13px}.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.quickCard{min-height:62px;padding:8px 11px;border:1px solid #d6e7fa;border-radius:13px;display:flex;align-items:center;gap:10px;background:#f5f9ff;transition:.2s;box-shadow:0 4px 13px rgba(16,42,67,.045)}.quickCard:hover{transform:translateY(-1px);background:#edf6ff;border-color:#bcd9f8;box-shadow:0 8px 20px rgba(16,42,67,.09)}.quickCard>span{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:17px;background:#e5f1ff;flex:0 0 36px}.quickCard div{flex:1}.quickCard strong{display:block;color:var(--navy);font-size:13px}.quickCard small{display:block;color:#5e7690;font-size:9px;line-height:1.25;margin-top:1px}.quickCard>b{font-size:18px;color:var(--blue)}.quickCard.orange>span{background:#fff4e7}.quickCard.orange>b{color:var(--orange)}.quickCard.navy>span{background:#eef2f7}.quickCard.navy>b{color:var(--navy)}.quickCard.green>span{background:#eaf8f1}.quickCard.green>b{color:var(--green)}
-.hero{background:#fff;padding:24px 0 22px;border-bottom:1px solid var(--line)}
-.heroGrid{display:grid;grid-template-columns:1.12fr .88fr;gap:30px;align-items:center}.eyebrow{display:inline-flex;background:var(--sky);border:1px solid #d6e7ff;color:var(--blue);padding:6px 12px;border-radius:30px;font-size:12px;font-weight:900}
-h1{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-2px;color:var(--navy);margin:16px 0 17px}h1 em{font-style:normal;color:var(--blue)}
-.hero p{font-size:14px;color:var(--muted);max-width:720px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
-.tags{display:flex;flex-wrap:wrap;gap:7px}.tag{display:inline-flex;padding:5px 9px;border-radius:30px;background:#fff;border:1px solid #dce5ef;color:#40516a;font-size:11px;font-weight:800}
-.heroPanel{border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff;box-shadow:var(--shadow)}
-.heroPanel h3{margin:0 0 15px;color:var(--navy)}.miniGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.mini{padding:14px;border:1px solid var(--line);border-radius:13px;background:var(--bg);font-weight:800;font-size:13px}.mini b{display:block;font-size:21px;color:var(--blue)}
-section{padding:48px 0}.white{background:#fff}.head{text-align:center;max-width:780px;margin:0 auto 24px}.kick{font-size:12px;text-transform:uppercase;letter-spacing:1.4px;font-weight:950;color:var(--blue)}
-h2{font-size:30px;line-height:1.2;color:var(--navy);margin:7px 0 10px}.head p{color:var(--muted);margin:0}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 7px 25px rgba(16,42,67,.045)}
-.icon{width:44px;height:44px;border-radius:13px;background:var(--sky);display:grid;place-items:center;font-size:21px;margin-bottom:12px}.card h3{margin:5px 0;color:var(--navy);font-size:19px}.card p{font-size:14px;color:var(--muted);margin:7px 0 15px}
-.feature{background:linear-gradient(135deg,#102a43,#174f91);color:#fff;border-radius:26px;padding:35px;position:relative;overflow:hidden}.feature:after{content:"AI • JOB • SKILLS • CAREER";position:absolute;right:-20px;bottom:8px;font-size:42px;font-weight:950;opacity:.05;white-space:nowrap}
-.feature h2{color:#fff}.feature p{color:#dce9f8}.featureGrid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}.feature .tag{background:#ffffff12;border-color:#ffffff2c;color:#fff}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:20px}.step{background:#ffffff12;border:1px solid #ffffff22;border-radius:14px;padding:16px}.step b{font-size:22px}.step strong{display:block;margin:5px 0}.step small{color:#cbdced}
-.jobs{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.listbox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px 20px;box-shadow:var(--shadow)}
-.job{padding:16px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;align-items:center}.job:last-child{border:0}.job strong{color:var(--navy)}.job small{display:block;color:var(--muted);margin-top:2px}
-.noteGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.note{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}.note .price{font-size:14px;font-weight:900;color:var(--green);margin-top:12px}
-.resumeBox{display:grid;grid-template-columns:.8fr 1.2fr;gap:22px}.formbox,.preview{background:#fff;border:1px solid var(--line);border-radius:18px;padding:23px;box-shadow:var(--shadow)}label{display:block;font-size:12px;font-weight:850;color:var(--navy);margin:11px 0 5px}
-input,select,textarea{width:100%;padding:12px;border:1px solid #d4dfeb;border-radius:9px;font:inherit;color:var(--ink);background:#fff}textarea{min-height:90px;resize:vertical}
-.preview{background:#fcfdff}.resumeTop{border-bottom:1px solid var(--line);padding-bottom:12px}.resumeTop h3{font-size:25px;margin:0;color:var(--navy)}.resumeTop p{margin:3px 0;color:var(--blue);font-weight:800;font-size:13px}.resumeSec{margin-top:17px}.resumeSec h4{color:var(--navy);margin:0 0 5px;text-transform:uppercase;font-size:12px;letter-spacing:.8px}.resumeSec p{margin:0;color:var(--muted);font-size:13px}
-.future{background:#fff}.docGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.doc{border:1px dashed #b9c9db;border-radius:14px;padding:16px;background:#fbfdff}.doc h3{margin:6px 0;color:var(--navy)}.doc p{font-size:13px;color:var(--muted)}.doc span{font-size:11px;font-weight:900;color:var(--blue)}
-.inquiry{display:grid;grid-template-columns:1fr 1fr;gap:22px}.comments{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}.comment{padding:13px 0;border-bottom:1px solid var(--line)}.comment:last-child{border:0}.comment b{color:var(--navy)}.comment small{color:var(--muted)}
-.cta{background:linear-gradient(120deg,var(--blue),var(--navy));color:#fff;border-radius:20px;padding:28px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{color:#fff}.cta p{color:#dbe8f8}
-footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}.foot h3{color:#fff}.foot a{display:block;margin:7px 0;font-size:13px}.copy{border-top:1px solid #ffffff1c;padding-top:15px;margin-top:25px;font-size:11px}
-
-.noticeSection{background:#f8fbff;padding:28px 0;border-bottom:1px solid var(--line)}.noticeHeader{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:7px}.noticeHeader h2{margin:5px 0;font-size:26px}.noticeHeader p{margin:0;color:var(--muted);font-size:14px}.liveBadge{display:inline-flex;align-items:center;gap:5px;background:#edf8f2;color:#11623f;border:1px solid #c9ead9;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:900;white-space:nowrap}.lightLive{background:var(--sky);color:var(--blue);border-color:#d6e7ff}.announcementList{display:grid;gap:10px}.announcement{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:12px;padding:13px 15px;box-shadow:0 5px 18px rgba(16,42,67,.04)}.announcementTop{display:flex;justify-content:space-between;gap:12px;align-items:center}.announcementTitle{font-weight:900;color:var(--navy)}.announcementDate{font-size:11px;color:var(--muted)}.announcementText{font-size:13px;color:#40516a;margin-top:4px}.loadingAnn{color:var(--muted)}.commentMeta{display:flex;justify-content:space-between;gap:10px;align-items:center}.commentText{margin-top:4px;color:#40516a;font-size:13px;white-space:pre-wrap}.commentUser{font-weight:850;color:var(--navy)}.commentTime{font-size:10px;color:var(--muted)}
-
-/* COMPACT LIVE NOTIFICATIONS */
-.compactNotice{padding:10px 0!important;background:#f7faff!important;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.compactNotice .noticeHeader{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
-.compactNotice .noticeHeader h2{font-size:18px;margin:0}
-.compactNotice .noticeHeader .kick{margin-bottom:2px;font-size:10px}
-.updateLink{font-size:12px;font-weight:800;color:var(--blue);text-decoration:none}
-.compactNotice .announcementList{display:grid;gap:6px}
-.compactNotice .announcement{padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;box-shadow:none}
-.compactNotice .announcementTop{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.compactNotice .announcementTitle{font-size:13px;font-weight:850;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.compactNotice .announcementDate{font-size:10px;color:var(--muted);white-space:nowrap}
-.compactNotice .announcementText{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-.hindiJobStrip{background:linear-gradient(90deg,#eef7ff,#f8fbff,#eef7ff);border-bottom:1px solid #d9e8f7;border-top:1px solid #d9e8f7;overflow:hidden}
-.hindiJobTrack{height:38px;display:flex;align-items:center;gap:42px;white-space:nowrap;width:max-content;animation:hindiMove 32s linear infinite;font-size:12px;font-weight:850;color:#17466f}
-.hindiJobTrack span:before{content:"•";color:#1769e8;margin-right:11px}
-@keyframes hindiMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.categoryStrip{background:#f8fbff;border-bottom:1px solid var(--line);padding:10px 0}.categoryInner{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.categoryInner strong{font-size:11px;color:var(--navy);margin-right:3px}.categoryInner a{font-size:10.5px;font-weight:800;color:#40516a;background:#fff;border:1px solid #dbe5ef;border-radius:20px;padding:4px 9px}.categoryInner a:hover{color:var(--blue);border-color:#bcd6fb}
-</style>
-
-<style>
-.admin-top-link{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  padding:8px 11px;
-  border:1px solid #d7e2f0;
-  border-radius:9px;
-  background:#f7faff;
-  color:#12304d !important;
-  font-size:12px;
-  font-weight:800;
-  text-decoration:none;
-  white-space:nowrap;
-}
-.admin-top-link:hover{
-  background:#eef5ff;
-  border-color:#b9d0ee;
-}
-@media (max-width: 800px){
-  .admin-top-link{
-    padding:7px 9px;
-    font-size:11px;
-  }
-}
-</style>
-<style>
-.livePopup{position:fixed;right:22px;bottom:22px;width:min(390px,calc(100% - 28px));background:#fff;border:1px solid #dce5ef;border-radius:18px;box-shadow:0 18px 55px rgba(16,42,67,.22);z-index:9999;overflow:hidden;transform:translateY(130%);opacity:0;pointer-events:none;transition:.35s ease}
-.livePopup.show{transform:translateY(0);opacity:1;pointer-events:auto}
-.livePopupBar{height:5px;background:linear-gradient(90deg,var(--blue),var(--orange))}
-.livePopupInner{padding:16px 17px 15px}.livePopupTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.livePopupLabel{font-size:10px;font-weight:950;color:var(--blue);letter-spacing:1px}.livePopupClose{border:0;background:#f1f5f9;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--navy)}
-.livePopupTitle{font-size:17px;font-weight:900;color:var(--navy);margin:7px 0 4px}.livePopupText{font-size:13px;color:#52657c;line-height:1.5}
-.livePopupAction{display:inline-flex;margin-top:12px;background:var(--blue);color:#fff;padding:8px 12px;border-radius:9px;font-size:12px;font-weight:850}.livePopupAction:hover{background:var(--blue2)}
-@media(max-width:600px){.livePopup{right:14px;bottom:14px;width:calc(100% - 28px)}}
-</style>
-
-<style>
-
-/* FACEBOOK-STYLE NOTIFICATION CENTER */
-.notifWrap{position:relative;display:inline-flex;align-items:center}
-.notifBell{position:relative;width:40px;height:40px;border:1px solid #d7e2f0;border-radius:12px;background:#f7faff;color:#102a43;display:grid;place-items:center;font-size:19px;cursor:pointer;transition:.2s}
-.notifBell:hover{background:#eef5ff;transform:translateY(-1px)}
-.notifBadge{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 5px;border-radius:20px;background:#d84b4b;color:#fff;border:2px solid #fff;font-size:10px;font-weight:900;display:none;align-items:center;justify-content:center}
-.notifPanel{position:absolute;right:0;top:48px;width:355px;max-width:calc(100vw - 24px);background:#fff;border:1px solid #dfe7f0;border-radius:16px;box-shadow:0 18px 45px rgba(16,42,67,.18);z-index:1000;display:none;overflow:hidden}
-.notifPanel.open{display:block}
-.notifPanelHead{padding:14px 15px 10px;border-bottom:1px solid #e8eef5;display:flex;justify-content:space-between;gap:10px;align-items:center}
-.notifPanelHead strong{font-size:17px;color:#102a43}
-.notifPanelHead button{border:0;background:transparent;color:#1769e8;font-size:11px;font-weight:850;cursor:pointer}
-.notifItems{max-height:390px;overflow:auto}
-.notifItem{display:flex;gap:11px;padding:12px 14px;border-bottom:1px solid #edf1f5;cursor:pointer;transition:.15s}
-.notifItem:hover{background:#f7faff}
-.notifItem.unread{background:#eef6ff}
-.notifIcon{width:34px;height:34px;min-width:34px;border-radius:11px;background:#edf5ff;display:grid;place-items:center;font-size:17px}
-.notifBody{min-width:0;flex:1}
-.notifTitle{font-size:12.5px;font-weight:900;color:#102a43}
-.notifMsg{font-size:11.5px;color:#64748b;line-height:1.4;margin-top:2px}
-.notifTime{font-size:9.5px;color:#94a3b8;margin-top:4px}
-.notifEmpty{padding:28px 15px;text-align:center;color:#64748b;font-size:12px}
-.notifFooter{padding:10px;text-align:center;border-top:1px solid #e8eef5}
-.notifFooter a{font-size:11px;font-weight:900;color:#1769e8}
-@media(max-width:800px){
-  .notifPanel{right:-8px;width:340px}
-  .notifBell{width:36px;height:36px}
-}
-
-</style>
-
-<style>
-.employerChatNavBtn{border:1px solid #cbdbea;background:#f0f7ff;color:#12355b;border-radius:9px;padding:8px 11px;font:inherit;font-size:12px;font-weight:850;cursor:pointer;white-space:nowrap}
-.employerChatNavBtn:hover{background:#e2f0ff;border-color:#9ec5f2}
-.employerChatOverlay{display:none;position:fixed;inset:0;background:rgba(8,25,45,.55);z-index:10020;align-items:center;justify-content:center;padding:14px}
-.employerChatOverlay.open{display:flex}
-.employerChatModal{width:min(520px,100%);max-height:min(88vh,760px);overflow:auto;background:#fff;border-radius:18px;box-shadow:0 25px 80px rgba(0,0,0,.25);padding:22px;border:1px solid #dce5ef}
-.employerChatHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
-.employerChatHead h2{font-size:22px;margin:0;color:#102a43}
-.employerChatClose{border:0;border-radius:50%;width:34px;height:34px;background:#edf2f7;font-size:22px;cursor:pointer;color:#102a43}
-.employerChatModal p{color:#64748b;font-size:13px;margin:5px 0 12px}
-.employerChatModal label{display:block;margin:10px 0 5px;font-size:12px;font-weight:850;color:#12355b}
-.employerChatModal input,.employerChatModal textarea{width:100%;padding:11px;border:1px solid #d4dfeb;border-radius:9px;font:inherit;font-size:14px}
-.employerChatModal textarea{min-height:100px;resize:vertical}
-.employerChatSubmit{border:0;border-radius:10px;background:#1769e8;color:white;font-weight:900;padding:12px 16px;cursor:pointer;width:100%;margin-top:12px}
-.employerChatSubmit:disabled{opacity:.6;cursor:wait}
-.employerChatStatus{display:none;padding:10px 12px;border-radius:9px;margin-top:10px;font-size:13px;border:1px solid}
-@media(max-width:800px){.employerChatNavBtn{padding:7px 9px;font-size:11px}.employerChatModal{padding:17px}}
-</style>
-
-<style>
-/* ===== Homepage professional first-screen layout ===== */
-.jobMessageStrip{height:32px!important;min-height:32px!important}
-.jobMessageStrip .dynamictrack{font-size:12px!important;font-weight:800!important}
-.heroCompact{padding:22px 0 16px!important;background:linear-gradient(180deg,#f7fbff 0%,#ffffff 100%)!important}
-.heroCompact .heroGrid{align-items:center!important;gap:28px!important}
-.heroCopy h1{font-size:clamp(30px,4vw,45px)!important;line-height:1.08!important;margin:9px 0 10px!important;max-width:760px}
-.heroCopy p{font-size:15px!important;line-height:1.5!important;max-width:700px!important;margin:0 0 14px!important}
-.heroButtons{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 12px}
-.heroBtn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:10px;text-decoration:none;font-weight:900;font-size:14px;border:1px solid transparent;box-shadow:0 5px 14px rgba(18,53,91,.08)}
-.primaryHero{background:#1769aa;color:#fff}
-.secondaryHero{background:#fff;color:#12355b;border-color:#cbdbea}
-.heroMiniTags{display:flex;gap:6px;flex-wrap:wrap}
-.heroMiniTags span{font-size:10px;font-weight:800;padding:5px 8px;border-radius:999px;background:#eef5fb;color:#36566f;border:1px solid #dbe7f1}
-.heroPanelCompact{padding:15px!important;border-radius:14px!important}
-.heroPanelTitle{font-size:16px;font-weight:900;margin-bottom:9px;color:#12355b}
-.heroPanelCompact .miniGrid{grid-template-columns:1fr 1fr!important;gap:8px!important}
-.heroPanelCompact .mini{padding:9px!important;font-size:11px!important}
-.professionalQuick{padding:10px 0 12px!important;background:#fff}
-.professionalQuick .quickTitle{margin-bottom:8px!important}
-.professionalQuick .quickTitle h2{font-size:19px!important}
-.professionalQuick .quickTitle p{font-size:11px!important}
-.quickCard.pro{min-height:58px!important;padding:9px 11px!important;border-radius:11px!important;border:1px solid #d8e4ee!important;box-shadow:0 3px 10px rgba(18,53,91,.05)!important}
-.quickCard.pro span{width:34px!important;height:34px!important;display:flex;align-items:center;justify-content:center;font-size:17px!important}
-.quickCard.pro strong{font-size:12px!important}
-.quickCard.pro small{font-size:9px!important;margin-top:2px!important}
-.quickCard.pro b{font-size:15px!important}
-.quickCard.pro.orange{background:#fff9ef!important}
-.professionalNotice{padding:10px 0 14px!important;background:#f7faff!important;border-top:1px solid #e4edf5!important}
-.professionalNotice .noticeHeader{margin-bottom:6px!important}
-.professionalNotice h2{font-size:18px!important}
-.professionalNotice .announcement{padding:9px 12px!important;font-size:12px!important}
-.categoryStrip{margin-top:0!important}
-@media(max-width:850px){
-  .heroCompact .heroGrid{grid-template-columns:1fr!important}
-  .heroPanelCompact{display:none}
-}
-@media(max-width:600px){
-  .heroCompact{padding:16px 0 12px!important}
-  .heroCopy h1{font-size:29px!important}
-  .heroCopy p{font-size:13px!important}
-  .professionalQuick .quickGrid{grid-template-columns:1fr 1fr!important;gap:7px!important}
-  .quickCard.pro{min-height:66px!important}
-}
-</style>
-
-<style>
-/* Final compact Hindi ticker */
-.jobMessageStrip{
-  min-height:42px!important;
-  height:42px!important;
-  display:flex!important;
-  align-items:center!important;
-  background:#f3f8fd!important;
-  border-top:1px solid #e1eaf2!important;
-  border-bottom:1px solid #e1eaf2!important;
-}
-.jobMessageStrip .dynamictrack{
-  font-size:14px!important;
-  font-weight:850!important;
-  line-height:42px!important;
-}
-@media(max-width:600px){
-  .jobMessageStrip{height:38px!important;min-height:38px!important}
-  .jobMessageStrip .dynamictrack{font-size:12px!important;line-height:38px!important}
-}
-</style>
-
-  <title>Jaipur & Rajasthan Jobs | Private Jobs, Govt Jobs & Fresher Vacancies</title>
+<title>Jaipur & Rajasthan Jobs | Private Jobs, Govt Jobs & Fresher Vacancies</title>
   <meta name="description" content="Find private jobs, fresher vacancies and Rajasthan government job updates in Jaipur and across Rajasthan. Browse job listings, check details and apply through available company or official links.">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -286,237 +63,132 @@ footer{background:#0d2138;color:#cedbea;padding:45px 0 18px}.foot{display:grid;g
 
 
 
-<style>
-/* Dynamic latest job cards in hero */
-.latestHeroJobs{min-width:0}
-.heroJobsHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
-.heroJobsHead .heroPanelTitle{margin:0;font-size:17px}.lightLive{flex:0 0 auto}
-.heroJobsHead small{display:block;color:var(--muted);font-size:10px;line-height:1.35;margin-top:3px}
-.heroLatestJobsList{display:grid;gap:8px}
-.heroJobCard{border:1px solid #dce6f0;background:#f8fbff;border-radius:12px;padding:10px 11px;min-width:0}
-.heroJobMain{display:flex;align-items:flex-start;justify-content:space-between;gap:9px}
-.heroJobInfo{min-width:0;flex:1}
-.heroJobTitle{font-size:13px;font-weight:900;color:var(--navy);line-height:1.3;display:block;overflow-wrap:anywhere}
-.heroJobCompany{font-size:10px;color:#52657c;margin-top:3px;overflow-wrap:anywhere}
-.heroJobMeta{font-size:10px;color:#52657c;margin-top:5px;line-height:1.4}
-.heroJobActions{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
-.heroJobButton{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:8px;background:var(--blue);color:#fff!important;font-size:11px;font-weight:850;text-decoration:none}
-.heroJobButton.secondary{background:#fff;color:var(--navy)!important;border:1px solid #cbd8e7}
-.heroJobLoading,.heroJobEmpty{padding:17px 10px;text-align:center;background:#f8fbff;border:1px dashed #cbd8e7;border-radius:12px;color:var(--muted);font-size:12px}
-.heroAllJobs{display:block;text-align:center;margin-top:9px;padding:8px;border-radius:9px;background:#eef5ff;color:var(--blue);font-size:12px;font-weight:900}
-@media(max-width:850px){.heroPanelCompact.latestHeroJobs{display:block!important}}
-</style>
-
-<style>
-.donate-nav-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 12px;border:1px solid #f4c6ce;border-radius:10px;background:#fff1f2;color:#a51d36;font-size:12px;font-weight:900;cursor:pointer;white-space:nowrap;box-shadow:0 3px 10px rgba(165,29,54,.08)}
-.donate-nav-btn:hover{background:#ffe4e8}
-.donate-modal{display:none;position:fixed;inset:0;background:rgba(8,25,45,.58);z-index:12000;align-items:center;justify-content:center;padding:16px}
-.donate-modal.open{display:flex}
-.donate-modal-card{width:min(350px,100%);background:#fff;border:1px solid #dce5ef;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.25);padding:18px;text-align:center;position:relative}
-.donate-modal-close{position:absolute;right:10px;top:9px;width:30px;height:30px;border:0;border-radius:50%;background:#f1f5f9;color:#102a43;font-size:20px;cursor:pointer}
-.donate-modal-title{font-size:18px;font-weight:900;color:#102a43;margin:5px 28px 6px}
-.donate-modal-copy{font-size:13px;color:#64748b;line-height:1.5;margin:0 0 12px}
-.donate-modal-upi{font-size:13px;font-weight:900;color:#26384c;margin:10px 0}
-.donate-modal-pay{display:inline-flex;background:#1769e8;color:#fff!important;padding:9px 15px;border-radius:9px;font-size:13px;font-weight:900;text-decoration:none}
-.donate-modal-note{display:block;font-size:11px;color:#718096;margin-top:10px}
-@media(max-width:600px){.donate-nav-btn{font-size:11px!important;padding:7px 9px!important}}
-</style>
-
-<style id="rj-premium">
-:root{--ink2:#0a1d36;--saffron:#f39a2f}
-.top{background:#07162b}
-nav{background:rgba(255,255,255,.92)!important}
-.donate-nav-btn{background:#fff!important;color:#334e68!important;border:1px solid #dbe4ee!important;box-shadow:none!important}
-.admin-top-link{display:none!important}
-.dynamic{background:#0d2748!important;border-bottom:0!important}.dynamictrack{color:#cfe0f5!important}.dynamic:hover .dynamictrack{animation-play-state:paused}
-.heroCompact{background:radial-gradient(900px 420px at 85% -10%,#1e4d8f 0%,transparent 60%),radial-gradient(600px 380px at 0% 110%,#7a4a12 0%,transparent 55%),linear-gradient(180deg,#0a1d36,#0d2748)!important;border-bottom:0!important;padding:30px 0 34px!important}
-.heroCopy h1{color:#fff!important}.heroCopy h1 em{font-style:normal;color:#ffc27a}
-.heroCopy p{color:#b9cbe3!important}
-.heroCopy .eyebrow{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.18)!important;color:#cfe0f5!important}
-.rjSearch{display:flex;gap:8px;background:#fff;border-radius:14px;padding:7px;max-width:620px;box-shadow:0 18px 40px rgba(0,0,0,.28);margin:14px 0 12px}
-.rjSearch input{flex:1;min-width:0;border:0;outline:0;padding:11px 12px;font-size:15px;font-family:inherit;color:var(--ink);background:transparent}
-.rjSearch button{border:0;border-radius:10px;background:var(--blue);color:#fff;font-weight:900;font-size:14px;padding:0 20px;cursor:pointer}
-.rjSearch:focus-within{outline:3px solid #7db4ff}
-.heroMiniTags a{font-size:12px;font-weight:800;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.08);color:#dbe8f8;border:1px solid rgba(255,255,255,.18)}
-.heroMiniTags a:hover,.heroMiniTags a:focus-visible{background:#fff;color:var(--navy)}
-.heroBtn.secondaryHero{background:transparent!important;color:#fff!important;border-color:rgba(255,255,255,.35)!important}
-.latestHeroJobs{background:#fff!important;border:0!important;box-shadow:0 30px 60px rgba(0,0,0,.35)!important;padding:16px!important}
-.heroCompact .heroGrid{align-items:start!important}.rjList{display:grid;gap:8px}
-.rjCard{display:block;border:1px solid #e1e8f0;border-left:4px solid var(--blue);background:#fff;border-radius:12px;padding:11px 13px;transition:border-color .15s,background .15s}
-.rjCard:hover,.rjCard:focus-visible{background:#f4f9ff;border-left-color:var(--saffron)}
-.rjTop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-.rjTitle{font-size:14px;font-weight:900;color:var(--navy);line-height:1.3}
-.rjCo{font-size:12px;color:#52657c;margin-top:2px}
-.rjMeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;font-size:11px;color:#40516a}
-.rjMeta span{background:#eef4fb;border-radius:6px;padding:3px 7px}
-.rjMeta .sal{background:#e8f6ef;color:#11623f;font-weight:800}
-.rjNew{background:var(--saffron);color:#fff;font-size:10px;font-weight:900;border-radius:6px;padding:2px 7px;white-space:nowrap}
-.rjSkel{height:74px;border-radius:12px;background:linear-gradient(90deg,#eef3f9 25%,#f8fbff 50%,#eef3f9 75%);background-size:200% 100%;animation:rjsh 1.3s infinite}
-@keyframes rjsh{to{background-position:-200% 0}}
-.rjIn{animation:rjin .5s both}@keyframes rjin{from{opacity:0;transform:translateY(10px)}}
-.rjErr{padding:16px;text-align:center;font-size:13px;color:#52657c;background:#f8fbff;border:1px dashed #cbd8e7;border-radius:12px}
-.rjErr button{margin-top:8px;border:0;background:var(--blue);color:#fff;border-radius:8px;padding:7px 14px;font-weight:800;cursor:pointer}
-.rjAdmin{font-size:11px;opacity:.6;margin-top:6px;display:inline-block}
-@media(max-width:850px){.heroCompact .heroGrid{grid-template-columns:1fr!important}.rjSearch button{padding:0 14px}}
-@media(prefers-reduced-motion:reduce){.rjIn,.rjSkel,.dynamictrack{animation:none!important}}
-a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #7db4ff;outline-offset:2px}
-@media(max-width:700px){.top{display:none}.navin{height:auto!important;flex-direction:column;align-items:stretch;gap:6px;padding:8px 0}.brand small{display:none}.menu{overflow-x:auto;white-space:nowrap;gap:12px;padding-bottom:4px;scrollbar-width:none}.menu>*{flex:0 0 auto}.dynamictrack{font-size:12px}}
-</style>
+<meta name="theme-color" content="#0a2342">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/rch-premium.css">
 </head>
 <body>
-<!-- LIVE NOTIFICATION POPUP -->
-<div id="livePopup" class="livePopup" aria-live="polite">
-<div class="livePopupBar"></div><div class="livePopupInner"><div class="livePopupTop"><div class="livePopupLabel">🔔 NEW UPDATE</div><button id="livePopupClose" class="livePopupClose" aria-label="Close">×</button></div>
-<div id="livePopupTitle" class="livePopupTitle">Latest Rajasthan Job Update</div><div id="livePopupText" class="livePopupText">New update available.</div><a id="livePopupAction" class="livePopupAction" href="#updates">View Update →</a></div></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+<symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></symbol>
+<symbol id="i-landmark" viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M9.5 21V10M14.5 21V10M19 21V10M2 9l10-6 10 6z"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0M16 4.5a3.5 3.5 0 0 1 0 7M18 20a6 6 0 0 0-3-5.2"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2M10 21v-3h4v3"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 0 0 4 0"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6"/></symbol>
+</defs></svg>
+<div id="toastStack" class="toastStack" aria-live="polite"></div>
+<div class="topbar"><div class="wrap">
+<span><svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg> Jaipur, Rajasthan</span>
+<span class="hide-sm">Private jobs · Government jobs · Career support</span>
+<a href="tel:+916350566010"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg> +91 63505 66010</a>
+</div></div>
 
-
-
-<div class="top"><div class="wrap topin"><span>📍 Jaipur, Rajasthan</span><span>Jobs • Government Jobs • Job Services</span></div></div>
-
-<nav><div class="wrap navin">
-<a href="#home" class="brand"><div class="logo">RJ</div><div>Rajasthan & Jaipur Job Portal<small>Jobs • Government Jobs • Career Support</small></div></a>
-<div class="menu">
-<a href="jobs.html">Jobs</a><a href="government-jobs.html">Govt Jobs</a><a href="post-a-job.html">Post a Job</a><a href="job-seeker.html">👤 Job Seeker</a><button type="button" class="employerChatNavBtn" id="openEmployerChat">🏢 HR / Company Chat</button><button type="button" class="donate-nav-btn" id="openDonateModal">❤️ Donate</button><a class="btn primary" href="inquiry.html">Inquiry</a><div class="notifWrap">
-  <button id="notifBell" class="notifBell" aria-label="Notifications" title="Notifications">🔔<span id="notifBadge" class="notifBadge">0</span></button>
-  <div id="notifPanel" class="notifPanel">
-    <div class="notifPanelHead">
-      <strong>🔔 Notifications</strong>
-      <button id="markAllRead" type="button">Mark all as read</button>
-    </div>
-    <div id="notifItems" class="notifItems">
-      <div class="notifEmpty">Loading notifications…</div>
-    </div>
-    <div class="notifFooter"><a href="#updates" id="viewAllNotif">View all updates</a></div>
+<nav class="site"><div class="wrap navin">
+<a href="#home" class="brand" aria-label="Rajasthan Job home"><div class="logo">RJ</div><div><b>Rajasthan Job</b><small>Jobs and career support</small></div></a>
+<div class="menu" id="mainMenu">
+<a class="link" href="jobs.html">Jobs</a><a class="link" href="government-jobs.html">Government jobs</a><a class="link" href="job-seeker.html">Job seekers</a><a class="link" href="#services">Services</a><a class="link" href="#contact">Contact</a><a class="link" href="post-a-job.html" style="display:none" id="mobPost">Post a job</a>
+</div>
+<div class="navActions">
+<div class="notifWrap">
+  <button id="notifBell" class="notifBell" aria-label="Notifications" aria-haspopup="true" title="Notifications"><svg class="ico" aria-hidden="true"><use href="#i-bell"/></svg><span id="notifBadge" class="notifBadge">0</span></button>
+  <div id="notifPanel" class="notifPanel" role="region" aria-label="Notifications">
+    <div class="notifPanelHead"><strong>Notifications</strong><button id="markAllRead" type="button">Mark all as read</button></div>
+    <div id="notifItems" class="notifItems"><div class="notifEmpty">Loading…</div></div>
   </div>
 </div>
-<a class="admin-top-link" href="admin-dashboard.html">🔐 Admin</a>
-</div></div></nav>
-
-<!-- SINGLE DYNAMIC JOB MESSAGE -->
-<div class="dynamic jobMessageStrip">
-  <div class="wrap dynamicin">
-    <div class="dynamictrack">
-      <span>🔥 Job chahiye? Yahan se milegi — Jaipur & Rajasthan mein Jobs, Government Jobs aur Career Support.</span>
-      <span>💼 Jaipur & Rajasthan ki latest job opportunities yahan dekhein.</span>
-      <span>🎓 Freshers ke liye bhi Jobs aur Career Support available hai.</span>
-      <span>🏛️ Government Jobs • RPSC • RSSB • CET Updates</span>
-      <span>💻 MIS • Excel • Power BI • SQL • Data Analyst Jobs</span>
-    </div>
-  </div>
+<button type="button" class="btn ghost" id="openEmployerChat">Hire talent</button>
+<a class="btn primary" href="post-a-job.html">Post a job</a>
+<button class="menuToggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mainMenu"><svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg></button>
 </div>
+</div></nav>
 
-<section class="hero heroCompact" id="home">
-  <div class="wrap heroGrid">
-    <div class="heroCopy">
-      <span class="eyebrow">JAIPUR & RAJASTHAN JOB PORTAL</span>
-      <h1>Jaipur & Rajasthan mein <em>Job Search</em> ka simple platform.</h1>
-      <p>Private Jobs, Government Jobs, Fresher Opportunities aur Career Support — sab ek jagah.</p>
-      <form class="rjSearch" action="jobs.html" method="get" role="search">
-        <input type="search" name="q" placeholder="Job title, skill ya company — jaise MIS Executive" aria-label="Job search">
-        <button type="submit">Search Jobs</button>
-      </form>
-      <div class="heroMiniTags">
-        <a href="jobs.html?q=Jaipur">Jaipur Jobs</a><a href="jobs.html?q=Rajasthan">Rajasthan Jobs</a><a href="government-jobs.html">Govt Jobs</a><a href="jobs.html?q=Fresher">Fresher Jobs</a><a href="jobs.html?q=MIS">MIS</a><a href="jobs.html?q=Data%20Analyst">Data Analyst</a>
-      </div>
-    </div>
-    <div class="heroPanel heroPanelCompact latestHeroJobs">
-      <div class="heroJobsHead">
-        <div><div class="heroPanelTitle">Latest Job Vacancies</div><small id="rjCount">Latest approved jobs</small></div>
-        <span class="liveBadge lightLive">LIVE</span>
-      </div>
-      <div id="heroLatestJobs" class="rjList"><div class="rjSkel"></div><div class="rjSkel"></div><div class="rjSkel"></div><div class="rjSkel"></div></div>
-      <a class="heroAllJobs" href="jobs.html">View All Jobs →</a>
-    </div>
-  </div>
-</section>
+<header class="hero" id="home"><div class="wrap heroGrid">
+<div>
+<span class="heroTag"><i></i> Jaipur &amp; Rajasthan job portal</span>
+<h1>Find your next role in Jaipur and Rajasthan.</h1>
+<p class="lead">Private jobs, government recruitment and career support in one place. Naukri dhoondhne se interview tak, hum saath hain.</p>
+<form class="rjSearch" action="jobs.html" method="get" role="search">
+<input type="search" name="q" placeholder="Job title or skill" aria-label="Search jobs">
+<button type="submit"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg> Search jobs</button>
+</form>
+<div class="chips"><span>Popular:</span><a href="jobs.html?q=Jaipur">Jaipur</a><a href="jobs.html?q=Fresher">Fresher</a><a href="jobs.html?q=MIS">MIS</a><a href="jobs.html?q=Data%20Analyst">Data Analyst</a><a href="jobs.html?q=Sales">Sales</a><a href="government-jobs.html">Government</a></div>
+</div>
+<aside class="heroPanel" aria-label="Latest jobs">
+<div class="heroPanelHead"><div><h3>Latest vacancies</h3><small id="rjCount">Checking live openings</small></div><span class="liveBadge">Live</span></div>
+<div id="heroLatestJobs" class="rjList"><div class="rjSkel"></div><div class="rjSkel"></div><div class="rjSkel"></div><div class="rjSkel"></div></div>
+<a class="heroAllJobs" href="jobs.html">View all jobs <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+</aside>
+</div></header>
 
-<section class="quickActions professionalQuick">
-  <div class="wrap">
-    <div class="quickTitle">
-      <div><div class="kick">MOST IMPORTANT</div><h2>What do you need?</h2></div>
-      <p>Ek option choose karein</p>
-    </div>
-    <div class="quickGrid">
-      <a class="quickCard pro blue" href="jobs.html">
-        <span>🔎</span><div><strong>Jobs Dekhein</strong><small>Latest Jaipur & Rajasthan Jobs</small></div><b>→</b>
-      </a>
-      <a class="quickCard pro navy" href="government-jobs.html">
-        <span>🏛️</span><div><strong>Government Jobs</strong><small>RPSC • RSSB • CET</small></div><b>→</b>
-      </a>
-      <a class="quickCard pro green" href="job-seeker.html">
-        <span>👤</span><div><strong>Find a Job</strong><small>Job chahiye? Yahan se milegi</small></div><b>→</b>
-      </a>
-      <a class="quickCard pro orange" href="#contact">
-        <span>💬</span><div><strong>Inquiry Karein</strong><small>Job & Career Support</small></div><b>→</b>
-      </a>
-    </div>
-  </div>
-</section>
+<section class="paths"><div class="wrap"><div class="pathGrid">
+<a class="path" href="jobs.html"><span class="pathIcon"><svg class="ico" aria-hidden="true"><use href="#i-briefcase"/></svg></span><strong>Browse jobs</strong><span class="d">Verified private openings across Jaipur and Rajasthan.</span><span class="go">Explore jobs <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span></a>
+<a class="path" href="government-jobs.html"><span class="pathIcon"><svg class="ico" aria-hidden="true"><use href="#i-landmark"/></svg></span><strong>Government jobs</strong><span class="d">RPSC, RSSB and CET notifications explained clearly.</span><span class="go">See recruitment <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span></a>
+<a class="path" href="job-seeker.html"><span class="pathIcon"><svg class="ico" aria-hidden="true"><use href="#i-user"/></svg></span><strong>Create your profile</strong><span class="d">Share your details once and get matched to openings.</span><span class="go">Get started <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span></a>
+<a class="path" href="post-a-job.html"><span class="pathIcon"><svg class="ico" aria-hidden="true"><use href="#i-building"/></svg></span><strong>Hire talent</strong><span class="d">Post a vacancy and reach job-ready candidates.</span><span class="go">Post a job <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></span></a>
+</div></div></section>
 
-<section class="noticeSection compactNotice professionalNotice" id="updates">
-  <div class="wrap">
-    <div class="noticeHeader">
-      <div><div class="kick">LATEST UPDATES</div><h2>🔔 Notifications</h2></div>
-      <a class="updateLink" href="#updates">View all</a>
-    </div>
-    <div id="announcementList" class="announcementList"><div class="announcement loadingAnn">Loading latest update…</div></div>
-  </div>
-</section>
-<section class="categoryStrip"><div class="wrap"><div class="categoryInner"><strong>Quick Search:</strong><a href="jobs.html">Jaipur Jobs</a><a href="jobs.html">Fresher Jobs</a><a href="jobs.html">MIS Jobs</a><a href="jobs.html">Data Analyst</a><a href="jobs.html">Sales Jobs</a><a href="#govt">Govt Jobs</a></div></div></section>
+<section class="s" id="services"><div class="wrap">
+<div class="sHead"><h2>Everything you need for the next step in your career</h2><p>From the first search to the final interview, one team supports you.</p></div>
+<div class="services">
+<div class="service"><svg class="ico" aria-hidden="true"><use href="#i-briefcase"/></svg><h3>Private jobs</h3><p>Current openings in Jaipur and across Rajasthan, reviewed before they go live.</p><ul><li>Fresher</li><li>MIS</li><li>Data Analyst</li><li>Sales</li><li>IT</li></ul></div>
+<div class="service"><svg class="ico" aria-hidden="true"><use href="#i-landmark"/></svg><h3>Government jobs</h3><p>Eligibility, dates, fees and the official application route, in simple language.</p><ul><li>RPSC</li><li>RSSB</li><li>CET</li><li>Police</li><li>Teaching</li></ul></div>
+<div class="service"><svg class="ico" aria-hidden="true"><use href="#i-file"/></svg><h3>Resume support</h3><p>A clear, ATS-friendly resume that presents your skills the way recruiters read them.</p></div>
+<div class="service"><svg class="ico" aria-hidden="true"><use href="#i-users"/></svg><h3>Interview preparation</h3><p>Practice questions, feedback and confidence-building before you sit across the table.</p></div>
+<div class="service"><svg class="ico" aria-hidden="true"><use href="#i-chart"/></svg><h3>Excel, MIS and Power BI</h3><p>Job-ready skills in Excel, SQL, Power BI and Python, taught around real office tasks.</p></div>
+<div class="service"><svg class="ico" aria-hidden="true"><use href="#i-building"/></svg><h3>Employer services</h3><p>Post vacancies and connect with candidates who match your requirement.</p></div>
+</div></div></section>
 
+<section class="s white" style="padding:56px 0"><div class="wrap"><div class="band">
+<div><h2>Hiring in Jaipur or Rajasthan?</h2><p>Share your requirement and we will help you reach job-ready freshers and experienced candidates.</p></div>
+<div class="bandActions"><a class="btn accent" href="post-a-job.html">Post a job</a><button type="button" class="btn onDark" id="openEmployerChat2">Talk to our team</button></div>
+</div></div></section>
 
-
-<section class="white" id="services"><div class="wrap"><div class="head"><div class="kick">हमारी सेवाएँ</div><h2>नौकरी से जुड़ी जरूरी जानकारी — एक जगह</h2><p>Private Jobs, Government Jobs और Career Support के लिए जरूरी जानकारी एक ही जगह.</p></div>
-<div class="cards">
-<div class="card"><div class="icon">💼</div><h3>Private Jobs</h3><p>Jaipur और Rajasthan में relevant private job opportunities और job information.</p><div class="tags"><span class="tag">Fresher</span><span class="tag">MIS</span><span class="tag">Data Analyst</span><span class="tag">Sales</span><span class="tag">IT</span><span class="tag">Remote</span></div></div>
-<div class="card" id="govt"><div class="icon">🏛️</div><h3>Government Jobs</h3><p>Rajasthan की government recruitment information को clear और simple format में देखें.</p><div class="tags"><span class="tag">RPSC</span><span class="tag">RSSB</span><span class="tag">CET</span><span class="tag">Police</span><span class="tag">Teaching</span><span class="tag">Railway</span><span class="tag">SSC</span><span class="tag">Banking</span><span class="tag">Defence</span></div></div><a class="btn primary" style="display:inline-block;margin-top:12px" href="government-jobs.html">🏛️ Government Jobs Dekhein →</a></div></div>
+<section class="s" id="contact"><div class="wrap">
+<div class="sHead"><h2>Tell us what you need</h2><p>Jobs, resume, interview preparation, skills or hiring. Send your requirement and our team will get back to you.</p></div>
+<div class="contactGrid">
+<div class="panel">
+<h3>Send an inquiry</h3><p class="sub">We usually reply on your mobile number.</p>
+<form id="inquiryForm">
+<label for="inqName">Name <span class="required">*</span></label><input id="inqName" required autocomplete="name" placeholder="Your name">
+<label for="inqMobile">Mobile <span class="required">*</span></label><input id="inqMobile" required inputmode="numeric" autocomplete="tel" placeholder="10-digit mobile number">
+<label for="inqEmail">Email <span style="color:var(--soft);font-weight:400">(optional)</span></label><input id="inqEmail" type="email" autocomplete="email" placeholder="you@example.com">
+<label for="inqService">Service</label><select id="inqService"><option value="">Choose a service</option><option>Jaipur / Rajasthan Job</option><option>Government Job</option><option>Interview Preparation</option><option>Excel / MIS</option><option>Power BI / SQL / Python</option><option>Employer Job Posting</option><option>Other</option></select>
+<label for="inqMessage">Your requirement <span class="required">*</span></label><textarea id="inqMessage" required placeholder="Describe what you are looking for"></textarea>
+<button id="inqBtn" class="btn primary" type="submit">Send inquiry</button>
+<div id="inqStatus" class="resumeStatus" role="status" aria-live="polite"></div>
+</form>
+</div>
+<div class="panel">
+<h3>Community comments</h3><p class="sub">Comments appear publicly after review.</p>
+<form id="commentForm">
+<label for="commentName">Name <span class="required">*</span></label><input id="commentName" required maxlength="50" placeholder="Your name">
+<label for="commentText">Comment <span class="required">*</span></label><textarea id="commentText" required maxlength="500" placeholder="Share your thoughts"></textarea>
+<button id="commentBtn" class="btn green" type="submit">Post comment</button>
+<div id="commentStatus" class="resumeStatus" role="status" aria-live="polite"></div>
+</form>
+<div id="publicComments" style="margin-top:22px"><div class="comment"><small>Loading comments…</small></div></div>
 </div>
 </div></div></section>
 
-<section id="jobs"><div class="wrap"><div class="head"><div class="kick">Job Board</div><h2>Jobs & Recruitment Updates</h2><p>Future mein live database se job cards add, edit, expire aur filter kiye ja sakte hain.</p></div>
-<div class="jobs"><div class="listbox">
-<div class="job"><div><strong>MIS Executive</strong><small>Jaipur • Excel / Reporting • Fresher Friendly</small></div><span class="tag">Private</span></div>
-<div class="job"><div><strong>Junior Data Analyst</strong><small>Jaipur • Excel / SQL / Power BI</small></div><span class="tag">Data</span></div>
-<div class="job"><div><strong>Sales Executive</strong><small>Jaipur • Customer & Sales Support</small></div><span class="tag">Private</span></div>
-<div class="job"><div><strong>Government Recruitment Update</strong><small>Rajasthan • Official notification based</small></div><span class="tag">Govt</span></div>
-<a class="btn primary" href="inquiry.html">Job ke baare mein inquiry</a></div>
-<div class="listbox"><h3 style="color:var(--navy)">Government Job Information</h3><p style="color:var(--muted);font-size:14px">Future government-job pages mein notification, eligibility, posts, important dates, fee, selection process aur official application route ko clearly display kiya ja sakta hai.</p><div class="tags"><span class="tag">RPSC</span><span class="tag">RSSB</span><span class="tag">CET</span><span class="tag">Rajasthan Police</span><span class="tag">Teaching</span><span class="tag">Railway</span><span class="tag">SSC</span><span class="tag">Banking</span><span class="tag">Defence</span><span class="tag">UPSC</span></div></div>
-</div></div></section>
-
-
-<section><div class="wrap"><div class="cta"><div><div class="kick" style="color:#acd4ff">Jaipur Job Support</div><h2>Job chahiye, resume support ya interview preparation?</h2><p>Apni requirement bhejiye. Inquiry Firebase database mein save hoti hai aur admin panel se review ki ja sakti hai.</p></div><a class="btn light" href="tel:+916350566010">📞 Contact Now</a></div></div></section>
-
-<section class="white" id="contact">
-<div class="wrap"><div class="head"><div class="kick">CONTACT & COMMUNITY</div><h2>Apni requirement bhejein</h2><p>Job, resume, interview, skills ya employer service — inquiry bhejein aur community mein comment bhi karein.</p></div>
-<div class="inquiry">
-  <div class="formbox">
-    <h3 style="color:var(--navy);margin-top:0">📩 Job / Service Inquiry</h3>
-    <p class="resumeHint">Aapki inquiry Firebase mein securely save hogi aur admin panel mein review ki ja sakegi.</p>
-    <form id="inquiryForm">
-      <label>Name <span class="required">*</span></label><input id="inqName" required placeholder="Your Name">
-      <label>Mobile <span class="required">*</span></label><input id="inqMobile" required inputmode="numeric" placeholder="10-digit mobile number">
-      <label>📧 Email Address <span style="color:#888;font-weight:500">(Optional)</span></label><input id="inqEmail" type="email" autocomplete="email" placeholder="yourname@example.com">
-      <label>Service</label><select id="inqService"><option value="">Choose Service</option><option>Jaipur / Rajasthan Job</option><option>Government Job</option><option>Interview Preparation</option><option>Excel / MIS</option><option>Power BI / SQL / Python</option><option>Other</option><option>Employer Job Posting</option><option>Other</option></select>
-      <label>Your Requirement <span class="required">*</span></label><textarea id="inqMessage" required placeholder="Apni requirement clearly likhiye..."></textarea>
-      <button id="inqBtn" class="btn primary" type="submit">📩 Submit Inquiry</button>
-      <div id="inqStatus" class="resumeStatus"></div>
-    </form>
-  </div>
-  <div class="comments">
-    <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><div><h3 style="color:var(--navy);margin:0">💬 Public Comments</h3><p style="color:var(--muted);font-size:13px;margin:4px 0 0">Comment submit karein. Review ke baad public page par sabko visible hoga.</p></div><span class="liveBadge lightLive">PUBLIC</span></div>
-    <form id="commentForm" style="margin-top:15px">
-      <label>Name <span class="required">*</span></label><input id="commentName" required maxlength="50" placeholder="Your Name">
-      <label>Comment <span class="required">*</span></label><textarea id="commentText" required maxlength="500" placeholder="Aap kya kehna chahte hain?"></textarea>
-      <button id="commentBtn" class="btn green" type="submit">💬 Post Comment</button>
-      <div id="commentStatus" class="resumeStatus"></div>
-    </form>
-    <div id="publicComments" style="margin-top:18px"><div class="comment"><small>Loading comments…</small></div></div>
-  </div>
-</div></div></section>
-<footer><div class="wrap foot"><div><h3>Rajasthan Job</h3><p>Jaipur & Rajasthan ke liye jobs, government job information, career resume, interview support aur job skills.</p></div>
-<div><h3>Explore</h3><a href="jobs.html">Private Jobs</a><a href="#govt">Government Jobs</a><a href="inquiry.html">Resume Support</a><a href="#services">All Services</a></div>
-<div><h3>Job Services</h3><a href="inquiry.html">Job Inquiry</a><a href="inquiry.html">Resume Support</a><a href="inquiry.html">Interview Preparation</a><a href="inquiry.html">Employer Services</a><a href="job-manager.html">🔐 Admin Login</a></div></div>
-<div class="wrap copy">© 2026 Rajasthan Job • Recruitment details should be verified from the relevant official source before applying.</div><div class="wrap"><a class="rjAdmin" href="admin-dashboard.html">Admin</a></div></footer>
+<footer><div class="wrap">
+<div class="foot">
+<div><a class="brand" href="#home"><div class="logo">RJ</div><div><b>Rajasthan Job</b><small>Jobs and career support</small></div></a><p>Jobs, government recruitment information, resume and interview support for Jaipur and Rajasthan.</p></div>
+<div><h4>Explore</h4><a href="jobs.html">Private jobs</a><a href="government-jobs.html">Government jobs</a><a href="job-seeker.html">Job seekers</a><a href="notes.html">Study notes</a></div>
+<div><h4>Services</h4><a href="inquiry.html">Job inquiry</a><a href="inquiry.html">Resume support</a><a href="inquiry.html">Interview preparation</a><a href="#services">All services</a></div>
+<div><h4>For employers</h4><a href="post-a-job.html">Post a job</a><button type="button" class="linkBtn" id="openEmployerChat3">Talk to our team</button><button type="button" class="linkBtn" id="openDonateModal">Support this website</button><a href="admin-dashboard.html">Admin login</a></div>
+</div>
+<div class="copy"><span>© 2026 Rajasthan Job. All rights reserved.</span><span>Please verify recruitment details from the official source before applying.</span></div>
+</div></footer>
 
 
 <script>
@@ -618,139 +290,137 @@ try{
 }
 
 
+/* ===== Notifications: bell panel + ONE activity pop-up at a time =====
+   Rules that keep it non-irritating:
+   - Never renders a list on the page; the bell panel holds the history.
+   - A pop-up appears only for items that are new (last 72 hours) and unread.
+   - Each item pops up once per browser, ever (remembered in localStorage).
+   - If several items are new, one pop-up shows the latest with "+N more".
+   - At most 3 pop-ups per visit; auto-hides after 8s, pauses on hover/focus. */
+const esc2=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt2=t=>{if(!t)return '';try{return new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'short',year:'numeric'}).format(t.toDate? t.toDate():new Date(t));}catch{return ''}};
+const ico=n=>`<svg class="ico" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const msOf=v=>{try{if(!v)return 0;const d=v.toDate?v.toDate():new Date(v);const t=d.getTime();return isNaN(t)?0:t}catch(e){return 0}};
+
 const notifBell=document.getElementById('notifBell');
 const notifPanel=document.getElementById('notifPanel');
 const notifBadge=document.getElementById('notifBadge');
 const notifItems=document.getElementById('notifItems');
 const markAllRead=document.getElementById('markAllRead');
-let latestNotifications=[];
+const toastStack=document.getElementById('toastStack');
 
-function notifIcon(type){
-  type=String(type||'').toLowerCase();
-  if(type.includes('job')) return '💼';
-  if(type.includes('gov')) return '🏛️';
-  if(type.includes('note')) return '📚';
-  if(type.includes('course')) return '🎓';
-  if(type.includes('alert')) return '⚠️';
-  return '🔔';
+const TOASTED_KEY='rch_toasted_v2', FRESH_MS=72*3600*1000, TOAST_MS=8000, MAX_SESSION_TOASTS=3;
+const toasted={
+  get(){try{return JSON.parse(localStorage.getItem(TOASTED_KEY)||'[]')}catch(e){return[]}},
+  add(ids){try{localStorage.setItem(TOASTED_KEY,JSON.stringify(Array.from(new Set(this.get().concat(ids))).slice(-300)))}catch(e){}}
+};
+let annItems=[], jobItems=[], latestNotifications=[], toastSched=null, toastTimer=null, sessionToasts=0;
+
+function kindIcon(n){
+  if(n.kind==='job') return 'briefcase';
+  const t=String(n.type||'').toLowerCase();
+  if(t.includes('job')) return 'briefcase';
+  if(t.includes('gov')) return 'landmark';
+  if(t.includes('note')) return 'file';
+  return 'bell';
 }
 function notifTime(ts){
-  if(!ts) return 'Just now';
-  try{
-    const d=ts.toDate?ts.toDate():new Date(ts);
-    const diff=Math.max(0,Date.now()-d.getTime());
-    if(diff<60000) return 'Just now';
-    if(diff<3600000) return Math.floor(diff/60000)+' min ago';
-    if(diff<86400000) return Math.floor(diff/3600000)+' hr ago';
-    return new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'short',year:'numeric'}).format(d);
-  }catch(e){return '';}
+  const t=msOf(ts); if(!t) return '';
+  const diff=Math.max(0,Date.now()-t);
+  if(diff<60000) return 'Just now';
+  if(diff<3600000) return Math.floor(diff/60000)+' min ago';
+  if(diff<86400000) return Math.floor(diff/3600000)+' hr ago';
+  return fmt2(ts);
 }
 function renderNotificationCenter(){
   const read=window.RJNotificationRead.get();
   const unread=latestNotifications.filter(n=>!read.includes(n.id));
   notifBadge.textContent=unread.length>99?'99+':unread.length;
   notifBadge.style.display=unread.length?'flex':'none';
-
+  markAllRead.style.display=unread.length?'':'none';
   if(!latestNotifications.length){
-    notifItems.innerHTML='<div class="notifEmpty">🔔 No notifications yet.<br>New updates yahan automatically aayenge.</div>';
+    notifItems.innerHTML='<div class="notifEmpty"><b>You are all caught up</b>New jobs and updates will appear here.</div>';
     return;
   }
-  notifItems.innerHTML=latestNotifications.map(n=>{
-    const unreadClass=read.includes(n.id)?'':' unread';
-    return `<div class="notifItem${unreadClass}" data-notif-id="${esc2(n.id)}">
-      <div class="notifIcon">${notifIcon(n.type||n.title)}</div>
-      <div class="notifBody">
-        <div class="notifTitle">${esc2(n.title||'New Update')}</div>
-        <div class="notifMsg">${esc2(n.message||'')}</div>
-        <div class="notifTime">${esc2(notifTime(n.createdAt))}</div>
+  notifItems.innerHTML=latestNotifications.map(n=>`<div class="notifItem${read.includes(n.id)?'':' unread'}" data-notif-id="${esc2(n.id)}" tabindex="0" role="button">
+    <div class="notifIcon ${n.kind==='job'?'job':''}">${ico(kindIcon(n))}</div>
+    <div class="notifBody"><div class="notifTitle">${esc2(n.title)}</div>${n.message?`<div class="notifMsg">${esc2(n.message)}</div>`:''}<div class="notifTime">${esc2(notifTime(n.createdAt))}</div></div>
+  </div>`).join('');
+}
+function openItem(id){
+  const n=latestNotifications.find(x=>x.id===id); if(!n) return;
+  window.RJNotificationRead.mark(id); renderNotificationCenter();
+  if(n.kind==='job'&&n.jobId){ location.href='job-detail.html?id='+encodeURIComponent(n.jobId); }
+}
+notifBell.addEventListener('click',e=>{e.stopPropagation();notifPanel.classList.toggle('open');hideToast();});
+document.addEventListener('click',e=>{if(!notifPanel.contains(e.target)&&!notifBell.contains(e.target))notifPanel.classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')notifPanel.classList.remove('open');});
+markAllRead.addEventListener('click',()=>{window.RJNotificationRead.all(latestNotifications.map(n=>n.id));renderNotificationCenter();});
+notifItems.addEventListener('click',e=>{const it=e.target.closest('.notifItem');if(it)openItem(it.getAttribute('data-notif-id'));});
+notifItems.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const it=e.target.closest('.notifItem');if(it){e.preventDefault();openItem(it.getAttribute('data-notif-id'));}}});
+
+/* ---- pop-up ---- */
+function hideToast(){
+  clearTimeout(toastTimer);
+  const el=toastStack.firstElementChild; if(!el) return;
+  el.classList.remove('show'); setTimeout(()=>{if(el.parentNode)el.remove();},300);
+}
+function showToast(n,more){
+  const isJob=n.kind==='job', cls=isJob?'job':'';
+  const action=isJob&&n.jobId
+    ?`<a href="job-detail.html?id=${encodeURIComponent(n.jobId)}" data-act="view">View job</a>`
+    :`<button type="button" data-act="open">Read update</button>`;
+  toastStack.innerHTML=`<div class="toast" role="status">
+    <div class="toastBody">
+      <div class="toastIcon ${cls}">${ico(kindIcon(n))}</div>
+      <div class="toastMain">
+        <div class="toastKind ${cls}">${isJob?'New job':'New update'}</div>
+        <div class="toastTitle">${esc2(n.title)}</div>
+        ${n.message?`<div class="toastText">${esc2(n.message)}</div>`:''}
+        <div class="toastFoot">${action}${more>0?`<span class="more">+${more} more in notifications</span>`:''}</div>
       </div>
-    </div>`;
-  }).join('');
-}
-notifBell.addEventListener('click',function(e){
-  e.stopPropagation();
-  notifPanel.classList.toggle('open');
-});
-document.addEventListener('click',function(e){
-  if(!notifPanel.contains(e.target) && !notifBell.contains(e.target)) notifPanel.classList.remove('open');
-});
-markAllRead.addEventListener('click',function(){
-  window.RJNotificationRead.all(latestNotifications.map(n=>n.id));
-  renderNotificationCenter();
-});
-notifItems.addEventListener('click',function(e){
-  const item=e.target.closest('.notifItem');
-  if(!item)return;
-  const id=item.getAttribute('data-notif-id');
-  window.RJNotificationRead.mark(id);
-  renderNotificationCenter();
-  notifPanel.classList.remove('open');
-  const updates=document.getElementById('updates');
-  if(updates) updates.scrollIntoView({behavior:'smooth',block:'start'});
-});
-
-// APPROVED JOB NOTIFICATIONS — public-safe because only approved jobs are readable.
-let firstApprovedJobSnapshot=true;
-try{
-  onSnapshot(query(collection(db2,'jobs'),where('status','==','approved')),snap=>{
-    if(firstApprovedJobSnapshot){ firstApprovedJobSnapshot=false; return; }
-    snap.docChanges().forEach(change=>{
-      if(change.type!=='added') return;
-      const j=change.doc.data();
-      const id='job_'+change.doc.id;
-      if(!window.RJNotificationRead.has(id)){
-        latestNotifications=[{id:id,title:'New Job Available',message:`${j.title||'New vacancy'}${j.company?' • '+j.company:''}${j.location?' • '+j.location:''}`,type:'job',status:'published',createdAt:new Date()}].concat(latestNotifications).slice(0,15);
-        renderNotificationCenter();
-      }
-    });
-  },err=>console.error('Approved job notification listener:',err));
-}catch(e){console.error('Approved job notification init:',e);}
-
-try{
-  // Read announcements without a Firestore composite-index dependency.
-  // We filter and sort on the browser so the bell keeps working even if
-  // Firestore has not created an index for status + createdAt yet.
-  onSnapshot(query(collection(db2,'announcements'),where('status','==','published')),snap=>{
-    latestNotifications=snap.docs
-      .map(d=>({id:d.id,...d.data()}))
-      .filter(n=>String(n.status||'').toLowerCase()==='published')
-      .sort((a,b)=>{
-        const ta=a.createdAt?.toDate?a.createdAt.toDate().getTime():new Date(a.createdAt||0).getTime();
-        const tb=b.createdAt?.toDate?b.createdAt.toDate().getTime():new Date(b.createdAt||0).getTime();
-        return tb-ta;
-      })
-      .slice(0,15);
-    renderNotificationCenter();
-  },err=>{
-    console.error('Notification center:',err);
-    notifItems.innerHTML='<div class="notifEmpty">Notifications temporarily unavailable.<br><small>Please check Firebase announcements read access.</small></div>';
+      <button type="button" class="toastClose" aria-label="Dismiss">${ico('x')}</button>
+    </div>
+    <div class="toastTimer" style="animation:toastTimer ${TOAST_MS}ms linear forwards"></div>
+  </div>`;
+  const el=toastStack.firstElementChild;
+  let remaining=TOAST_MS, started=Date.now();
+  const start=()=>{started=Date.now();clearTimeout(toastTimer);toastTimer=setTimeout(hideToast,remaining);};
+  const pause=()=>{clearTimeout(toastTimer);remaining-=Date.now()-started;el.classList.add('paused');};
+  const resume=()=>{el.classList.remove('paused');start();};
+  el.addEventListener('mouseenter',pause);el.addEventListener('mouseleave',resume);
+  el.addEventListener('focusin',pause);el.addEventListener('focusout',resume);
+  el.querySelector('.toastClose').addEventListener('click',hideToast);
+  el.querySelector('[data-act]').addEventListener('click',ev=>{
+    if(ev.currentTarget.dataset.act==='open'){notifPanel.classList.add('open');hideToast();}
+    else{window.RJNotificationRead.mark(n.id);}
   });
-}catch(e){
-  console.error('Notification center init:',e);
-  notifItems.innerHTML='<div class="notifEmpty">Notifications temporarily unavailable.</div>';
+  requestAnimationFrame(()=>el.classList.add('show')); start();
+}
+function evaluateToast(){
+  const done=new Set(toasted.get()), now=Date.now();
+  const fresh=latestNotifications.filter(n=>!done.has(n.id)&&!window.RJNotificationRead.has(n.id)&&msOf(n.createdAt)&&now-msOf(n.createdAt)<FRESH_MS);
+  toasted.add(latestNotifications.map(n=>n.id)); // seen once = never pop up again
+  if(!fresh.length||sessionToasts>=MAX_SESSION_TOASTS||notifPanel.classList.contains('open')) return;
+  sessionToasts++; showToast(fresh[0],fresh.length-1);
+}
+function rebuild(){
+  latestNotifications=annItems.concat(jobItems).sort((a,b)=>msOf(b.createdAt)-msOf(a.createdAt)).slice(0,12);
+  renderNotificationCenter();
+  clearTimeout(toastSched); toastSched=setTimeout(evaluateToast,1500); // wait so both feeds load, then decide once
 }
 
-const esc2=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const fmt2=t=>{if(!t)return '';try{return new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'short',year:'numeric'}).format(t.toDate? t.toDate():new Date(t));}catch{return ''}};
-const annBox=document.getElementById('announcementList');
-const livePopup=document.getElementById('livePopup');
-const livePopupTitle=document.getElementById('livePopupTitle');
-const livePopupText=document.getElementById('livePopupText');
-const livePopupAction=document.getElementById('livePopupAction');
-let popupTimer=null, initialAnnouncements=true, knownAnnouncementIds=new Set();
-function showLivePopup(title,message,href='#updates'){
- livePopupTitle.textContent=title||'Latest Rajasthan Job Update';
- livePopupText.textContent=message||'New update available.';
- livePopupAction.href=href; livePopup.classList.add('show');
- clearTimeout(popupTimer); popupTimer=setTimeout(()=>livePopup.classList.remove('show'),9000);
-}
-document.getElementById('livePopupClose').onclick=()=>livePopup.classList.remove('show');
 try{onSnapshot(query(collection(db2,'announcements'),where('status','==','published')),snap=>{
- if(!snap.docs.length){annBox.innerHTML='<div class="announcement"><div class="announcementTitle">No new notifications</div><div class="announcementText">New updates yahan automatically show honge.</div></div>';return;}
- const docs=snap.docs.slice().sort((x,y)=>{const a=x.data(),b=y.data();const ta=a.createdAt?.toDate?a.createdAt.toDate().getTime():new Date(a.createdAt||0).getTime();const tb=b.createdAt?.toDate?b.createdAt.toDate().getTime():new Date(b.createdAt||0).getTime();return tb-ta;}).slice(0,3); annBox.innerHTML=docs.map(d=>{const a=d.data();return `<div class="announcement"><div class="announcementTop"><div class="announcementTitle">🔔 ${esc2(a.title||'Update')}</div><div class="announcementDate">${esc2(fmt2(a.createdAt))}</div></div><div class="announcementText">${esc2(a.message||'')}</div></div>`}).join('');
- if(initialAnnouncements){snap.docs.forEach(d=>knownAnnouncementIds.add(d.id));initialAnnouncements=false;}
- else{const fresh=snap.docChanges().find(ch=>ch.type==='added'&&!knownAnnouncementIds.has(ch.doc.id));if(fresh){const a=fresh.doc.data();knownAnnouncementIds.add(fresh.doc.id);showLivePopup(a.title,a.message,'#updates');}}
-},()=>{annBox.innerHTML='<div class="announcement"><div class="announcementTitle">Updates temporarily unavailable</div><div class="announcementText">Please refresh the page later.</div></div>';});}catch(e){}
+  annItems=snap.docs.map(d=>{const a=d.data();return {id:d.id,kind:'announcement',type:a.type,title:a.title||'Update',message:a.message||'',createdAt:a.createdAt};});
+  rebuild();
+},err=>{console.error('Announcements:',err);notifItems.innerHTML='<div class="notifEmpty"><b>Notifications unavailable</b>Please refresh the page in a moment.</div>';});}catch(e){console.error(e);}
+
+try{onSnapshot(query(collection(db2,'jobs'),where('status','==','approved')),snap=>{
+  const cutoff=Date.now()-14*864e5;
+  jobItems=snap.docs.map(d=>{const j=d.data();return {id:'job_'+d.id,jobId:d.id,kind:'job',title:j.title||j.jobTitle||'New job vacancy',message:[j.company||j.companyName,j.location].filter(Boolean).join(' • '),createdAt:j.createdAt||j.postedAt};}).filter(n=>msOf(n.createdAt)>cutoff);
+  rebuild();
+},err=>console.error('Job notifications:',err));}catch(e){console.error(e);}
+
 const commentBox=document.getElementById('publicComments');
 try{onSnapshot(query(collection(db2,'comments'),where('status','==','approved'),orderBy('createdAt','desc'),limit(10)),snap=>{
  if(!snap.docs.length){commentBox.innerHTML='<div class="comment"><small>No public comments yet. Be the first to comment.</small></div>';return;}
@@ -772,7 +442,7 @@ inquiryForm.addEventListener('submit',async function(e){
 
   if(!name || !mobile || !message){
     st.style.display='block';
-    st.textContent='❌ Name, mobile aur requirement fill karein.';
+    st.textContent='Name, mobile aur requirement fill karein.';
     st.style.color='#a63d3d';
     st.style.background='#fff5f5';
     st.style.borderColor='#f2cccc';
@@ -781,7 +451,7 @@ inquiryForm.addEventListener('submit',async function(e){
 
   if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
     st.style.display='block';
-    st.textContent='❌ Please enter a valid email address.';
+    st.textContent='Please enter a valid email address.';
     st.style.color='#a63d3d';
     st.style.background='#fff5f5';
     st.style.borderColor='#f2cccc';
@@ -790,7 +460,7 @@ inquiryForm.addEventListener('submit',async function(e){
 
   if(!/^\d{10}$/.test(mobile)){
     st.style.display='block';
-    st.textContent='❌ Please enter a valid 10-digit mobile number.';
+    st.textContent='Please enter a valid 10-digit mobile number.';
     st.style.color='#a63d3d';
     st.style.background='#fff5f5';
     st.style.borderColor='#f2cccc';
@@ -798,9 +468,9 @@ inquiryForm.addEventListener('submit',async function(e){
   }
 
   btn.disabled=true;
-  btn.textContent='⏳ Sending...';
+  btn.textContent='Sending...';
   st.style.display='block';
-  st.textContent='⏳ Inquiry submit ho rahi hai...';
+  st.textContent='Inquiry submit ho rahi hai...';
   st.style.color='#1769aa';
   st.style.background='#eef6ff';
   st.style.borderColor='#cfe4fb';
@@ -817,24 +487,24 @@ inquiryForm.addEventListener('submit',async function(e){
       updatedAt:serverTimestamp()
     });
 
-    st.textContent='✅ Inquiry submitted successfully. Rajasthan Job admin ise review karega.';
+    st.textContent='Inquiry submitted successfully. Rajasthan Job admin ise review karega.';
     st.style.color='#11623f';
     st.style.background='#edf8f2';
     st.style.borderColor='#c9ead9';
     inquiryForm.reset();
   }catch(err){
     console.error('Inquiry submit error:',err);
-    st.textContent='❌ Inquiry submit nahi ho saki. Please try again.';
+    st.textContent='Inquiry submit nahi ho saki. Please try again.';
     st.style.color='#a63d3d';
     st.style.background='#fff5f5';
     st.style.borderColor='#f2cccc';
   }finally{
     btn.disabled=false;
-    btn.textContent='📩 Submit Inquiry';
+    btn.textContent='Send inquiry';
   }
 });
 const commentForm=document.getElementById('commentForm');
-commentForm.addEventListener('submit',async e=>{e.preventDefault();const btn=document.getElementById('commentBtn'),st=document.getElementById('commentStatus');const name=document.getElementById('commentName').value.trim(),comment=document.getElementById('commentText').value.trim();if(name.length<2||comment.length<1){st.style.display='block';st.textContent='Name aur comment dono fill karein.';st.style.color='#a63d3d';return;}btn.disabled=true;btn.textContent='⏳ Posting...';try{await addDoc(collection(db2,'comments'),{name,comment,status:'pending',createdAt:serverTimestamp()});st.style.display='block';st.textContent='✅ Comment submitted. Review ke baad public page par show hoga.';st.style.color='#11623f';st.style.background='#edf8f2';st.style.borderColor='#c9ead9';commentForm.reset();}catch(err){console.error(err);st.style.display='block';st.textContent='❌ Comment submit nahi ho saka.';st.style.color='#a63d3d';st.style.background='#fff5f5';st.style.borderColor='#f2cccc';}finally{btn.disabled=false;btn.textContent='💬 Post Comment';}});
+commentForm.addEventListener('submit',async e=>{e.preventDefault();const btn=document.getElementById('commentBtn'),st=document.getElementById('commentStatus');const name=document.getElementById('commentName').value.trim(),comment=document.getElementById('commentText').value.trim();if(name.length<2||comment.length<1){st.style.display='block';st.textContent='Name aur comment dono fill karein.';st.style.color='#a63d3d';return;}btn.disabled=true;btn.textContent='Posting...';try{await addDoc(collection(db2,'comments'),{name,comment,status:'pending',createdAt:serverTimestamp()});st.style.display='block';st.textContent='Comment submitted. Review ke baad public page par show hoga.';st.style.color='#11623f';st.style.background='#edf8f2';st.style.borderColor='#c9ead9';commentForm.reset();}catch(err){console.error(err);st.style.display='block';st.textContent='Comment submit nahi ho saka.';st.style.color='#a63d3d';st.style.background='#fff5f5';st.style.borderColor='#f2cccc';}finally{btn.disabled=false;btn.textContent='💬 Post Comment';}});
 </script>
 
 
@@ -873,27 +543,27 @@ if(inquiryFormFallback){
 
     if(!name || !message || !/^\d{10}$/.test(mobile)){
       st.style.display="block";
-      st.textContent="❌ Name, 10-digit mobile aur requirement sahi se fill karein.";
+      st.textContent="Name, 10-digit mobile aur requirement sahi se fill karein.";
       return;
     }
 
     btn.disabled=true;
-    btn.textContent="⏳ Sending...";
+    btn.textContent="Sending...";
     try{
       await addDoc(collection(inquiryDb,"inquiries"),{
         name,mobile,email,service,message,status:"new",
         createdAt:serverTimestamp(),updatedAt:serverTimestamp()
       });
       st.style.display="block";
-      st.textContent="✅ Inquiry submitted successfully. Rajasthan Job admin ise review karega.";
+      st.textContent="Inquiry submitted successfully. Rajasthan Job admin ise review karega.";
       inquiryFormFallback.reset();
     }catch(err){
       console.error(err);
       st.style.display="block";
-      st.textContent="❌ Inquiry submit nahi ho saki. Please try again.";
+      st.textContent="Inquiry submit nahi ho saki. Please try again.";
     }finally{
       btn.disabled=false;
-      btn.textContent="📩 Submit Inquiry";
+      btn.textContent="Send inquiry";
     }
   }, true);
 }
@@ -904,7 +574,7 @@ if(inquiryFormFallback){
 <div class="employerChatOverlay" id="employerChatOverlay" role="dialog" aria-modal="true" aria-labelledby="employerChatTitle">
   <div class="employerChatModal">
     <div class="employerChatHead">
-      <div><h2 id="employerChatTitle">🏢 HR / Company Chat</h2><p><strong>Hiring in Jaipur or Rajasthan?</strong> Connect with job-ready freshers and experienced candidates through Rajasthan Career Hub. Share your vacancy and hiring needs—we’ll help you connect with suitable profiles.</p></div>
+      <div><h2 id="employerChatTitle">Talk to our hiring team</h2><p><strong>Hiring in Jaipur or Rajasthan?</strong> Connect with job-ready freshers and experienced candidates through Rajasthan Career Hub. Share your vacancy and hiring needs—we’ll help you connect with suitable profiles.</p></div>
       <button type="button" class="employerChatClose" id="closeEmployerChat" aria-label="Close chat">×</button>
     </div>
     <form id="employerChatForm">
@@ -918,7 +588,7 @@ if(inquiryFormFallback){
       <input id="employerChatPhone" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" placeholder="10-digit mobile number">
       <label for="employerChatMessage">Message *</label>
       <textarea id="employerChatMessage" maxlength="2000" required placeholder="Tell us about your hiring requirement or question…"></textarea>
-      <button type="submit" class="employerChatSubmit" id="employerChatSend">💬 Send Message</button>
+      <button type="submit" class="employerChatSubmit" id="employerChatSend">Send message</button>
       <div class="employerChatStatus" id="employerChatStatus" role="status" aria-live="polite"></div>
     </form>
   </div>
@@ -1016,13 +686,13 @@ chatForm?.addEventListener("submit",async e=>{
       text:message,sender:"employer",senderName:name,ownerUid:user.uid,createdAt:serverTimestamp()
     });
     chatStatus.style.color="#11623f";chatStatus.style.background="#edf8f2";chatStatus.style.borderColor="#c9ead9";
-    chatStatus.textContent="✅ Message submit ho gaya! Aap isi browser se wapas aakar apni conversation continue kar sakte hain. Admin aapke diye gaye email/mobile par bhi contact kar sakta hai.";
+    chatStatus.textContent="Message submit ho gaya! Aap isi browser se wapas aakar apni conversation continue kar sakte hain. Admin aapke diye gaye email/mobile par bhi contact kar sakta hai.";
     document.getElementById("employerChatMessage").value="";
   }catch(err){
     console.error("Employer chat submit:",err);
     chatStatus.style.color="#a63d3d";chatStatus.style.background="#fff5f5";chatStatus.style.borderColor="#f2cccc";
-    chatStatus.textContent="❌ Message submit nahi hua. Firebase Console mein Authentication ka Anonymous sign-in enable karein aur secure employerChats Firestore rules publish karein.";
-  }finally{sendBtn.disabled=false;sendBtn.textContent="💬 Send Message";}
+    chatStatus.textContent="Message submit nahi hua. Firebase Console mein Authentication ka Anonymous sign-in enable karein aur secure employerChats Firestore rules publish karein.";
+  }finally{sendBtn.disabled=false;sendBtn.textContent="Send message";}
 });
 </script>
 
@@ -1080,6 +750,17 @@ async function go(){
   }
 }
 go();
+</script>
+<script>
+(function(){
+ var t=document.getElementById('menuToggle'),m=document.getElementById('mainMenu'),mp=document.getElementById('mobPost');
+ function mobile(){return window.matchMedia('(max-width:860px)').matches}
+ function sync(){if(mp)mp.style.display=mobile()?'block':'none'}
+ sync();window.addEventListener('resize',sync);
+ if(t&&m){t.addEventListener('click',function(){var o=m.classList.toggle('open');t.setAttribute('aria-expanded',o)});
+  m.addEventListener('click',function(e){if(e.target.closest('a'))m.classList.remove('open')});}
+ ['openEmployerChat2','openEmployerChat3'].forEach(function(id){var b=document.getElementById(id),o=document.getElementById('openEmployerChat');if(b&&o)b.addEventListener('click',function(){o.click()})});
+})();
 </script>
 </body>
 </html>
