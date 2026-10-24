@@ -37,6 +37,9 @@ const STATIC_PAGES = [
   ['junior-data-analyst-jaipur.html', 'monthly', '0.6'],
   ['mis-executive-jaipur.html', 'monthly', '0.6'],
   ['sales-executive-jaipur.html', 'monthly', '0.6'],
+  ['terms.html', 'yearly', '0.3'],
+  ['privacy.html', 'yearly', '0.3'],
+  ['refund.html', 'yearly', '0.3'],
 ];
 
 /* ---------- Firestore (REST, no SDK needed) ---------- */
@@ -170,6 +173,7 @@ ${ld ? `<script type="application/ld+json">${ld}</script>` : ''}
 <div class="bar"><div class="wrap"><a href="index.html"><b>Rajasthan Job</b></a><a href="jobs.html">← Sab jobs dekhein</a></div></div>
 ${body}
 ${script}
+${jobId ? '<script src="assets/rj-config.js"></script>\n<script src="assets/rj-premium.js"></script>' : ''}
 <script type="module" src="assets/rch-analytics-tracker.js"></script>
 <script src="assets/rch-chrome.js"></script>
 </body></html>
@@ -196,6 +200,7 @@ function jobPage(j, all) {
   <div class="card">
     <div class="facts">${f('Salary', j.salary || 'Not specified', 'sal')}${f('Experience', j.experience || 'Any experience')}${f('Job type', j.type || 'Full Time')}${f('Qualification', j.qualification || 'Not specified')}${f('Deadline', j.deadline)}</div>
     <div class="actions">${apply ? `<a class="btn apply" href="${esc(apply)}" target="_blank" rel="noopener noreferrer">Apply Now</a>` : ''}<a class="btn ghost wa" href="${esc(wa)}" target="_blank" rel="noopener noreferrer">WhatsApp par share</a><button class="btn ghost" id="cp" type="button">Link copy</button></div>
+    <div id="rjPremium" data-rj-job="${esc(j.id)}"></div>
     ${isExpired(j) ? '<div class="note">Is vacancy ki last date nikal chuki hai. Naye jobs ke liye Jobs page dekhein.</div>' : ''}
     <div class="sec"><h2>Job Description</h2><p>${nl2br(j.description || 'Details employer ke apply page par available hain.')}</p></div>
     ${j.notes ? `<div class="sec"><h2>Additional Information</h2><p>${nl2br(j.notes)}</p></div>` : ''}

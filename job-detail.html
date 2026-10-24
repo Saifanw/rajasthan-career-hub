@@ -53,6 +53,8 @@ a:focus-visible,button:focus-visible{outline:3px solid #7db4ff;outline-offset:2p
 <div class="sticky" id="sticky"><a class="btn apply" id="stickyApply" target="_blank" rel="noopener noreferrer">Apply Now</a><button class="btn ghost wa" id="stickyWa" type="button">WhatsApp</button></div>
 <div class="toast" id="toast" role="status">Link copy ho gaya</div>
 
+<script src="assets/rj-config.js"></script>
+<script src="assets/rj-premium.js"></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import{getFirestore,doc,getDoc,collection,query,where,getDocs}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
@@ -79,9 +81,11 @@ async function load(){
     const f=(l,v,c='')=>v?`<div class="fact ${c}"><small>${l}</small><b>${esc(v)}</b></div>`:'';
     $('content').innerHTML=`<div class="facts">${f('Salary',j.salary||'Not specified','sal')}${f('Experience',j.experience||'Any experience')}${f('Job type',j.type||'Full Time')}${f('Qualification',j.qualification||'Not specified')}${f('Deadline',j.deadline)}</div>
 <div class="actions">${apply?`<a class="btn apply" href="${esc(apply)}" target="_blank" rel="noopener noreferrer">Apply Now</a>`:''}<a class="btn ghost wa" href="${wa}" target="_blank" rel="noopener noreferrer">WhatsApp par share</a><button class="btn ghost" id="cp" type="button">Link copy</button></div>
+<div id="rjPremium"></div>
 <div class="sec"><h2>Job Description</h2><p>${esc(j.description||'Details employer ke apply page par available hain.').replace(/\n/g,'<br>')}</p></div>
 ${j.notes?`<div class="sec"><h2>Additional Information</h2><p>${esc(j.notes).replace(/\n/g,'<br>')}</p></div>`:''}
 <div class="note">Apply karne se pehle vacancy aur application link ek baar verify zaroor karein.</div>`;
+    if(window.RJPremium)RJPremium.mount($('rjPremium'),id);
     $('cp').onclick=async()=>{try{await navigator.clipboard.writeText(url);toast()}catch(e){prompt('Link copy karein:',url)}};
     if(apply){$('stickyApply').href=apply}else{$('stickyApply').style.display='none'}
     $('stickyWa').onclick=()=>window.open(wa,'_blank','noopener');

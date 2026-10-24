@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Premium Manager | Rajasthan Job Admin</title>
+<style>:root{--navy:#102a43;--blue:#1769e8;--bg:#f5f7fb;--line:#dfe7ef;--muted:#64748b;--green:#11623f;--red:#a63d3d}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#182536}.wrap{width:min(1000px,94%);margin:auto}header{background:var(--navy);color:#fff;padding:17px 0}.head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.brand{font-size:20px;font-weight:900}.btn{border:0;border-radius:9px;padding:10px 14px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;font:inherit;font-weight:800}.white{background:#fff;color:var(--navy)}.primary{background:var(--blue);color:#fff}.danger{background:#fff0f0;color:var(--red)}.light{background:#eef4fa;color:var(--navy)}main{padding:26px 0 60px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:18px}h2{margin:0 0 6px;color:var(--navy)}.muted{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;margin-top:12px}.full{grid-column:1/-1}label{display:block;font-size:12px;font-weight:900;margin-bottom:6px;color:var(--navy)}input,select,textarea{width:100%;border:1px solid #cfd9e3;border-radius:9px;padding:11px;font:inherit}textarea{min-height:90px;resize:vertical}.row{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.row b{color:var(--navy)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}.stat{background:#f7faff;border:1px solid #e1ebf5;border-radius:12px;padding:12px;text-align:center}.stat b{display:block;font-size:24px;color:var(--navy)}.stat span{font-size:11px;color:var(--muted);font-weight:800}.msg{margin-top:10px;font-size:14px;font-weight:700}.ok{color:var(--green)}.er{color:var(--red)}table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}td,th{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:11px}.tw{overflow-x:auto}@media(max-width:640px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}}</style>
+</head><body>
+<header><div class="wrap head"><div class="brand">Rajasthan Job — Premium Manager</div><div><a class="btn white" href="job-manager.html">Job Manager</a> <button class="btn white" id="logoutBtn" type="button" style="display:none">Logout</button></div></div></header>
+<main class="wrap">
+
+<section class="card" id="loginCard"><h2>Premium admin login</h2>
+<p class="muted">Ye wahi email/password hai jo aapke Supabase (Trade Lab) admin ka hai. Job Manager ka Firebase login alag hai.</p>
+<form id="loginForm"><div class="grid"><div><label>Email</label><input id="lEmail" type="email" required autocomplete="username"></div><div><label>Password</label><input id="lPass" type="password" required autocomplete="current-password"></div></div>
+<button class="btn primary" style="margin-top:14px" type="submit">Login</button><div class="msg er" id="lMsg"></div></form></section>
+
+<section id="app" style="display:none">
+<div class="card"><h2>Kamai (paid unlocks)</h2><div class="stats"><div class="stat"><b id="sCount">0</b><span>TOTAL PAYMENTS</span></div><div class="stat"><b id="sSum">₹0</b><span>TOTAL COLLECTED</span></div><div class="stat"><b id="sJobs">0</b><span>JOBS WITH PREMIUM</span></div></div>
+<p class="muted">Razorpay fee aur GST isme se kat'ti hai. Final settlement Razorpay dashboard mein dekhein.</p>
+<div class="tw"><table><thead><tr><th>Date</th><th>Job</th><th>Email</th><th>Mobile</th><th>₹</th></tr></thead><tbody id="payRows"><tr><td colspan="5" class="muted">Loading…</td></tr></tbody></table></div></div>
+
+<div class="card"><h2 id="fTitle">Premium details add karein</h2>
+<p class="muted">Sirf wahi jaankari daliye jo employer ki permission se ya unke apne public post/career page se li gayi ho. Ye data public nahi hota, sirf payment ke baad dikhta hai.</p>
+<div class="grid"><div class="full"><label>Job (approved jobs)</label><input id="jobSearch" placeholder="Job title ya company search karein…" style="margin-bottom:8px"><select id="jobSel" size="5" style="height:auto"></select></div>
+<div><label>HR Name</label><input id="hrName" maxlength="80"></div><div><label>HR Phone</label><input id="hrPhone" type="tel" maxlength="20"></div>
+<div><label>HR WhatsApp</label><input id="hrWa" type="tel" maxlength="20"></div><div><label>HR Email</label><input id="hrEmail" type="email" maxlength="120"></div>
+<div class="full"><label>Company Career Page link</label><input id="career" type="url" placeholder="https://" maxlength="300"></div>
+<div class="full"><label>Hiring tips / extra note (optional)</label><textarea id="note" maxlength="1500" placeholder="Jaise: interview kaise hota hai, kisse milna hai, kaunsa time best hai…"></textarea></div>
+<div><label>Price (₹)</label><input id="price" type="number" min="1" max="999" value="10"></div></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><button class="btn primary" id="saveBtn" type="button">Save premium</button><button class="btn danger" id="delBtn" type="button" style="display:none">Is job se premium hatayein</button><button class="btn light" id="clrBtn" type="button">Clear</button></div>
+<div class="msg" id="fMsg"></div></div>
+
+<div class="card"><h2>Jin jobs par premium laga hai</h2><div id="premList"><p class="muted">Loading…</p></div></div>
+</section>
+</main>
+
+<script src="assets/rj-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import{getFirestore,collection,getDocs,query,where}from"https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+const CFG=window.RJ_CONFIG||{},SB_URL=CFG.sbUrl||'',SB_KEY=CFG.sbKey||'';const READY=!!(SB_URL&&SB_KEY&&!/PASTE/i.test(SB_URL+SB_KEY));
+const firebaseConfig={apiKey:"AIzaSyDO75-iuVlRP9emqnR-d1T4g66akuQS328",authDomain:"rajasthan-job.firebaseapp.com",projectId:"rajasthan-job",storageBucket:"rajasthan-job.firebasestorage.app",messagingSenderId:"894888753938",appId:"1:894888753938:web:92e66d7a7237be1fd9d1cb",measurementId:"G-15S2XJQK80"};
+const $=id=>document.getElementById(id);
+const db=getFirestore(initializeApp(firebaseConfig));
+const sb=READY?supabase.createClient(SB_URL,SB_KEY):null;
+if(!READY)$('lMsg').textContent='Pehle assets/rj-config.js mein naye Supabase project ka URL aur key daliye.';
+let jobs=[],prem={},selId=new URLSearchParams(location.search).get('id')||'';
+const title=id=>{const j=jobs.find(x=>x.id===id);return j?`${j.title||'Job'} — ${j.company||''}`:(prem[id]?.job_title||id)};
+const say=(t,ok)=>{$('fMsg').textContent=t;$('fMsg').className='msg '+(ok?'ok':'er')};
+const clean=s=>String(s||'').trim();
+
+async function enter(){
+  const {data:isAdmin,error}=await sb.rpc('is_admin');
+  if(error||!isAdmin){await sb.auth.signOut();$('lMsg').textContent='Ye account admin nahi hai ya email confirm nahi hua.';return false}
+  $('loginCard').style.display='none';$('app').style.display='block';$('logoutBtn').style.display='inline-block';
+  const snap=await getDocs(query(collection(db,'jobs'),where('status','==','approved')));
+  jobs=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  await loadPrem();fillSel();loadPay();
+  if(selId)pick(selId);
+  return true}
+
+async function loadPrem(){
+  const {data}=await sb.from('rj_job_premium').select('*').order('updated_at',{ascending:false});
+  prem={};(data||[]).forEach(r=>prem[r.job_id]=r);$('sJobs').textContent=(data||[]).length;
+  const box=$('premList');box.innerHTML='';
+  if(!data||!data.length){box.innerHTML='<p class="muted">Abhi kisi job par premium nahi laga.</p>';return}
+  data.forEach(r=>{const row=document.createElement('div');row.className='row';
+    const l=document.createElement('div');const b=document.createElement('b');b.textContent=title(r.job_id);const p=document.createElement('div');p.className='muted';
+    p.textContent='₹'+r.price+' · '+[r.hr_name,r.hr_phone,r.hr_whatsapp,r.hr_email,r.career_url&&'career page',r.insider_note&&'tips'].filter(Boolean).join(' · ');
+    l.append(b,p);const e=document.createElement('button');e.className='btn light';e.textContent='Edit';e.onclick=()=>{pick(r.job_id);scrollTo({top:0,behavior:'smooth'})};
+    row.append(l,e);box.appendChild(row)})}
+
+async function loadPay(){
+  const {data,error}=await sb.from('rj_payments').select('*').order('created_at',{ascending:false}).limit(500);
+  const rows=data||[];$('sCount').textContent=rows.length;$('sSum').textContent='₹'+rows.reduce((a,r)=>a+(r.amount||0),0).toLocaleString('en-IN');
+  const tb=$('payRows');tb.innerHTML='';
+  if(error||!rows.length){tb.innerHTML='<tr><td colspan="5" class="muted">Abhi koi payment nahi.</td></tr>';return}
+  rows.slice(0,25).forEach(r=>{const tr=document.createElement('tr');
+    [new Date(r.created_at).toLocaleDateString('en-IN'),title(r.job_id),r.email,r.phone||'-','₹'+r.amount].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});tb.appendChild(tr)})}
+
+function fillSel(){
+  const q=clean($('jobSearch').value).toLowerCase(),s=$('jobSel');s.innerHTML='';
+  jobs.filter(j=>!q||`${j.title} ${j.company} ${j.location}`.toLowerCase().includes(q)).slice(0,200).forEach(j=>{
+    const o=document.createElement('option');o.value=j.id;o.textContent=`${prem[j.id]?'💰 ':''}${j.title||'Job'} — ${j.company||''} (${j.location||''})`;if(j.id===selId)o.selected=true;s.appendChild(o)})}
+
+function pick(id){
+  selId=id;fillSel();const r=prem[id]||{};
+  $('hrName').value=r.hr_name||'';$('hrPhone').value=r.hr_phone||'';$('hrWa').value=r.hr_whatsapp||'';$('hrEmail').value=r.hr_email||'';
+  $('career').value=r.career_url||'';$('note').value=r.insider_note||'';$('price').value=r.price||10;
+  $('fTitle').textContent=prem[id]?'Premium edit: '+title(id):'Premium details add karein: '+title(id);
+  $('delBtn').style.display=prem[id]?'inline-block':'none';say('',true)}
+
+$('jobSel').onchange=e=>pick(e.target.value);
+$('jobSearch').oninput=fillSel;
+$('clrBtn').onclick=()=>{selId='';fillSel();['hrName','hrPhone','hrWa','hrEmail','career','note'].forEach(k=>$(k).value='');$('price').value=10;$('fTitle').textContent='Premium details add karein';$('delBtn').style.display='none';say('',true)};
+
+$('saveBtn').onclick=async()=>{
+  if(!selId)return say('Pehle list se job chuniye.');
+  const row={job_id:selId,job_title:(jobs.find(j=>j.id===selId)?.title||'').slice(0,120),hr_name:clean($('hrName').value),hr_phone:clean($('hrPhone').value),hr_whatsapp:clean($('hrWa').value),
+    hr_email:clean($('hrEmail').value),career_url:clean($('career').value),insider_note:clean($('note').value),price:parseInt($('price').value,10),updated_at:new Date().toISOString()};
+  if(![row.hr_name,row.hr_phone,row.hr_whatsapp,row.hr_email,row.career_url,row.insider_note].some(Boolean))return say('Kam se kam ek detail daliye.');
+  if(row.career_url&&!/^https?:\/\//i.test(row.career_url))return say('Career link http:// ya https:// se shuru hona chahiye.');
+  if(row.hr_email&&!/^\S+@\S+\.\S+$/.test(row.hr_email))return say('HR email sahi nahi hai.');
+  if(!(row.price>=1&&row.price<=999))return say('Price 1 se 999 ke beech rakhiye.');
+  $('saveBtn').disabled=true;
+  const {error}=await sb.from('rj_job_premium').upsert(row,{onConflict:'job_id'});
+  $('saveBtn').disabled=false;
+  if(error){console.error(error);return say('Save nahi hua: '+error.message)}
+  await loadPrem();fillSel();pick(selId);say('Save ho gaya ✅ Job page par ₹'+row.price+' wala unlock button dikhne lagega.',true)};
+
+$('delBtn').onclick=async()=>{
+  if(!selId||!confirm('Is job se premium hata dein? Pehle jinhone pay kiya tha unhe bhi details nahi dikhengi (payment record rahega).'))return;
+  const {error}=await sb.from('rj_job_premium').delete().eq('job_id',selId);
+  if(error)return say('Delete nahi hua: '+error.message);
+  await loadPrem();fillSel();pick(selId);say('Premium hata diya.',true)};
+
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();if(!sb)return;$('lMsg').textContent='';
+  const {error}=await sb.auth.signInWithPassword({email:clean($('lEmail').value).toLowerCase(),password:$('lPass').value});
+  if(error)return $('lMsg').textContent=error.message;await enter()});
+$('logoutBtn').onclick=async()=>{if(sb)await sb.auth.signOut();location.reload()};
+(async()=>{if(!sb)return;const {data}=await sb.auth.getSession();if(data.session)await enter()})();
+</script>
+</body></html>
