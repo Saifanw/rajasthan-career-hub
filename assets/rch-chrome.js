@@ -23,7 +23,7 @@
   var foot=document.createElement('footer');foot.className='rcFoot';
   foot.innerHTML='<div class="rcWrap"><div class="rcFootGrid">'+
     '<div><a class="rcBrand" href="index.html"><div class="rcLogo">RJ</div><div><b>Rajasthan Job</b><small>Jobs and career support</small></div></a><p>Jobs, government recruitment information, resume and interview support for Jaipur and Rajasthan.</p></div>'+
-    '<div><h4>Explore</h4><a href="jobs.html">Private jobs</a><a href="government-jobs.html">Government jobs</a><a href="job-seeker.html">Job seekers</a><a href="notes.html">Notes</a><a href="resume-builder.html">Resume builder</a></div>'+
+    '<div><h4>Explore</h4><a href="jobs.html">Private jobs</a><a href="job/">Latest job pages</a><a href="government-jobs.html">Government jobs</a><a href="job-seeker.html">Job seekers</a><a href="notes.html">Notes</a><a href="resume-builder.html">Resume builder</a></div>'+
     '<div><h4>Services</h4><a href="inquiry.html">Job inquiry</a><a href="inquiry.html">Resume support</a><a href="inquiry.html">Interview preparation</a><a href="index.html#services">All services</a></div>'+
     '<div><h4>For employers</h4><a href="post-a-job.html">Post a job</a><a href="inquiry.html">Talk to our team</a><a href="admin-dashboard.html">Admin login</a></div></div>'+
     '<div class="rcCopy"><span>© 2026 Rajasthan Job. All rights reserved.</span><span>Please verify recruitment details from the official source before applying.</span></div></div>';

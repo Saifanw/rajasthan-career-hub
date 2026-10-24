@@ -99,8 +99,10 @@ import { getFirestore, collection, doc, setDoc, addDoc, updateDoc, serverTimesta
   const device = /ipad|tablet|(android(?!.*mobile))/i.test(ua) ? "Tablet" : /mobi|iphone|ipod|android/i.test(ua) ? "Mobile" : "Desktop";
   const os = /windows nt/i.test(ua) ? "Windows" : /android/i.test(ua) ? "Android" : /iphone|ipad|ipod/i.test(ua) ? "iOS" : /mac os x/i.test(ua) ? "macOS" : /cros/i.test(ua) ? "ChromeOS" : /linux/i.test(ua) ? "Linux" : "Other";
   const browser = /FBAN|FBAV/.test(ua) ? "Facebook App" : /Instagram/.test(ua) ? "Instagram App" : /EdgA?\//.test(ua) ? "Edge" : /OPR\/|Opera/.test(ua) ? "Opera" : /SamsungBrowser/.test(ua) ? "Samsung Internet" : /Firefox\/|FxiOS/.test(ua) ? "Firefox" : /Chrome\/|CriOS/.test(ua) ? "Chrome" : /Safari\//.test(ua) ? "Safari" : "Other";
-  const page = cut(location.pathname.split("/").pop() || "index.html", 160);
-  const jobId = page === "job-detail.html" ? cut(params.get("id") || "", 80) : "";
+  const jobMeta = ((document.querySelector('meta[name="rch-job-id"]') || {}).content || "").trim();
+  /* Static SEO job pages (job/*.html) report as "job-detail.html" so the dashboard counts them as job views */
+  const page = jobMeta ? "job-detail.html" : cut(location.pathname.split("/").pop() || "index.html", 160);
+  const jobId = jobMeta ? cut(jobMeta, 80) : (page === "job-detail.html" ? cut(params.get("id") || "", 80) : "");
   const tz = (() => { try { return cut(Intl.DateTimeFormat().resolvedOptions().timeZone, 60); } catch (_) { return ""; } })();
   const cached = (() => { try { const c = JSON.parse(LS.get("rch_an_geo") || "null"); return c && Date.now() - c.t < 864e5 ? c : null; } catch (_) { return null; } })();
 
