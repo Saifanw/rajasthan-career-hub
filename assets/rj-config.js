@@ -4,5 +4,5 @@
 window.RJ_CONFIG = {
   sbUrl: 'https://andbibvopslwayjhluyq.supabase.co/rest/v1/',
   sbKey: 'sb_publishable_vUoyIE0PtrjuSTK59wUteg_pt9Oh4oM',
-  razorpayKey: 'rzp_live_Tq2J3Mo863dERr'
+  razorpayKey: 'rzp_live_TrjARMbmodrxTK'
 };
